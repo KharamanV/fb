@@ -11,8 +11,6 @@ class PostsTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('posts')->insert([
-            
-        ]);
+        factory(App\Models\Post::class, 20)->create();
     }
 }
