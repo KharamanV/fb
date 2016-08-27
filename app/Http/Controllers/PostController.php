@@ -28,7 +28,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -39,7 +39,17 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $post = new Post;
+        $this->validate($request, [
+            'title' => 'required',
+            'short' => 'required',
+            'slug'  => 'required',
+            'text'  => 'required'
+        ]);
+
+        $post->fill($request->all())->save();
+
+        return redirect()->back();
     }
 
     /**
