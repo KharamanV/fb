@@ -36,4 +36,14 @@ class LoginController extends Controller
     {
         $this->middleware('guest', ['except' => 'logout']);
     }
+
+    /**
+     * Redeclaring username() method, which will look on login field on login-page, not email
+     *
+     * @return string
+     */
+    public function username()
+    {
+        return 'login';
+    }
 }
