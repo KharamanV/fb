@@ -24,7 +24,7 @@ class PostController extends Controller
 
     public function test()
     {
-        $user = new User();
+        $user = User::find(3);
         dd($user->role()->first());
     }
 
