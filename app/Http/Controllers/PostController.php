@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 
 use App\Models\Post;
+use App\Models\User;
 
 class PostController extends Controller
 {
@@ -19,6 +20,12 @@ class PostController extends Controller
     {
         $posts = Post::latest('created_at')->get();
         return view('posts.index', ['posts' => $posts]);
+    }
+
+    public function test()
+    {
+        $user = new User();
+        dd($user->role()->first());
     }
 
     /**
