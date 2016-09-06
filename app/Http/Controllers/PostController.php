@@ -11,6 +11,7 @@ use App\Models\User;
 
 class PostController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      *
@@ -22,10 +23,10 @@ class PostController extends Controller
         return view('posts.index', ['posts' => $posts]);
     }
 
-    public function test()
+    public function test(Request $request)
     {
-        $user = User::find(3);
-        dd($user->role()->first());
+        echo "string";
+        $ass = new User;
     }
 
     /**

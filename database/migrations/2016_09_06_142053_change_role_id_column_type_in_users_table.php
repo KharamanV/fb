@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ChangeRoleColumnInUsersTable extends Migration
+class ChangeRoleIdColumnTypeInUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class ChangeRoleColumnInUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role_id')->default(3)->change();
+            $table->integer('role_id')->unsigned()->default(null)->change();
         });
     }
 
@@ -26,7 +26,7 @@ class ChangeRoleColumnInUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('role_id')->change();
+            
         });
     }
 }

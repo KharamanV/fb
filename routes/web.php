@@ -14,7 +14,11 @@
 Route::resource('post', 'PostController');
 
 Route::auth();
-//Auth::routes();
 
 Route::get('/home', 'HomeController@index');
-Route::get('test', 'PostController@test');
+Route::get('test', [
+	'uses' =>'PostController@test', 
+	'as' => 'test',
+	'middleware' => 'roles',
+	'roles' => 'admin'
+]);
