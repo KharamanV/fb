@@ -9,6 +9,8 @@ use App\Http\Requests;
 use App\Models\Post;
 use App\Models\User;
 
+use Illuminate\Support\Facades\Auth;
+
 class PostController extends Controller
 {
 
@@ -26,7 +28,7 @@ class PostController extends Controller
     public function test(Request $request)
     {
         echo "string";
-        $ass = new User;
+        dd(Auth::user()->hasAnyRole('Admin'));
     }
 
     /**

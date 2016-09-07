@@ -16,11 +16,10 @@ Route::resource('post', 'PostController');
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
-Route::get('test', [
+Route::get('hook', [
 	'uses' =>'PostController@test', 
 	'as' => 'test',
-	'middleware' => 'roles',
-	'roles' => 'admin'
+	// 'middleware' => 'roles',
+	// 'roles' => 'admin'
 ]);
-
-Route::get('/hook', 'Auth\LoginController@hook');
+;

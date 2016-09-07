@@ -30,6 +30,13 @@ class LoginController extends Controller
     protected $redirectTo = '/post';
 
     /**
+     * Where to redirect users after login / registration.
+     *
+     * @var string
+     */
+    protected $adminRedirectTo = '/admin';
+
+    /**
      * Create a new controller instance.
      *
      * @return void
@@ -56,15 +63,16 @@ class LoginController extends Controller
      */
     public function redirectPath()
     {
-        if (Auth::user()->hasAnyRole('Admin')) {
-            echo "string"; die;
-            $this->redirectTo = '/admin';
+        //TODO: Optimize this algorytm
+        if (property_exists($this, 'redirectTo')) {
+            if (Auth::user()->hasAnyRole('Admin')) {
+                $this->redirectTo = property_exists($this, 'adminRedirectTo') ? $this->adminRedirectTo : $this->redirectTo;
+            }
+            return $this->redirectTo;
         }
-        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+        return '/home';
+
+
     }
 
-    public function hook()
-    {
-        echo "string";
-    }
 }
