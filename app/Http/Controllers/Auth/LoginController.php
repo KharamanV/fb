@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
@@ -45,5 +47,24 @@ class LoginController extends Controller
     public function username()
     {
         return 'login';
+    }
+
+    /**
+     * Get the post register / login redirect path.
+     *
+     * @return string
+     */
+    public function redirectPath()
+    {
+        if (Auth::user()->hasAnyRole('Admin')) {
+            echo "string"; die;
+            $this->redirectTo = '/admin';
+        }
+        return property_exists($this, 'redirectTo') ? $this->redirectTo : '/home';
+    }
+
+    public function hook()
+    {
+        echo "string";
     }
 }

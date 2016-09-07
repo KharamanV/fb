@@ -22,3 +22,5 @@ Route::get('test', [
 	'middleware' => 'roles',
 	'roles' => 'admin'
 ]);
+
+Route::get('/hook', 'Auth\LoginController@hook');
