@@ -13,7 +13,7 @@
 
 Route::resource('post', 'PostController');
 
-Route::auth();
+Auth::routes();
 
 Route::get('/home', 'HomeController@index');
 Route::get('hook', [
@@ -22,4 +22,3 @@ Route::get('hook', [
 	// 'middleware' => 'roles',
 	// 'roles' => 'admin'
 ]);
-;
