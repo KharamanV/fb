@@ -27,8 +27,10 @@ class PostController extends Controller
 
     public function test(Request $request)
     {
-        echo "string";
-        dd(Auth::user()->hasAnyRole('Admin'));
+        $obj = new UserActivation;
+        dd($obj->test());
+        // echo "string";
+        // dd(Auth::user()->hasAnyRole('Admin'));
     }
 
     /**
