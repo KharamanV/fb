@@ -11,6 +11,8 @@ class UserActivation extends Model
 
 	protected $table = 'user_activations';
 
+    protected $resendAfter = 2;
+
     protected function getToken()
     {
         return hash_hmac('sha256', str_random(40), config('app.key'));
@@ -38,20 +40,33 @@ class UserActivation extends Model
         return $token;
     }
 
-    public function createActivation($user)
+    public function createActivation($userId)
     {
-
-        $activation = $this->getActivation($user);
-
-        if (!$activation) {
-            return $this->createToken($user);
+        if (!$this->getActivation($userId)) {
+            return $this->createToken($userId);
         }
-        return $this->regenerateToken($user);
+        return $this->regenerateToken($userId);
 
     }
 
-    public function hasActivation($userId)
+    public function getActivation($userId)
     {
         return DB::table($this->table)->where('user_id', $userId)->first();
+    }
+
+    public function getActivationByToken($token)
+    {
+        return DB::table($this->table)->where('token', $token)->first();
+    }
+
+    public function deleteActivation($token)
+    {
+        DB::table($this->table)->where('token', $token)->delete();
+    }
+
+    private function shouldSend($userId)
+    {
+        $activation = $this->getActivation($userId);
+        return $activation === null || strtotime($activation->created_at) + 60 * 60 * $this->resendAfter < time();
     }
 }

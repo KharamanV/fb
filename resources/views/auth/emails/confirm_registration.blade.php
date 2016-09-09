@@ -1,0 +1,1 @@
+<a href="{{ $token }}">Activate account</a>

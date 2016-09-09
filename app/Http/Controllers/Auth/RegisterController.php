@@ -6,6 +6,7 @@ use App\Models\User;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use App\Mail\ConfirmRegistration;
 
 class RegisterController extends Controller
 {
@@ -66,12 +67,44 @@ class RegisterController extends Controller
     {
         // TODO: make roles properties for this class, and put property in 'role_id' instead of role_id directly
         return User::create([
-            'login' => $data['login'],
-            'email' => $data['email'],
-            'name' => $data['name'],
+            'login'     => $data['login'],
+            'email'     => $data['email'],
+            'name'      => $data['name'],
             'last_name' => $data['last_name'],
-            'password' => bcrypt($data['password']),
-            'role_id' => 3
+            'password'  => bcrypt($data['password']),
+            'role_id'   => 3,
+            'is_active' => 0
         ]);
+    }
+
+    /**
+     * Handle a registration request for the application.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function register(Request $request)
+    {
+        $this->validator($request->all())->validate();
+        $this->create($request->all());
+
+        return back()->with('status', 'На ваш email адрес было отправлено письмо с ссылкой для подтверждения регистрации');
+        //$this->guard()->login();
+        //return redirect($this->redirectPath());
+    }
+
+    public function sendActivationMail($userId)
+    {
+        $confirmRegister = new ConfirmRegistration();
+        if ($user->activated || !$this->shouldSend($userId)) {
+            return;
+        }
+
+        $token = $this->activationRepo->createActivation($userId);
+
+        $link = route('user.activate', $token);
+        $message = sprintf('Activate account <a href="%s">%s</a>', $link, $link);
+
+        
     }
 }
