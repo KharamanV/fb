@@ -16,7 +16,7 @@ class CheckRole
     public function handle($request, Closure $next)
     {
         if ($request->user() === null) {
-            return $request('Отказано в доступе', 401);
+            return response('Отказано в доступе', 401);
         }
 
         $actions = $request->route()->getAction();

@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin;
+
 
 use App\Http\Controllers\Controller;
-use App\Mail\ConfirmRegistration;
 use App\Models\User;
-use App\Models\UserActivation;
 
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
@@ -14,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 
 use Validator;
 
-class RegisterController extends Controller
+class RegisterAdminController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -34,7 +33,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/post';
+    protected $redirectTo = '/admin';
 
     /**
      * Create a new controller instance.
@@ -43,7 +42,17 @@ class RegisterController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('guest');
+        $this->middleware('roles');
+    }
+
+    /**
+     * Show the application registration form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function showRegistrationForm()
+    {
+        return view('admin.register');
     }
 
     /**
@@ -78,8 +87,8 @@ class RegisterController extends Controller
             'name'      => $data['name'],
             'last_name' => $data['last_name'],
             'password'  => bcrypt($data['password']),
-            'role_id'   => 3,
-            'is_active' => 0
+            'role_id'   => 1,
+            'is_active' => 1
         ]);
     }
 
@@ -92,36 +101,9 @@ class RegisterController extends Controller
     public function register(Request $request)
     {
         $this->validator($request->all())->validate();
-        $user = $this->create($request->all());
-        $this->sendActivationMail($user);
+        $this->create($request->all());
 
-        return back()->with('status', 'На ваш email адрес было отправлено письмо с ссылкой для подтверждения регистрации');
-        //$this->guard()->login();
-        //return redirect($this->redirectPath());
+        return redirect($this->redirectPath());
     }
 
-    public function sendActivationMail($user)
-    {
-        $userActivation = new UserActivation();
-
-        if ($user->is_active || !$userActivation->shouldSend($user->id)) {
-            return;
-        }
-
-        $token = $userActivation->createActivation($user->id);
-        $link = route('register.activate', $token);
-
-        Mail::to($user)->send(new ConfirmRegistration($link));        
-    }
-
-    public function activate($token)
-    {
-        $userActivation = new UserActivation();
-
-        if ($user = $userActivation->activateUser($token)) {
-            Auth::login($user);
-            return redirect($this->redirectPath());
-        }
-        return response('Страница не найдена', 404);
-    }
 }

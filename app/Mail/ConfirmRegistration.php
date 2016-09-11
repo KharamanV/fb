@@ -12,13 +12,20 @@ class ConfirmRegistration extends Mailable
     use Queueable, SerializesModels;
 
     /**
+     * Link which contains URL with route and token
+     *
+     * @var Link
+     */
+    public $link;
+
+    /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($link)
     {
-        //
+        $this->link = $link;
     }
 
     /**
@@ -28,6 +35,6 @@ class ConfirmRegistration extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.confirm_registration');
+        return $this->view('auth.emails.confirmRegistration');
     }
 }

@@ -64,9 +64,26 @@ class UserActivation extends Model
         DB::table($this->table)->where('token', $token)->delete();
     }
 
-    private function shouldSend($userId)
+    public function shouldSend($userId)
     {
         $activation = $this->getActivation($userId);
         return $activation === null || strtotime($activation->created_at) + 60 * 60 * $this->resendAfter < time();
+    }
+
+    public function activateUser($token)
+    {
+        $activation = $this->getActivationByToken($token);
+
+        if ($activation === null) {
+            return null;
+        }
+
+        $user = User::find($activation->user_id);
+        $user->is_active = 1;
+        $user->save();
+        
+        $this->deleteActivation($token);
+
+        return $user;
     }
 }

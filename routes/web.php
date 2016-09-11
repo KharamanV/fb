@@ -15,10 +15,24 @@ Route::resource('post', 'PostController');
 
 Auth::routes();
 
+Route::get('register/comfirm/{token}', [
+    'uses' => 'Auth\RegisterController@activate',
+    'as'   => 'register.activate',
+]);
+
 Route::get('/home', 'HomeController@index');
 Route::get('hook', [
-	'uses' =>'PostController@test', 
-	'as' => 'test',
-	// 'middleware' => 'roles',
-	// 'roles' => 'admin'
+    'uses' =>'PostController@test', 
+    'as' => 'test',
+    // 'middleware' => 'roles',
+    // 'roles' => 'admin'
+]);
+
+Route::get('admin/register', [
+    'uses' =>'Admin\RegisterAdminController@showRegistrationForm', 
+    'roles' => 'admin',
+]);
+Route::post('admin/register', [
+	'uses' =>'Admin\RegisterAdminController@register', 
+	'roles' => 'admin'
 ]);
