@@ -36,3 +36,11 @@ Route::post('admin/register', [
 	'uses' =>'Admin\RegisterAdminController@register', 
 	'roles' => 'admin'
 ]);
+
+Route::get('cabinet', [
+	'uses' => 'CabinetController@index',
+]);
+
+Route::put('cabinet/edit', [
+	'uses' => 'CabinetController@update',
+]);
