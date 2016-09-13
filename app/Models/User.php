@@ -1,8 +1,10 @@
 <?php
 
 namespace App\Models;
+
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -49,6 +51,27 @@ class User extends Authenticatable
 
     protected function hasRole($role) {
         return $this->role()->where('name', $role)->first();
+    }
 
+    public function setRoleIdAttribute($value)
+    {
+        if ($this->isAdmin()) {
+            $this->attributes['role_id'] = $value;
+        }
+    }
+
+    public function setIsActiveAttribute($value)
+    {
+        if ($this->isAdmin()) {
+            $this->attributes['is_active'] = $value;
+        }
+    }
+
+    public function isAdmin()
+    {
+        if (Auth::check() && Auth::user()->role_id == 1) {
+            return true;
+        }
+        return false;
     }
 }

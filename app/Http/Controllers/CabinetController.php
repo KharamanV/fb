@@ -20,4 +20,14 @@ class CabinetController extends Controller
     	$user = Auth::user();
     	return view('cabinet.index', ['user' => $user]);
     }
+
+    public function update(Request $request)
+    {
+    	$user = Auth::user();
+    	$user->fill($request->all());
+    	$user->save();
+
+    	return back();
+    }
+
 }
