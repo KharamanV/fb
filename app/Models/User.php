@@ -6,16 +6,19 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 
+use App\Models\Role;
+
 class User extends Authenticatable
 {
     use Notifiable;
+
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'last_name', 'login', 'role_id', 'is_active'
+        'name', 'email', 'password', 'last_name', 'login', 'role_id', 'is_active', 'age', 'city'
     ];
 
     /**
@@ -27,11 +30,22 @@ class User extends Authenticatable
         'password', 'remember_token'
     ];
 
+    /**
+     * Defining relation to role model
+     * 
+     * @return Relation
+     */
     public function role()
     {
          return $this->belongsTo('App\Models\Role');
     }
 
+    /**
+     * Checks, is the user has needed role
+     * 
+     * @param string/array $roles
+     * @return boolean
+     */
     public function hasAnyRole($roles)
     {
         if (is_array($roles)) {
@@ -48,11 +62,22 @@ class User extends Authenticatable
 
         return false;
     }
-
+    /**
+     * Checks, is the user has needed role
+     * 
+     * @param string $role
+     * @return boolean
+     */
     protected function hasRole($role) {
         return $this->role()->where('name', $role)->first();
     }
 
+    /**
+     * Setter/Mutator for role_id column
+     * 
+     * @param $value
+     * @return void
+     */
     public function setRoleIdAttribute($value)
     {
         if ($this->isAdmin()) {
@@ -60,6 +85,12 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * Setter/Mutator for is_active column
+     * 
+     * @param $value
+     * @return void
+     */
     public function setIsActiveAttribute($value)
     {
         if ($this->isAdmin()) {
@@ -67,9 +98,14 @@ class User extends Authenticatable
         }
     }
 
+    /**
+     * Checks, is the current user - admin
+     * 
+     * @return boolean
+     */
     public function isAdmin()
     {
-        if (Auth::check() && Auth::user()->role_id == 1) {
+        if (Auth::check() && Auth::user()->hasAnyRole('Admin')) {
             return true;
         }
         return false;

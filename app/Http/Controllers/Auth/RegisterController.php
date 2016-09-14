@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+
 use App\Mail\ConfirmRegistration;
+
 use App\Models\User;
 use App\Models\UserActivation;
 
@@ -78,8 +80,6 @@ class RegisterController extends Controller
             'name'      => $data['name'],
             'last_name' => $data['last_name'],
             'password'  => bcrypt($data['password']),
-            'role_id'   => 3,
-            'is_active' => 0
         ]);
     }
 
@@ -100,6 +100,12 @@ class RegisterController extends Controller
         //return redirect($this->redirectPath());
     }
 
+    /**
+     * Sending a email with confirmation registration link
+     * 
+     * @param $user User, who need to send a email with link
+     * @return void
+     */
     public function sendActivationMail($user)
     {
         $userActivation = new UserActivation();
@@ -114,6 +120,13 @@ class RegisterController extends Controller
         Mail::to($user)->send(new ConfirmRegistration($link));        
     }
 
+    /**
+     * Checking the token match and
+     * activates the user and signing in him into site
+     * 
+     * @param $token Token for the matching
+     * @return \Illuminate\Http\Response
+     */
     public function activate($token)
     {
         $userActivation = new UserActivation();

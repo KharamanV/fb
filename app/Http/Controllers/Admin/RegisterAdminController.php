@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Role;
 
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
@@ -36,7 +37,7 @@ class RegisterAdminController extends Controller
     protected $redirectTo = '/admin';
 
     /**
-     * Create a new controller instance.
+     * Create a new controller instance
      *
      * @return void
      */
@@ -80,14 +81,13 @@ class RegisterAdminController extends Controller
      */
     protected function create(array $data)
     {
-        // TODO: make roles properties for this class, and put property in 'role_id' instead of role_id directly
         return User::create([
             'login'     => $data['login'],
             'email'     => $data['email'],
             'name'      => $data['name'],
             'last_name' => $data['last_name'],
             'password'  => bcrypt($data['password']),
-            'role_id'   => 1,
+            'role_id'   => Role::getRoleId('Admin'),
             'is_active' => 1
         ]);
     }
