@@ -7,5 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'short', 'slug', 'text'];
+    protected $fillable = ['title', 'short', 'slug', 'text', 'img_path'];
+
+    public function scopeSlug($query, $slug)
+    {
+    	return $query->where('slug', $slug);
+    }
 }

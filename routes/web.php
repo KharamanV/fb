@@ -43,3 +43,7 @@ Route::put('cabinet/edit', [
 	'uses' => 'CabinetController@update',
 	'as'   => 'cabinet.edit'
 ]);
+
+Route::group(['roles' => 'Admin'], function() {
+    Route::resource('admin', 'Admin\AdminController');
+});
