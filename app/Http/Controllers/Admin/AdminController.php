@@ -25,7 +25,8 @@ class AdminController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->get();
+        return view('admin.index', ['posts' => $posts]);
     }
 
     /**
@@ -46,7 +47,16 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'short' => 'required|max:255',
+            'slug'  => 'required|unique:posts|alpha_dash|min:5|max:255',
+            'text'  => 'required'
+        ]);
+
+        $post = new Post($request->all());
+        $post->save();
+
     }
 
     /**
@@ -68,9 +78,11 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+        $post = Post::where('slug', $slug)->first();
+
+        return view('admin.edit', ['post' => $post]);
     }
 
     /**
@@ -82,7 +94,17 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::where('slug', $slug)->first();
+        $this->validate($request, [
+            'title' => 'required|max:255|min:3',
+            'short' => 'required|max:255',
+            'slug'  => 'required|unique:posts|alpha_dash|min:5|max:255',
+            'text'  => 'required'
+        ]);
+
+        $post->fill($request->all())->save();
+
+        return back();
     }
 
     /**
