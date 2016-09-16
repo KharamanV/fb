@@ -92,19 +92,28 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
         $post = Post::where('slug', $slug)->first();
-        $this->validate($request, [
-            'title' => 'required|max:255|min:3',
-            'short' => 'required|max:255',
-            'slug'  => 'required|unique:posts|alpha_dash|min:5|max:255',
-            'text'  => 'required'
-        ]);
+        if ($request->input('slug') == $post->slug) {
+            $this->validate($request, [
+                'title' => 'required|max:255|min:3',
+                'short' => 'required|max:255',
+                'text'  => 'required'
+            ]);
+        } else {
 
+            $this->validate($request, [
+                'title' => 'required|max:255|min:3',
+                'short' => 'required|max:255',
+                'slug'  => 'required|unique:posts|alpha_dash|min:5|max:255',
+                'text'  => 'required'
+            ]);
+        }
+        
         $post->fill($request->all())->save();
 
-        return back();
+        return redirect()->route('admin.edit', $post->slug);
     }
 
     /**

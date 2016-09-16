@@ -12,16 +12,10 @@
         }
     </style>
     <div class="container">
-        
-        @if (count($errors) > 0)
-            <ul>
-                @foreach($errors->all() as $error)
-                    <li class="alert alert-danger">{{ $error }}</li>
-                @endforeach
-            </ul>
-        @endif
-        <form action="{{ route('admin.store') }}" method="post" enctype="multipart/form-data">
+        @include('partials._errors')
+        <form action="{{ route('admin.update', $post->slug) }}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
+            {{ method_field('PUT') }}
             <label>
                 Title: <br>
                 <input type="text" name="title" value="{{ $post->title }}">

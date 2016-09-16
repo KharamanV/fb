@@ -12,6 +12,7 @@
         }
     </style>
     <div class="container">
+        @include('partials._errors')
         <form action="{{ route('admin.store') }}" method="post" enctype="multipart/form-data">
             {{ csrf_field() }}
             <label>
