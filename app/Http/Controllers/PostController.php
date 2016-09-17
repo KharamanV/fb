@@ -21,7 +21,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::latest('created_at')->get();
+        $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->get();
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -41,7 +41,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        
     }
 
     /**
@@ -52,17 +52,7 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $post = new Post;
-        $this->validate($request, [
-            'title' => 'required',
-            'short' => 'required',
-            'slug'  => 'required',
-            'text'  => 'required'
-        ]);
-
-        $post->fill($request->all())->save();
-
-        return redirect()->back();
+       
     }
 
     /**
@@ -71,9 +61,9 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($slug)
     {
-        $post = Post::find($id);
+        $post = Post::slug($slug)->firstOrFail();
         return view('posts.show', ['post' => $post]);
     }
 
@@ -85,8 +75,7 @@ class PostController extends Controller
      */
     public function edit($id)
     {
-        $post = Post::find($id);
-        return view('posts.edit', ['post' => $post]);
+        
     }
 
     /**
@@ -98,17 +87,7 @@ class PostController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $post = Post::find($id);
-        $this->validate($request, [
-            'title' => 'required',
-            'short' => 'required',
-            'slug'  => 'required',
-            'text'  => 'required'
-        ]);
-
-        $post->fill($request->all())->save();
-
-        return redirect()->back();
+       
 
     }
 
@@ -120,9 +99,6 @@ class PostController extends Controller
      */
     public function destroy($id)
     {
-        $post = Post::find($id);
-        $post->delete();
         
-        return redirect()->route('post.index');
     }
 }

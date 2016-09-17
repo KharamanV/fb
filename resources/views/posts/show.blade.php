@@ -3,7 +3,10 @@
 @section('content')
     <div class="container">
         <h1>{{ $post->title }}</h1>
-        <p>{{ $post->text }}</p>
+        <div class="">
+            <img src="{{ asset('uploads/original/' . $post->img) }}">
+        </div>
+        <div>{!! $post->text !!}</div>
         <em>{{ $post->created_at }}</em>
         <hr>
         <a href="{{ route('post.index') }}">Posts</a>

@@ -17,24 +17,25 @@
             {{ csrf_field() }}
             <label>
                 Title: <br>
-                <input type="text" name="title">
+                <input type="text" name="title" id="title-field" value="{{ old('title') }}">
             </label>
             <label>
                 Slug: <br>
-                <input type="slug" name="slug">
+                <input type="slug" name="slug" id="slug-field" value="{{ old('slug') }}">
             </label>
             <label>
                 Short: <br>
-                <input type="short" name="short">
+                <input type="short" name="short" value="{{ old('short') }}">
             </label>
             <label>
                 Text: <br>
-                <textarea name="text"></textarea>
+                <textarea name="text">{{ old('text') }}</textarea>
             </label>
             <label>
                 Image: <br>
-                <input type="file" name="img">
+                <input type="file" name="img" id="image-upload">
             </label>
+            <img id="image-preview" src="">
             <button type="submit">OK</button>
         </form>
     </div>

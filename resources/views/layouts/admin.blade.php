@@ -19,6 +19,12 @@
             'csrfToken' => csrf_token(),
         ]); ?>
     </script>
+    <style>
+        #image-preview {
+            max-width: 200px;
+            height: auto;  
+        }
+    </style>
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-static-top">
@@ -76,5 +82,49 @@
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
+    <script src="/js/transliteral.js"></script>
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea',
+            plugins: 'code image'
+        });
+
+
+
+        //Slug
+        var slug = function(str) {
+            var str = transliterate(str);
+            var $slug = '';
+            var trimmed = $.trim(str);
+            $slug = trimmed.replace(/[^a-zа-я0-9-]/gi, '-').
+            replace(/-+/g, '-').
+            replace(/^-|-$/g, '');
+            return $slug.toLowerCase();
+        }
+
+        $('#title-field').focusout(function() {
+            $('#slug-field').val(slug($(this).val()));
+        });
+
+        //Image preview
+        function readURL(input) {
+        if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function (e) {
+                    $('#image-preview').attr('src', e.target.result);
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        $("#image-upload").change(function(){
+            readURL(this);
+        });
+
+
+    </script>
 </body>
 </html>

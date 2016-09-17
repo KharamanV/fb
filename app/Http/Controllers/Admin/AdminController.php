@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Helpers\ImageHelper;
+
+use Image;
 
 
 
@@ -51,12 +55,19 @@ class AdminController extends Controller
             'title' => 'required|max:255',
             'short' => 'required|max:255',
             'slug'  => 'required|unique:posts|alpha_dash|min:5|max:255',
-            'text'  => 'required'
+            'text'  => 'required',
+            'img'   => 'sometimes|image|max:2048'
         ]);
 
         $post = new Post($request->all());
+
+        if ($request->hasFile('img')) {
+            $post->img = ImageHelper::upload($request->file('img'));
+        }
+        
         $post->save();
 
+        return redirect()->route('admin.index');
     }
 
     /**
@@ -80,7 +91,7 @@ class AdminController extends Controller
      */
     public function edit($slug)
     {
-        $post = Post::where('slug', $slug)->first();
+        $post = Post::slug($slug)->first();
 
         return view('admin.edit', ['post' => $post]);
     }
@@ -94,24 +105,27 @@ class AdminController extends Controller
      */
     public function update(Request $request, $slug)
     {
-        $post = Post::where('slug', $slug)->first();
-        if ($request->input('slug') == $post->slug) {
-            $this->validate($request, [
-                'title' => 'required|max:255|min:3',
-                'short' => 'required|max:255',
-                'text'  => 'required'
-            ]);
-        } else {
+        $post = Post::slug($slug)->first();
 
-            $this->validate($request, [
-                'title' => 'required|max:255|min:3',
-                'short' => 'required|max:255',
-                'slug'  => 'required|unique:posts|alpha_dash|min:5|max:255',
-                'text'  => 'required'
-            ]);
-        }
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'short' => 'required|max:255',
+            'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug,' . $post->id,
+            'text'  => 'required',
+            'img'   => 'sometimes|image|max:2048'
+        ]);
         
-        $post->fill($request->all())->save();
+        $post->fill($request->all());
+
+        if ($request->hasFile('img')) {
+            $oldName = $post->img;
+            $post->img = ImageHelper::upload($request->file('img'));
+            if ($oldName) {
+                ImageHelper::delete($oldName);
+            }
+        }
+
+        $post->save();
 
         return redirect()->route('admin.edit', $post->slug);
     }
@@ -122,8 +136,15 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        //
+        $post = Post::slug($slug)->first();
+        $post->delete();
+
+        if ($post->img) {
+            ImageHelper::delete($post->img);
+        }
+        
+        return redirect()->back();
     }
 }

@@ -18,11 +18,11 @@
             {{ method_field('PUT') }}
             <label>
                 Title: <br>
-                <input type="text" name="title" value="{{ $post->title }}">
+                <input type="text" name="title" id="title-field" value="{{ $post->title }}">
             </label>
             <label>
                 Slug: <br>
-                <input type="slug" name="slug" value="{{ $post->slug }}">
+                <input type="slug" name="slug" id="slug-field" value="{{ $post->slug }}">
             </label>
             <label>
                 Short: <br>
@@ -34,8 +34,9 @@
             </label>
             <label>
                 Image: <br>
-                <input type="file" name="img">
+                <input type="file" name="img" id="image-upload">
             </label>
+            <img id="image-preview" src="">
             <button type="submit">OK</button>
         </form>
     </div>
