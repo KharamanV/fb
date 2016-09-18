@@ -3,6 +3,7 @@
 @section('content')
     <div class="container">
         <h1>{{ $post->title }}</h1>
+        <p>Категория: {{ $post->category->name }}</p>
         <div class="">
             <img src="{{ asset('uploads/original/' . $post->img) }}">
         </div>

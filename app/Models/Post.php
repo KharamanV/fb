@@ -13,4 +13,9 @@ class Post extends Model
     {
     	return $query->where('slug', $slug);
     }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category');
+    }
 }
