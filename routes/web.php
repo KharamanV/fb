@@ -11,11 +11,11 @@
 |
 */
 
-Route::resource('post', 'PostController');
+Route::resource('post', 'PostController', ['only' => ['index', 'show']]);
 
 Auth::routes();
 
-Route::get('register/comfirm/{token}', [
+Route::get('register/confirm/{token}', [
     'uses' => 'Auth\RegisterController@activate',
     'as'   => 'register.activate',
 ]);
@@ -46,4 +46,7 @@ Route::put('cabinet/edit', [
 
 Route::group(['roles' => 'Admin'], function() {
     Route::resource('admin', 'Admin\AdminController');
+    Route::resource('categories', 'Admin\CategoryController', ['except' => ['create', 'show']]);
+    Route::resource('tags', 'Admin\TagController', ['except' => ['create', 'show']]);
 });
+

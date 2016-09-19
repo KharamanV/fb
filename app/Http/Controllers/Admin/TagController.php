@@ -6,14 +6,15 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Category;
+use App\Models\Tag;
 
-class CategoryController extends Controller
+class TagController extends Controller
 {
     public function __construct()
     {
         $this->middleware('roles');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -21,8 +22,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $categories = Category::all();
-        return view('admin.categories.index', ['categories' => $categories]);
+        $tags = Tag::all();
+        return view('admin.tags.index', ['tags' => $tags]);
     }
 
     /**
@@ -37,8 +38,8 @@ class CategoryController extends Controller
         	'name' => 'required|max:255',
     	]);
 
-    	$category = new Category($request->all());
-    	$category->save();
+    	$tag = new Tag($request->all());
+    	$tag->save();
     	return redirect()->back()->with('status', 'Success!');
     }
 
@@ -50,8 +51,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        $category = Category::findOrFail($id);
-        return view('admin.categories.edit', ['category' => $category]);
+        $tag = Tag::findOrFail($id);
+        return view('admin.tags.edit', ['tag' => $tag]);
     }
 
     /**
@@ -68,10 +69,10 @@ class CategoryController extends Controller
             'description' => 'max:255'
         ]);
 
-        $category = Category::find($id);
-        $category->fill($request->all())->save();
+        $tag = Tag::find($id);
+        $tag->fill($request->all())->save();
 
-        return redirect()->route('categories.edit', $category->id);
+        return redirect()->route('tags.edit', $tag->id);
     }
 
     /**
@@ -82,8 +83,8 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        $category = Category::findOrFail($id);
-        $category->delete();
-        return redirect()->route('categories.index');
+        $tag = Tag::findOrFail($id);
+        $tag->delete();
+        return redirect()->route('tags.index');
     }
 }

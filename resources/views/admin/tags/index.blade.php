@@ -4,25 +4,25 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
-				<h1>Категории</h1>
+				<h1>Теги</h1>
 				<table class="table" style="background-color: #fff;">
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>Категория</th>
+							<th>Тег</th>
 							<th>Описание</th>
 							<th>Действия</th>
 						</tr>
 					</thead>
 					<tbody>
-						@foreach($categories as $category)
+						@foreach($tags as $tag)
 							<tr>
-								<td>{{ $category->id }}</td>
-								<td>{{ $category->name }}</td>
-								<td>{{ $category->description }}</td>
+								<td>{{ $tag->id }}</td>
+								<td>{{ $tag->name }}</td>
+								<td>{{ $tag->description }}</td>
 								<td>
-									<a href="{{ route('categories.edit', $category->id) }}">Редактировать</a>
-									<form action="{{ route('categories.destroy', $category->id) }}" method="post">
+									<a href="{{ route('tags.edit', $tag->id) }}">Редактировать</a>
+									<form action="{{ route('tags.destroy', $tag->id) }}" method="post">
 										{{ csrf_field() }}
 										{{ method_field('DELETE') }}
 										<button type="submit">Удалить</button>
@@ -35,13 +35,13 @@
 			</div>
 			<div class="col-sm-4">
 				<div class="well">
-					<h2>Добавить категорию</h2>
+					<h2>Добавить тег</h2>
 					@if (session('status'))
 						<div class="alert alert-success">
 							{{ session('status') }}
 						</div>
 					@endif
-					<form action="{{ route('categories.store') }}" method="post">
+					<form action="{{ route('tags.store') }}" method="post">
 						{{ csrf_field() }}
 						<input type="text" name="name" class="form-control">
 						<textarea name="description" class="form-control"></textarea>

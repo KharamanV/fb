@@ -25,12 +25,20 @@
                 <input type="slug" name="slug" id="slug-field" value="{{ $post->slug }}">
             </label>
             <label>
+                Категория:
+                <select name="category_id" class="form-control">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ ($category->id == $post->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </label>
+            <label>
                 Short: <br>
                 <input type="short" name="short" value="{{ $post->short }}">
             </label>
             <label>
                 Text: <br>
-                <textarea name="text">{{ $post->text }}</textarea>
+                <textarea name="text" id="editor">{{ $post->text }}</textarea>
             </label>
             <label>
                 Image: <br>

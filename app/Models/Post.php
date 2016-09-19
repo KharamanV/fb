@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post extends Model
 {
-    protected $fillable = ['title', 'short', 'slug', 'text', 'img_path'];
+    protected $fillable = ['title', 'short', 'slug', 'text', 'img', 'category_id'];
 
     public function scopeSlug($query, $slug)
     {
@@ -17,5 +17,10 @@ class Post extends Model
     public function category()
     {
         return $this->belongsTo('App\Models\Category');
+    }
+
+    public function tags()
+    {
+    	return $this->belongsToMany('App\Models\Tag');
     }
 }

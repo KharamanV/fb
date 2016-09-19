@@ -24,12 +24,28 @@
                 <input type="slug" name="slug" id="slug-field" value="{{ old('slug') }}">
             </label>
             <label>
+                Категория:
+                <select name="category_id" class="form-control">
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </label>
+            <label>
+                Теги:
+                <select name="tags[]" class="form-control js-example-basic-multiple" multiple>
+                    @foreach($tags as $tag)
+                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                    @endforeach
+                </select>
+            </label>
+            <label>
                 Short: <br>
                 <input type="short" name="short" value="{{ old('short') }}">
             </label>
             <label>
                 Text: <br>
-                <textarea name="text">{{ old('text') }}</textarea>
+                <textarea name="text" id="editor">{{ old('text') }}</textarea>
             </label>
             <label>
                 Image: <br>

@@ -9,7 +9,8 @@ use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Post;
 use App\Helpers\ImageHelper;
-
+use App\Models\Category;
+use App\Models\Tag;
 use Image;
 
 
@@ -40,7 +41,9 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.create');
+        $categories = Category::all();
+        $tags = Tag::all();
+        return view('admin.create', ['categories' => $categories, 'tags' => $tags]);
     }
 
     /**
@@ -51,12 +54,14 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request->tags);
         $this->validate($request, [
-            'title' => 'required|max:255',
-            'short' => 'required|max:255',
-            'slug'  => 'required|unique:posts|alpha_dash|min:5|max:255',
-            'text'  => 'required',
-            'img'   => 'sometimes|image|max:2048'
+            'title'       => 'required|max:255',
+            'short'       => 'required|max:255',
+            'slug'        => 'required|unique:posts|alpha_dash|min:5|max:255',
+            'text'        => 'required',
+            'img'         => 'sometimes|image|max:2048',
+            'category_id' => 'sometimes|integer',
         ]);
 
         $post = new Post($request->all());
@@ -79,7 +84,6 @@ class AdminController extends Controller
     public function show($slug)
     {
         $post = Post::slug($slug)->firstOrFail();
-
         return view('admin.show', ['post' => $post]);
     }
 
@@ -92,8 +96,8 @@ class AdminController extends Controller
     public function edit($slug)
     {
         $post = Post::slug($slug)->first();
-
-        return view('admin.edit', ['post' => $post]);
+        $categories = Category::all();
+        return view('admin.edit', ['post' => $post, 'categories' => $categories]);
     }
 
     /**
@@ -108,11 +112,12 @@ class AdminController extends Controller
         $post = Post::slug($slug)->first();
 
         $this->validate($request, [
-            'title' => 'required|max:255',
-            'short' => 'required|max:255',
-            'slug'  => 'required|alpha_dash|min:5|max:255|unique:posts,slug,' . $post->id,
-            'text'  => 'required',
-            'img'   => 'sometimes|image|max:2048'
+            'title'       => 'required|max:255',
+            'short'       => 'required|max:255',
+            'slug'        => 'required|alpha_dash|min:5|max:255|unique:posts,slug,' . $post->id,
+            'text'        => 'required',
+            'img'         => 'sometimes|image|max:2048',
+            'category_id' => 'sometimes|integer'
         ]);
         
         $post->fill($request->all());

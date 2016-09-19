@@ -12,6 +12,7 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
+    <link href="/css/select2.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -54,6 +55,12 @@
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
                     <!-- Authentication Links -->
+                        <li>
+                            <a href="{{ route('categories.index') }}">Категории</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('tags.index') }}">Теги</a>
+                        </li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
                                 {{ Auth::user()->name }} <span class="caret"></span>
@@ -83,10 +90,13 @@
     <!-- Scripts -->
     <script src="/js/app.js"></script>
     <script src="/js/transliteral.js"></script>
+    <script src="/js/select2.min.js"></script>
     <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
     <script>
+        'use strict';
+
         tinymce.init({
-            selector: 'textarea',
+            selector: '#editor',
             plugins: 'code image'
         });
 
@@ -94,9 +104,9 @@
 
         //Slug
         var slug = function(str) {
-            var str = transliterate(str);
+            var string = transliterate(str);
             var $slug = '';
-            var trimmed = $.trim(str);
+            var trimmed = $.trim(string);
             $slug = trimmed.replace(/[^a-zа-я0-9-]/gi, '-').
             replace(/-+/g, '-').
             replace(/^-|-$/g, '');
@@ -123,6 +133,9 @@
         $("#image-upload").change(function(){
             readURL(this);
         });
+
+        //Tags selectbox
+        $(".js-example-basic-multiple").select2();
 
 
     </script>
