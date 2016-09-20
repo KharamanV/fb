@@ -44,9 +44,8 @@ Route::put('cabinet/edit', [
 	'as'   => 'cabinet.edit'
 ]);
 
-Route::group(['roles' => 'Admin'], function() {
-    Route::resource('admin', 'Admin\AdminController');
-    Route::resource('categories', 'Admin\CategoryController', ['except' => ['create', 'show']]);
-    Route::resource('tags', 'Admin\TagController', ['except' => ['create', 'show']]);
+Route::group(['roles' => 'Admin', 'namespace' => 'Admin'], function() {
+    Route::resource('admin', 'AdminController');
+    Route::resource('categories', 'CategoryController', ['except' => ['create', 'show']]);
+    Route::resource('tags', 'TagController', ['except' => ['create', 'show']]);
 });
-

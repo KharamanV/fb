@@ -33,6 +33,20 @@
                 </select>
             </label>
             <label>
+                Теги:
+                <select name="tags[]" class="form-control js-example-basic-multiple" multiple>
+                    @foreach($tags as $tag)
+                        @foreach($post->tags as $postTag)
+                            @if ($postTag->id == $tag->id)
+                                <option value="{{ $tag->id }}" selected>{{ $tag->name }}</option>
+                                <?php continue 2; ?>
+                            @endif
+                        @endforeach
+                        <option value="{{ $tag->id }}">{{ $tag->name }}</option>
+                    @endforeach
+                </select>
+            </label>
+            <label>
                 Short: <br>
                 <input type="short" name="short" value="{{ $post->short }}">
             </label>

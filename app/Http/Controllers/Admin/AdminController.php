@@ -54,7 +54,6 @@ class AdminController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->tags);
         $this->validate($request, [
             'title'       => 'required|max:255',
             'short'       => 'required|max:255',
@@ -71,6 +70,7 @@ class AdminController extends Controller
         }
         
         $post->save();
+        $post->tags()->attach($request->tags);
 
         return redirect()->route('admin.index');
     }
@@ -97,7 +97,8 @@ class AdminController extends Controller
     {
         $post = Post::slug($slug)->first();
         $categories = Category::all();
-        return view('admin.edit', ['post' => $post, 'categories' => $categories]);
+        $tags = Tag::all();
+        return view('admin.edit', ['post' => $post, 'categories' => $categories, 'tags' => $tags]);
     }
 
     /**
@@ -131,6 +132,11 @@ class AdminController extends Controller
         }
 
         $post->save();
+        if ($request->tags) {
+            $post->tags()->sync($request->tags);
+        } else {
+            $post->tags()->detach();
+        }
 
         return redirect()->route('admin.edit', $post->slug);
     }
