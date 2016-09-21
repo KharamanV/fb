@@ -12,4 +12,9 @@ class Tag extends Model
     {
     	return $this->belongsToMany('App\Models\Post');
     }
+
+    public function scopeTag($query, $tag)
+    {
+    	return $query->where('name', $tag);
+    }
 }

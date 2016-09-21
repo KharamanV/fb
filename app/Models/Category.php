@@ -12,4 +12,9 @@ class Category extends Model
     {
         return $this->hasMany('App\Models\Post');
     }
+
+    public function scopeSlug($query, $category)
+    {
+    	return $query->where('slug', $category);
+    }
 }

@@ -18,7 +18,7 @@
 						@foreach($tags as $tag)
 							<tr>
 								<td>{{ $tag->id }}</td>
-								<td>{{ $tag->name }}</td>
+								<td><a href="{{ route('tag.show', $tag->name) }}">{{ $tag->name }}</a></td>
 								<td>{{ $tag->description }}</td>
 								<td>
 									<a href="{{ route('tags.edit', $tag->id) }}">Редактировать</a>

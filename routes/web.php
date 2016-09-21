@@ -49,3 +49,13 @@ Route::group(['roles' => 'Admin', 'namespace' => 'Admin'], function() {
     Route::resource('categories', 'CategoryController', ['except' => ['create', 'show']]);
     Route::resource('tags', 'TagController', ['except' => ['create', 'show']]);
 });
+
+Route::get('tag/{tag}', [
+    'uses' => 'PostController@showPostsByTag',
+    'as'   => 'tag.show'
+]);
+
+Route::get('category/{category}', [
+    'uses' => 'PostController@showPostsByCategory',
+    'as'   => 'category.show'
+]);

@@ -8,6 +8,8 @@ use App\Http\Requests;
 
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Tag;
+use App\Models\Category;
 
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +23,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->get();
+        $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(3);
         return view('posts.index', ['posts' => $posts]);
     }
 
@@ -44,6 +46,16 @@ class PostController extends Controller
     {
         $post = Post::slug($slug)->firstOrFail();
         return view('posts.show', ['post' => $post]);
+    }
+
+    public function showPostsByTag($tag) {
+        $posts = Tag::tag($tag)->firstOrFail()->posts;
+        return view('posts.index', ['posts' => $posts]);
+    }
+
+    public function showPostsByCategory($category) {
+        $posts = Category::slug($category)->firstOrFail()->posts;
+        return view('posts.index', ['posts' => $posts]);
     }
 
 }

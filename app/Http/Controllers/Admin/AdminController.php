@@ -30,7 +30,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->get();
+        $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(3);
         return view('admin.index', ['posts' => $posts]);
     }
 
@@ -150,6 +150,7 @@ class AdminController extends Controller
     public function destroy($slug)
     {
         $post = Post::slug($slug)->first();
+        $post->tags()->detach();
         $post->delete();
 
         if ($post->img) {
