@@ -21,19 +21,14 @@ class PostController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(3);
+        $posts = ($request->search) ? Post::searchByTitle($request->search)->orderById()->paginate(3) : Post::orderById()->paginate(3);
         return view('posts.index', ['posts' => $posts]);
     }
 
     public function test(Request $request)
     {
-        abort(404);
-        /*$obj = new UserActivation;
-        dd($obj->test());*/
-        // echo "string";
-        // dd(Auth::user()->hasAnyRole('Admin'));
     }
 
     /**

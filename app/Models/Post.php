@@ -11,7 +11,17 @@ class Post extends Model
 
     public function scopeSlug($query, $slug)
     {
-    	return $query->where('slug', $slug);
+        return $query->where('slug', $slug);
+    }
+
+    public function scopeOrderById($query)
+    {
+    	return $query->orderBy('id', 'desc');
+    }
+
+    public function scopeSearchByTitle($query, $value)
+    {
+        return $query->where('title', 'LIKE', '%' . $value . '%');
     }
 
     public function category()
@@ -23,4 +33,5 @@ class Post extends Model
     {
     	return $this->belongsToMany('App\Models\Tag');
     }
+
 }

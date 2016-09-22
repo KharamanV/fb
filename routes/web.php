@@ -59,3 +59,5 @@ Route::get('category/{category}', [
     'uses' => 'PostController@showPostsByCategory',
     'as'   => 'category.show'
 ]);
+
+Route::get('');

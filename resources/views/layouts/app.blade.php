@@ -47,6 +47,10 @@
 
                 <!-- Right Side Of Navbar -->
                 <ul class="nav navbar-nav navbar-right">
+                    <form action="{{ route('post.index') }}" style="display: inline-block;">
+                        <input type="search" name="search" value="{{ old('search') }}">
+                        <button type="submit">OK</button>
+                    </form>
                     <!-- Authentication Links -->
                     @if (Auth::guest())
                         <li><a href="{{ url('/login') }}">Login</a></li>
