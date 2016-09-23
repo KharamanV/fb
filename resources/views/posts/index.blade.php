@@ -20,7 +20,7 @@
 			<hr>
 		@endforeach
 		<div class="text-center">
-			{{ $posts->links() }}
+			{{ $posts->setPath($path)->links() }}
 		</div>
 	</div>
 @endsection

@@ -40,6 +40,11 @@ class User extends Authenticatable
          return $this->belongsTo('App\Models\Role');
     }
 
+    public function comments()
+    {
+        return $this->hasMany('App\Models\Comment');
+    }
+
     /**
      * Checks, is the user has needed role
      * 

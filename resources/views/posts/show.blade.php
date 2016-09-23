@@ -12,7 +12,7 @@
             @endforeach
         </div>
         <div class="">
-            <img src="{{ asset('uploads/original/' . $post->img) }}">
+            <img src="{{ asset('uploads/original/' . $post->img) }}" width="500">
         </div>
         <div>{!! $post->text !!}</div>
         <em>{{ $post->created_at }}</em>
