@@ -18,7 +18,7 @@
 						@foreach($categories as $category)
 							<tr>
 								<td>{{ $category->id }}</td>
-								<td>{{ $category->name }}</td>
+								<td><a href="{{ route('category.show', $category->slug) }}">{{ $category->name }}</a></td>
 								<td>{{ $category->description }}</td>
 								<td>
 									<a href="{{ route('categories.edit', $category->id) }}">Редактировать</a>
@@ -43,8 +43,9 @@
 					@endif
 					<form action="{{ route('categories.store') }}" method="post">
 						{{ csrf_field() }}
-						<input type="text" name="name" class="form-control">
-						<textarea name="description" class="form-control"></textarea>
+						<input type="text" name="name" class="form-control" placeholder="Имя">
+						<input type="text" name="slug" class="form-control" placeholder="Slug">
+						<textarea name="description" class="form-control" placeholder="Описание"></textarea>
 						<button type="submit" class="btn btn-primary btn-block">Добавить</button>
 					</form>
 				</div>

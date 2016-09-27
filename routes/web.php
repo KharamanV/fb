@@ -60,4 +60,4 @@ Route::get('category/{category}', [
     'as'   => 'category.show'
 ]);
 
-Route::get('');
+Route::resource('comment', 'CommentController', ['except' => ['create', 'show', 'index']]);

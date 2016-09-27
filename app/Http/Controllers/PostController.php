@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
@@ -13,12 +11,14 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Tag;
 use App\Models\Category;
+use App\Helpers\PaginateHelper;
 
 
 class PostController extends Controller
 {
 
     public $perPage = 2;
+    public $path;
 
     /**
      * Display a listing of the resource.
@@ -31,8 +31,9 @@ class PostController extends Controller
         return view('posts.index', ['posts' => $posts]);
     }
 
-    public function test(Request $request)
+    public function __construct(Request $request)
     {
+        $this->path = $request->url();
     }
 
     /**
@@ -48,25 +49,17 @@ class PostController extends Controller
     }
 
     public function showPostsByTag(Request $request, $tag) {
-        $posts = Tag::tag($tag)->firstOrFail()->posts;
+        $tagPosts = Tag::tag($tag)->firstOrFail()->posts;
+        $posts = PaginateHelper::paginate($tagPosts, $this->perPage);
 
-        $path = $request->url();
-
-        $currentPage = LengthAwarePaginator::resolveCurrentPage();
-        $posts = collect($posts);
-
-        //Slice the collection to get the items to display in current page
-        $currentPageResults = $posts->slice(($currentPage - 1) * $this->perPage, $this->perPage)->all();
-
-        //Create our paginator and pass it to the view
-        $posts = new LengthAwarePaginator($currentPageResults, count($posts), $this->perPage);
-
-        return view('posts.index', ['posts' => $posts, 'path' => $path]); 
+        return view('posts.index', ['posts' => $posts, 'path' => $this->path]); 
     }
 
-    public function showPostsByCategory($category) {
-        $posts = Category::slug($category)->firstOrFail()->posts;
-        return view('posts.index', ['posts' => $posts]);
+    public function showPostsByCategory(Request $request, $category) {
+        $categoryPosts = Category::slug($category)->firstOrFail()->posts;
+        $posts = PaginateHelper::paginate($categoryPosts, $this->perPage);
+
+        return view('posts.index', ['posts' => $posts, 'path' => $this->path]);
     }
 
 }

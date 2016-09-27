@@ -18,5 +18,42 @@
         <em>{{ $post->created_at }}</em>
         <hr>
         <a href="{{ route('post.index') }}">Posts</a>
+        <hr><br>
+        <div class="row">
+            <div class="col-sm-6">
+                @if (session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+                @if (Auth::check())
+                    <form action="{{ route('comment.store') }}" method="post" class="text-center">
+                        {{ csrf_field() }}
+                        <h4 class="text-center">Добавить комментарий</h4>
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <textarea class="form-control" name="text" placeholder="Текст комментария:"></textarea>
+                        <button type="submit" class="btn btn-success">Отправить</button>
+                    </form>
+                @else
+                    <div class="alert alert-warning">
+                        Войдите, чтобы иметь возможность оставлять комментарии
+                    </div>
+                @endif
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <div class="comments">
+                    @foreach ($post->comments as $comment)
+                        <div class="comment" style="border: 1px solid #000; margin-bottom: 20px">
+                            <h4>{{ $comment->user->name . ' ' . $comment->last_name }}</h4>
+                            <hr>
+                            <p>{{ $comment->text }}</p>
+                            
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
     </div>
 @endsection

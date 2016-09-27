@@ -24,6 +24,10 @@
                 Описание:
                 <input type="text" name="description" value="{{ $category->description }}">
             </label>
+            <label>
+                Slug:
+                <input type="text" name="slug" value="{{ $category->slug }}">
+            </label>
             <button type="submit">OK</button>
         </form>
     </div>
