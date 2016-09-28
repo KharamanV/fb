@@ -17,6 +17,7 @@
 			</div>
 			<p>{{ $post->short }}</p>
 			<em>{{ $post->created_at }}</em>
+			<p>Комментариев: <span class="label label-default">{{ $post->comments->count() }}</span></p>
 			<hr>
 		@endforeach
 		<div class="text-center">

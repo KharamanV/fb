@@ -46,10 +46,33 @@
                 <div class="comments">
                     @foreach ($post->comments as $comment)
                         <div class="comment" style="border: 1px solid #000; margin-bottom: 20px">
+                            <div class="rating pull-right">
+                                <strong style="font-size: 20px;">{{ $comment->rating }}</strong>
+                                @if (!$comment->isOwn())
+                                    <form action="{{ route('comment.rateup', $comment->id) }}">
+                                        {{ csrf_field() }}
+                                        <button type="submit" class="btn btn-success">+</button>
+                                    </form>
+                                    <form action="{{ route('comment.ratedown', $comment->id) }}">
+                                        {{ csrf_field() }}
+                                        <button type="submit" class="btn btn-danger">-</button>
+                                    </form>
+                                @endif
+                            </div>
+                            
                             <h4>{{ $comment->user->name . ' ' . $comment->last_name }}</h4>
                             <hr>
                             <p>{{ $comment->text }}</p>
-                            
+                            @if ($comment->isEditable())
+                                <a href="{{ route('comment.edit', $comment->id) }}">Редактировать</a>
+                            @endif
+                            @if ($comment->isOwn())
+                                <form action="{{ route('comment.destroy', $comment->id) }}" method="post">
+                                    {{ csrf_field() }}
+                                    {{ method_field('DELETE') }}
+                                    <button type="submit">Удалить</button>
+                                </form>
+                            @endif
                         </div>
                     @endforeach
                 </div>

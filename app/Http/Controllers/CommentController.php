@@ -47,7 +47,11 @@ class CommentController extends Controller
      */
     public function edit($id)
     {
-        
+        $comment = Comment::find($id);
+        if (!$comment->isEditable()) {
+            return response('Вы не можете редактировать этот комментарий', 401);
+        }
+        return view('comments.edit', ['comment' => $comment]);
     }
 
     /**
@@ -59,7 +63,19 @@ class CommentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
+        $comment = Comment::find($id);
+        if (!$comment->isEditable()) {
+            return response('Вы не можете редактировать этот комментарий', 401);
+        }
+        $this->validate($request, [
+            'text' => 'required'
+        ]);
+
+        $comment->text = $request->text;
+        $comment->save();
+
+        return redirect()->route('post.show', $comment->post->slug)->with('success', 'Комментарий успешно отредактирован!');
     }
 
     /**
@@ -70,6 +86,35 @@ class CommentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comment = Comment::find($id);
+        
+        if (!$comment->isOwn()) {
+            return response('Вы не можете удалить этот комментарий', 401);
+        }
+
+        $comment->delete();
+
+        return redirect()->back()->with('success', 'Комментарий успешно удален');
+
+    }
+
+    public function rateUp($id)
+    {
+        $comment = Comment::find($id);
+        if ($comment->isOwn()) {
+            return response('Вы не можете голосовать за свой комментарий', 401);
+        }
+        $comment->rating++;
+        $comment->save();
+
+        return redirect()->back()->with('success', 'Ваш голос учтен');
+    }
+
+    public function rateDown($id)
+    {
+        $comment = Comment::find($id);
+        if ($comment->isOwn()) {
+            return response('Вы не можете голосовать за свой комментарий', 401)
+        }
     }
 }

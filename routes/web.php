@@ -61,3 +61,6 @@ Route::get('category/{category}', [
 ]);
 
 Route::resource('comment', 'CommentController', ['except' => ['create', 'show', 'index']]);
+
+Route::post('comment/{comment}/rateup', ['uses' => 'CommentController@rateUp', 'as' => 'comment.rateup']);
+Route::post('comment/{comment}/ratedown', ['uses' => 'CommentController@rateDown', 'as' => 'comment.ratedown']);

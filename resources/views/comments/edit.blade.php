@@ -4,11 +4,9 @@
 	<div class="container">
 		<form action="{{ route('comment.update', $comment->id) }}" method="post">
 			{{ csrf_field() }}
-			{{ method_field('PUT') }}
-			<textarea name="text">
-				
-			</textarea>
-			
+			{{ method_field('PATCH') }}
+			<textarea name="text">{{ $comment->text }}</textarea>
+			<button>OK</button>
 		</form>
 	</div>
 @endsection
