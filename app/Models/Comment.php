@@ -10,7 +10,7 @@ class Comment extends Model
 	protected $fillable = ['text', 'post_id', 'user_id'];
 
 	/**
-	 * 15 minutes to edit comment
+	 * 30 minutes to edit comment
 	 * 
 	 * @var int $editTime
 	 */
@@ -26,9 +26,14 @@ class Comment extends Model
     	return $this->belongsTo('App\Models\User');
     }
 
+    public function rates()
+    {
+    	return $this->hasMany('App\Models\CommentsRate');
+    }
+
     public function isOwn()
     {
-    	return Auth::user()->id == $this->user_id;
+    	return (Auth::check()) ? Auth::user()->id == $this->user_id : false;
     }
 
     public function isEditable()
@@ -39,11 +44,9 @@ class Comment extends Model
     	return false;
     }
 
-    public function isRateable()
+    public function isRated()
     {
-    	if (!$this->isOwn()) {
-
-    	}
+    	return $this->rates()->where('user_id', Auth::user()->id)->first();
     }
 
 }

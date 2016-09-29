@@ -48,12 +48,12 @@
                         <div class="comment" style="border: 1px solid #000; margin-bottom: 20px">
                             <div class="rating pull-right">
                                 <strong style="font-size: 20px;">{{ $comment->rating }}</strong>
-                                @if (!$comment->isOwn())
-                                    <form action="{{ route('comment.rateup', $comment->id) }}">
+                                @if (!$comment->isOwn() && !$comment->isRated())
+                                    <form action="{{ route('comment.rateup', $comment->id) }}" method="post">
                                         {{ csrf_field() }}
                                         <button type="submit" class="btn btn-success">+</button>
                                     </form>
-                                    <form action="{{ route('comment.ratedown', $comment->id) }}">
+                                    <form action="{{ route('comment.ratedown', $comment->id) }}" method="post">
                                         {{ csrf_field() }}
                                         <button type="submit" class="btn btn-danger">-</button>
                                     </form>

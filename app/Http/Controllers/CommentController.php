@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 use App\Http\Requests;
 use App\Models\Comment;
+use App\Models\CommentsRate;
 
 class CommentController extends Controller
 {
@@ -101,9 +103,15 @@ class CommentController extends Controller
     public function rateUp($id)
     {
         $comment = Comment::find($id);
-        if ($comment->isOwn()) {
-            return response('Вы не можете голосовать за свой комментарий', 401);
+        $rate = new CommentsRate;
+        if ($comment->isOwn() || $comment->isRated()) {
+            return response('Вы не можете проголосовать за этот комментарий', 401);
         }
+        $rate->value = 1;
+        $rate->user_id = Auth::user()->id;
+        $rate->comment_id = $comment->id;
+        $rate->save();
+
         $comment->rating++;
         $comment->save();
 
@@ -113,8 +121,18 @@ class CommentController extends Controller
     public function rateDown($id)
     {
         $comment = Comment::find($id);
-        if ($comment->isOwn()) {
-            return response('Вы не можете голосовать за свой комментарий', 401)
+        $rate = new CommentsRate;
+        if ($comment->isOwn() || $comment->isRated()) {
+            return response('Вы не можете проголосовать за этот комментарий', 401);
         }
+        $rate->value = -1;
+        $rate->user_id = Auth::user()->id;
+        $rate->comment_id = $comment->id;
+        $rate->save();
+
+        $comment->rating--;
+        $comment->save();
+
+        return redirect()->back()->with('success', 'Ваш голос учтен');
     }
 }
