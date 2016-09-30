@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Models\User;
 use App\Models\Role;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 
 class CabinetController extends Controller
@@ -41,5 +42,15 @@ class CabinetController extends Controller
 
     	return back();
     }
+
+    public function changePassword(Request $request)
+    {
+        if (Hash::check('qwerty123', $request->user()->password)) {
+            
+        }
+    }
+
+
+
 
 }

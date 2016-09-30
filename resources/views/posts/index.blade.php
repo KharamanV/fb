@@ -12,15 +12,17 @@
 					<a href="{{ route('tag.show', $tag->name) }}" class="label label-success">{{ $tag->name }}</a>
 				@endforeach
 			</div>
+			<h5>Рейтинг: <span class="label label-warning">{{ $post->rating }}</span></h5>
 			<div class="">
 				<img width="500" src="{{ asset('uploads/800/' . $post->img) }}">
 			</div>
 			<p>{{ $post->short }}</p>
 			<em>{{ $post->created_at }}</em>
+			<p>Комментариев: <span class="label label-default">{{ $post->comments->count() }}</span></p>
 			<hr>
 		@endforeach
 		<div class="text-center">
-			{{-- {{ $posts->setPath($path)->links() }} --}}
+			{{ (isset($path)) ? $posts->setPath($path)->links() : $posts->links() }}
 		</div>
 	</div>
 @endsection

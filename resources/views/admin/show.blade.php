@@ -3,10 +3,10 @@
 @section('content')
     <div class="container">
         <h1>{{ $post->title }}</h1>
-        <p>Категория: {{ $post->category->name }}</p>
+        <p>Категория: <a href="{{ $post->category->slug }}">{{ $post->category->name }}</a></p>
         <div class="tags">
 	        @foreach($post->tags as $tag)
-				<span class="label label-success">{{ $tag->name }}</span>
+				<a href="{{ route('tag.show', $tag->name) }}"><span class="label label-success">{{ $tag->name }}</span></a>
 	        @endforeach
         </div>
         <img src="{{ asset('uploads/original/' . $post->img) }}">
