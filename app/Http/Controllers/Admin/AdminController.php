@@ -41,6 +41,7 @@ class AdminController extends Controller
      */
     public function create()
     {
+
         $categories = Category::all();
         $tags = Tag::all();
         return view('admin.create', ['categories' => $categories, 'tags' => $tags]);

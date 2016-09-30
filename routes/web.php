@@ -32,6 +32,7 @@ Route::get('admin/register', [
     'uses'  =>'Admin\RegisterAdminController@showRegistrationForm', 
     'roles' => 'admin',
 ]);
+
 Route::post('admin/register', [
 	'uses'  =>'Admin\RegisterAdminController@register', 
 	'roles' => 'admin'
@@ -41,7 +42,8 @@ Route::get('cabinet', 'CabinetController@index');
 
 Route::put('cabinet/edit', [
 	'uses' => 'CabinetController@update',
-	'as'   => 'cabinet.edit'
+	'as'   => 'cabinet.edit',
+
 ]);
 
 Route::group(['roles' => 'Admin', 'namespace' => 'Admin'], function() {

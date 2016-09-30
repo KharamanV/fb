@@ -71,7 +71,7 @@ class LoginController extends Controller
             if (Auth::user()->hasAnyRole('Admin')) {
                 $this->redirectTo = property_exists($this, 'adminRedirectTo') ? $this->adminRedirectTo : $this->redirectTo;
             }
-            return $this->redirectTo;
+            return $this->redirectTo;   
         }
         return '/home';
     }
