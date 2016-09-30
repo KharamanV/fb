@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class CommentsRate extends Model
+class PostsRate extends Model
 {
-    public function comment()
+    public function post()
     {
-    	return $this->belongsTo('App\Models\Comment');
+    	return $this->belongsTo('App\Models\Post');
     }
 
     public function user()

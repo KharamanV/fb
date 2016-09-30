@@ -73,6 +73,9 @@
                                     {{ csrf_field() }}
                                 </form>
                             </li>
+                            <li>
+                                <a href="{{ route('cabinet.index') }}">Личный кабинет</a>
+                            </li>
                             @endif
                         </ul>
                     </li>

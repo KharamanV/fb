@@ -37,7 +37,7 @@ Route::post('admin/register', [
 	'roles' => 'admin'
 ]);
 
-Route::get('cabinet', 'CabinetController@index');
+Route::get('cabinet', ['uses' => 'CabinetController@index', 'as' => 'cabinet.index']);
 
 Route::put('cabinet/edit', [
 	'uses' => 'CabinetController@update',
@@ -64,3 +64,10 @@ Route::resource('comment', 'CommentController', ['except' => ['create', 'show', 
 
 Route::post('comment/{comment}/rateup', ['uses' => 'CommentController@rateUp', 'as' => 'comment.rateup']);
 Route::post('comment/{comment}/ratedown', ['uses' => 'CommentController@rateDown', 'as' => 'comment.ratedown']);
+
+Route::group(['middleware' => 'auth'], function() {
+    Route::post('post/{post}/rateup', ['uses' => 'PostController@rateUp', 'as' => 'post.rateup']);
+    Route::post('post/{post}/ratedown', ['uses' => 'PostController@rateDown', 'as' => 'post.ratedown']);
+});
+
+Route::post('password/change', ['as' => 'password.change', 'uses' => 'CabinetController@changePassword']);

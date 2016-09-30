@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-
+use App\Traits\Rating;
 
 class Post extends Model
 {
+    use Rating;
+
     protected $fillable = ['title', 'short', 'slug', 'text', 'img', 'category_id'];
 
     public function scopeSlug($query, $slug)
@@ -37,6 +39,11 @@ class Post extends Model
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
+    }
+
+    public function rates()
+    {
+        return $this->hasMany('App\Models\PostsRate');
     }
 
 }

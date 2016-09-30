@@ -12,6 +12,7 @@
 					<a href="{{ route('tag.show', $tag->name) }}" class="label label-success">{{ $tag->name }}</a>
 				@endforeach
 			</div>
+			<h5>Рейтинг: <span class="label label-warning">{{ $post->rating }}</span></h5>
 			<div class="">
 				<img width="500" src="{{ asset('uploads/800/' . $post->img) }}">
 			</div>

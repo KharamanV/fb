@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+
+use App\Traits\Rating;
 
 class Comment extends Model
 {
+    use Rating;
+
 	protected $fillable = ['text', 'post_id', 'user_id'];
 
 	/**
@@ -31,22 +34,12 @@ class Comment extends Model
     	return $this->hasMany('App\Models\CommentsRate');
     }
 
-    public function isOwn()
-    {
-    	return (Auth::check()) ? Auth::user()->id == $this->user_id : false;
-    }
-
     public function isEditable()
     {
     	if ($this->isOwn() && (strtotime($this->created_at) + $this->editTime) > time()) {
     		return true;
     	}
     	return false;
-    }
-
-    public function isRated()
-    {
-    	return $this->rates()->where('user_id', Auth::user()->id)->first();
     }
 
 }
