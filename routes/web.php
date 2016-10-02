@@ -73,3 +73,6 @@ Route::group(['middleware' => 'auth'], function() {
 });
 
 Route::post('password/change', ['as' => 'password.change', 'uses' => 'CabinetController@changePassword']);
+Route::post('email/change', ['as' => 'email.change', 'uses' => 'CabinetController@sendResetEmailLink']);
+Route::get('email/change/{token}', ['as' => 'email.token', 'uses' => 'CabinetController@confirmChangeEmail']);
+Route::post('email/update', ['as' => 'email.update', 'uses' => 'CabinetController@changeEmail']);

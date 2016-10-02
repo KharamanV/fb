@@ -5,6 +5,13 @@
 
 		<div class="row">
 			<div class="col-sm-8">
+				@include('partials._errors')
+				@if (session('info'))
+					<div class="alert alert-info">{{ session('info') }}</div>
+				@endif
+				@if (session('success'))
+					<div class="alert alert-success">{{ session('success') }}</div>
+				@endif
 				<h1>{{ $user->login }}</h1>
 				<form action="{{ route('cabinet.edit') }}" method="post">
 					{{ csrf_field() }}
@@ -18,12 +25,21 @@
 					<label for="age">Возраст</label>
 					<input type="text" name="age" value="{{ $user->age }}" id="age">
 					<br>
+					<label>Email</label> <span class="label label-default">{{ $user->email }}</span>
+					<br>
 					<label for="city">Город</label>
 					<input type="text" name="city" value="{{ $user->city }}" id="city">
 					<br>
 					<label>Дата регистрации</label> {{ $user->created_at }}
 					<br>
 					<input type="submit" value="Сохранить изменения">
+				</form>
+				<form action="{{ route('email.change') }}" method="post">
+					{{ csrf_field() }}
+					<div class="form-group">
+						<input type="email" name="new_email">
+						<button class="btn btn-primary">Сменить email</button>
+					</div>
 				</form>
 			</div>
 			<div class="col-sm-4">
