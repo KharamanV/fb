@@ -21,13 +21,6 @@ class Comment extends Model
 	 */
 	public $editTime = 60 * 30;
 
-    public $hasPermissions;
-
-    public function __construct()
-    {
-        $this->hasPermissions = (Auth::check()) ? Auth::user()->hasAnyRole(['Admin', 'Moderator']) : false;
-    }
-
     public function post()
     {
     	return $this->belongsTo('App\Models\Post');
@@ -43,10 +36,15 @@ class Comment extends Model
     	return $this->hasMany('App\Models\CommentsRate');
     }
 
+    public function hasPermissions()
+    {
+        return (Auth::check()) ? Auth::user()->hasAnyRole(['Admin', 'Moderator']) : false;
+    }
+
     public function isEditable()
     {
         
-    	if (($this->isOwn() && (strtotime($this->created_at) + $this->editTime) > time()) || $this->hasPermissions) {
+    	if (($this->isOwn() && (strtotime($this->created_at) + $this->editTime) > time()) || $this->hasPermissions()) {
     		return true;
     	}
     	return false;
@@ -54,7 +52,7 @@ class Comment extends Model
 
     public function isDeletable()
     {
-        if ($this->isOwn() || $this->hasPermissions) {
+        if ($this->isOwn() || $this->hasPermissions()) {
             return true;
         }
         return false;

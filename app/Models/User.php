@@ -50,6 +50,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\Models\Tag');
     }
 
+    public function ban()
+    {
+        return $this->hasOne('App\Models\Ban');
+    }
+
     /**
      * Checks, is the user has needed role
      * 
