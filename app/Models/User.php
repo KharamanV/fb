@@ -18,7 +18,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'last_name', 'login', 'role_id', 'is_active', 'age', 'city', 'img'
+        'name', 'email', 'password', 'last_name', 'login', 'role_id', 'is_active', 'age', 'city', 'avatar'
     ];
 
     /**
@@ -43,6 +43,11 @@ class User extends Authenticatable
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany('App\Models\Tag');
     }
 
     /**
@@ -114,6 +119,11 @@ class User extends Authenticatable
             return true;
         }
         return false;
+    }
+
+    public function scopeUsername($query, $username)
+    {
+        return $query->where('login', $username);
     }
 
     

@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 use App\Traits\Rating;
+
 
 class Comment extends Model
 {
@@ -18,6 +20,13 @@ class Comment extends Model
 	 * @var int $editTime
 	 */
 	public $editTime = 60 * 30;
+
+    public $hasPermissions;
+
+    public function __construct()
+    {
+        $this->hasPermissions = (Auth::check()) ? Auth::user()->hasAnyRole(['Admin', 'Moderator']) : false;
+    }
 
     public function post()
     {
@@ -36,10 +45,19 @@ class Comment extends Model
 
     public function isEditable()
     {
-    	if ($this->isOwn() && (strtotime($this->created_at) + $this->editTime) > time()) {
+        
+    	if (($this->isOwn() && (strtotime($this->created_at) + $this->editTime) > time()) || $this->hasPermissions) {
     		return true;
     	}
     	return false;
+    }
+
+    public function isDeletable()
+    {
+        if ($this->isOwn() || $this->hasPermissions) {
+            return true;
+        }
+        return false;
     }
 
 }

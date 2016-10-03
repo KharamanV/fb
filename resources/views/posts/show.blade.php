@@ -83,7 +83,7 @@
                             @if ($comment->isEditable())
                                 <a href="{{ route('comment.edit', $comment->id) }}">Редактировать</a>
                             @endif
-                            @if ($comment->isOwn())
+                            @if ($comment->isDeletable())
                                 <form action="{{ route('comment.destroy', $comment->id) }}" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}

@@ -14,6 +14,8 @@ class ImageHelper
 
     protected static $originalFolder = 'original';
 
+    protected static $avatarFolder = '150';
+
     public static function upload($img) 
     {
         $name = md5(time() . $img->getClientOriginalName()) . '.' . $img->getClientOriginalExtension();
@@ -29,7 +31,7 @@ class ImageHelper
                     $constraint->aspectRatio();
                     $constraint->upsize();
                 })->save($path . self::$smallFolder . '/' . $name);
-
+        
         return $name;
     }
 
@@ -41,6 +43,38 @@ class ImageHelper
             self::$originalFolder . '/' . $imgName,
         ]);
     }
+
+    public static function uploadAvatar($img) 
+    {
+        $name = md5(time() . $img->getClientOriginalName()) . '.' . $img->getClientOriginalExtension();
+        $path = public_path('uploads/avatars/');
+
+        Image::make($img)
+                ->resize(150, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })->save($path . self::$avatarFolder . '/' . $name)
+                ->resize(60, null, function ($constraint) {
+                    $constraint->aspectRatio();
+                    $constraint->upsize();
+                })->save($path . self::$smallFolder . '/' . $name);
+        
+        return $name;
+    }
+
+    public static function deleteAvatar($imgName)
+    {
+        $subFolder = 'avatars/';
+
+        Storage::delete([
+            $subFolder . self::$avatarFolder . '/' . $imgName,
+            $subFolder . self::$smallFolder . '/' . $imgName,
+        ]);
+    }
+
+
+
+
 
 
 }

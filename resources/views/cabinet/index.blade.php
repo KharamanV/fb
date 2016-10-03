@@ -13,7 +13,8 @@
 					<div class="alert alert-success">{{ session('success') }}</div>
 				@endif
 				<h1>{{ $user->login }}</h1>
-				<form action="{{ route('cabinet.edit') }}" method="post">
+				<div><img src="{{ ($user->avatar) ? asset('uploads/avatars/150/' . $user->avatar) : asset('img/default_avatar.png') }}" alt=""></div>
+				<form action="{{ route('cabinet.edit') }}" method="post" enctype="multipart/form-data" style="border: 1px solid #000">
 					{{ csrf_field() }}
 					{{ method_field('PUT') }}
 					<label for="name">Имя</label>
@@ -32,7 +33,12 @@
 					<br>
 					<label>Дата регистрации</label> {{ $user->created_at }}
 					<br>
-					<input type="submit" value="Сохранить изменения">
+					<label>
+		                Аватар (не больше 1мб): <input type="file" name="avatar" id="image-upload">
+		            </label>
+		            <img id="image-preview" src="" style="max-width: 100px">
+		            <br>
+					<input type="submit" value="Сохранить изменения" class="btn btn-success">
 				</form>
 				<form action="{{ route('email.change') }}" method="post">
 					{{ csrf_field() }}
@@ -42,7 +48,7 @@
 					</div>
 				</form>
 			</div>
-			<div class="col-sm-4">
+			<div class="col-sm-2">
 				<form action="{{ route('password.change') }}" method="post" class="form-horizontal">
 					{{ csrf_field() }}
 					<div class="form-group">
@@ -59,6 +65,9 @@
 					</div>
 					<button class="btn btn-primary">Сменить пароль</button>
 				</form>
+			</div>
+			<div class="col-sm-2">
+				<a href="{{ route('cabinet.subscribes') }}" class="btn btn-danger">Настроить подписки на рубрики</a>
 			</div>
 		</div>
 

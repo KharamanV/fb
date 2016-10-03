@@ -70,9 +70,13 @@ Route::post('comment/{comment}/ratedown', ['uses' => 'CommentController@rateDown
 Route::group(['middleware' => 'auth'], function() {
     Route::post('post/{post}/rateup', ['uses' => 'PostController@rateUp', 'as' => 'post.rateup']);
     Route::post('post/{post}/ratedown', ['uses' => 'PostController@rateDown', 'as' => 'post.ratedown']);
+    Route::get('subscribes', ['uses' => 'PostController@showPostsBySubscribes', 'as' => 'post.subscribes']);
 });
 
 Route::post('password/change', ['as' => 'password.change', 'uses' => 'CabinetController@changePassword']);
 Route::post('email/change', ['as' => 'email.change', 'uses' => 'CabinetController@sendResetEmailLink']);
 Route::get('email/change/{token}', ['as' => 'email.token', 'uses' => 'CabinetController@confirmChangeEmail']);
 Route::post('email/update', ['as' => 'email.update', 'uses' => 'CabinetController@changeEmail']);
+Route::get('user/{username}', ['as' => 'user.show', 'uses' => 'UserController@show']);
+Route::get('cabinet/subscribes', ['as' => 'cabinet.subscribes', 'uses' => 'CabinetController@showSubscribeSettings']);
+Route::post('cabinet/subscribes', ['as' => 'cabinet.updateTags', 'uses' => 'CabinetController@updateTags']);

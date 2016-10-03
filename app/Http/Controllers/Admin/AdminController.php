@@ -122,10 +122,10 @@ class AdminController extends Controller
             'category_id' => 'sometimes|integer'
         ]);
         
+        $oldName = $post->img;
         $post->fill($request->all());
 
         if ($request->hasFile('img')) {
-            $oldName = $post->img;
             $post->img = ImageHelper::upload($request->file('img'));
             if ($oldName) {
                 ImageHelper::delete($oldName);

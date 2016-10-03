@@ -99,4 +99,19 @@ class PostController extends Controller
         return redirect()->back()->with('success', 'Ваш голос учтен');
     }
 
+    public function showPostsBySubscribes()
+    {
+        $tags = [];
+
+        foreach (Auth::user()->tags as $tag) {
+            $tags[] = $tag->id;
+        }
+
+        $posts = Post::whereHas('tags', function($query) use ($tags) {
+            $query->whereIn('tags.id', $tags);
+        })->paginate($this->perPage);
+
+        return view('posts.index', ['posts' => $posts]);
+    }
+
 }

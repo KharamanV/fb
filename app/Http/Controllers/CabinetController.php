@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
-use App\Http\Requests;
+use App\Helpers\ImageHelper;
 use App\Mail\EmailChange;
-use App\Models\User;
-use App\Models\Role;
 use App\Models\EmailReset;
+use App\Models\Role;
+use App\Models\Tag;
+use App\Models\User;
+
 
 
 class CabinetController extends Controller
@@ -39,11 +42,27 @@ class CabinetController extends Controller
      */
     public function update(Request $request)
     {
-    	$user = Auth::user();
-    	$user->fill($request->all());
+        $this->validate($request, [
+            'name'      => 'required|max:255',
+            'last_name' => 'required|max:255',
+            'age'       => 'integer|min:12|max:100',
+            'avatar'    => 'sometimes|image|max:1024'
+        ]);
+
+    	$user = $request->user();
+        $oldName = $user->avatar;
+        $user->fill($request->all());
+
+        if ($request->hasFile('avatar')) {
+            $user->avatar = ImageHelper::uploadAvatar($request->file('avatar'));
+            if ($oldName) {
+                ImageHelper::deleteAvatar($oldName);
+            }
+        }
+
     	$user->save();
 
-    	return back();
+    	return back()->with('success', 'Информация изменена');
     }
 
     public function changePassword(Request $request)
@@ -93,9 +112,7 @@ class CabinetController extends Controller
     }
 
     public function changeEmail(Request $request)
-    {
-        
-
+    { 
         if (!session('user_id') || !session('new_email')) {
             return response('Время сессии истекло', 404);
         }
@@ -116,6 +133,30 @@ class CabinetController extends Controller
 
         return redirect()->route('cabinet.index')->with('success', 'Почтовый адрес успешно изменен');
     }
+
+    public function showSubscribeSettings()
+    {
+        $tags = Tag::all();
+        $userTags = Auth::user()->tags;
+        return view('cabinet.subscribes', ['tags' => $tags, 'userTags' => $userTags]);
+    }
+
+    public function updateTags(Request $request)
+    {
+        $this->validate($request, ['tags' => 'array']);
+        $user = $request->user();
+        if ($request->tags) {
+            $user->tags()->sync($request->tags);
+        } else {
+            $user->tags()->detach();
+        }
+
+        return redirect()->route('cabinet.index')->with('success', 'Подписка была успешно изменена');
+
+
+    }
+
+    
 
 
 

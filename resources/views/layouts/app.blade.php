@@ -37,6 +37,9 @@
                 <a class="navbar-brand" href="{{ route('post.index') }}">
                     Home
                 </a>
+                <a class="navbar-brand" href="{{ route('post.subscribes') }}">
+                    По подписке
+                </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">
@@ -88,5 +91,23 @@
 
     <!-- Scripts -->
     <script src="/js/app.js"></script>
+    <script>
+        //Image preview
+        function readURL(input) {
+        if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                
+                reader.onload = function (e) {
+                    $('#image-preview').attr('src', e.target.result);
+                }
+                
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        
+        $("#image-upload").change(function(){
+            readURL(this);
+        });
+    </script>
 </body>
 </html>

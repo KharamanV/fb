@@ -90,7 +90,7 @@ class CommentController extends Controller
     {
         $comment = Comment::find($id);
         
-        if (!$comment->isOwn()) {
+        if (!$comment->isDeletable()) {
             return response('Вы не можете удалить этот комментарий', 401);
         }
 
