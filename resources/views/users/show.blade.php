@@ -2,6 +2,11 @@
 
 @section('content')
 	<div class="container">
+		@if (session('success'))
+			<div class="alert alert-success">
+				{{ session('success') }}
+			</div>
+		@endif
 		<div><img src="{{ ($user->avatar) ? asset('uploads/avatars/150/' . $user->avatar) : asset('img/default_avatar.png') }}" alt=""></div>
 		<strong>Пользователь:</strong> <span>{{ $user->login }}</span><br>
 		<strong>Имя:</strong> <span>{{ $user->name }}</span><br>
@@ -20,8 +25,11 @@
 				@endforeach
 			</ul>
 		</div>
-		@if (Auth::check() && Auth::user()->hasPermissions($user))
+		@if (Auth::check() && Auth::user()->hasBanPermissions($user))
             <a href="{{ route('ban.create', $user->id) }}" class="btn btn-xs btn-danger">Забанить</a>
+        @endif
+		@if (Auth::check() && Auth::user()->isAdmin())
+            <a href="{{ route('role.assign.show', $user->id) }}" class="btn btn-xs btn-success">Изменить роль</a>
         @endif
 	</div>
 @endsection

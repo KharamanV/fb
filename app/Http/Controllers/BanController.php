@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-
 use App\Http\Requests;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 use App\Models\Ban;
 use App\Models\User;
@@ -42,6 +42,9 @@ class BanController extends Controller
     public function create($userId)
     {
         $user = User::find($userId);
+        if (!Auth::user()->hasBanPermissions($user)) {
+           return response('Вы не можете банить этого пользователя'); 
+        }
         return view('bans.create', ['user' => $user, 'terms' => $this->terms]);
     }
 

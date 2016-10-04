@@ -38,7 +38,7 @@ class Comment extends Model
 
     public function isEditable($author)
     {
-        $user = (Auth::check) ? Auth::user() : null;
+        $user = (Auth::check()) ? Auth::user() : null;
         if ($user) {
             if ($user->hasAnyRole('Admin')) {
                 return true;
@@ -47,14 +47,13 @@ class Comment extends Model
                 return $this->isOwn() || !$author->hasAnyRole(['Admin', 'Moderator']);
             }
             return $this->isOwn() && (strtotime($this->created_at) + $this->editTime) > time();
-        } else {
-            return false;
         }
+        return false;
     }
 
     public function isDeletable($user)
     {
-        $user = (Auth::check) ? Auth::user() : null;
+        $user = (Auth::check()) ? Auth::user() : null;
         if ($user) {
             if ($user->hasAnyRole('Admin')) {
                 return true;

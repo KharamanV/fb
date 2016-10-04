@@ -130,8 +130,13 @@ class User extends Authenticatable
 
     public function hasBanPermissions($user)
     {
-        //FIX THIS
-        return $this->hasAnyRole(['Admin', 'Moderator']) && !$user->hasAnyRole(['Admin', 'Moderator']);
+        if ($this->hasAnyRole('Admin') && !$user->hasAnyRole('Admin')) {
+            return true;
+        }
+        if ($this->hasAnyRole('Moderator') && !$user->hasAnyRole(['Admin', 'Moderator'])) {
+            return true;
+        }
+        return false;
     }
 
     public function isBanned()

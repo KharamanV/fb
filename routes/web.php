@@ -44,6 +44,8 @@ Route::group(['middleware' => 'notBanned'], function() {
         Route::resource('admin', 'AdminController');
         Route::resource('categories', 'CategoryController', ['except' => ['create', 'show']]);
         Route::resource('tags', 'TagController', ['except' => ['create', 'show']]);
+        Route::get('user/{user}/role', ['uses' => 'RoleController@showAssigningForm', 'as' => 'role.assign.show']);
+        Route::patch('role/assign', ['uses' => 'RoleController@assign', 'as' => 'role.assign']);
     });
 
     Route::get('tag/{tag}', [
@@ -79,6 +81,7 @@ Route::group(['middleware' => 'notBanned'], function() {
         Route::resource('ban', 'BanController', ['except' => ['create', 'edit', 'update']]);
         Route::get('ban/{ban}/create', ['uses' => 'BanController@create', 'as' => 'ban.create']);
     });
+
 });
 
 

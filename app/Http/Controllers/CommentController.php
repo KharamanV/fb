@@ -50,7 +50,7 @@ class CommentController extends Controller
     public function edit($id)
     {
         $comment = Comment::find($id);
-        if (!$comment->isEditable()) {
+        if (!$comment->isEditable($comment->user)) {
             return response('Вы не можете редактировать этот комментарий', 401);
         }
         return view('comments.edit', ['comment' => $comment]);
@@ -67,7 +67,7 @@ class CommentController extends Controller
     {
 
         $comment = Comment::find($id);
-        if (!$comment->isEditable()) {
+        if (!$comment->isEditable($comment->user)) {
             return response('Вы не можете редактировать этот комментарий', 401);
         }
         $this->validate($request, [
@@ -90,7 +90,7 @@ class CommentController extends Controller
     {
         $comment = Comment::find($id);
         
-        if (!$comment->isDeletable()) {
+        if (!$comment->isDeletable($comment->user)) {
             return response('Вы не можете удалить этот комментарий', 401);
         }
 
