@@ -14,4 +14,10 @@ class UserController extends Controller
         $user = User::username($username)->firstOrFail();
         return view('users.show', ['user' => $user]);
     }
+
+    public function showBannedMessage(Request $request)
+    {
+    	$user = $request->user();
+    	return view('banned', ['user' => $user]);
+    }
 }

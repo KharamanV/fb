@@ -36,26 +36,36 @@ class Comment extends Model
     	return $this->hasMany('App\Models\CommentsRate');
     }
 
-    public function hasPermissions()
+    public function isEditable($author)
     {
-        return (Auth::check()) ? Auth::user()->hasAnyRole(['Admin', 'Moderator']) : false;
-    }
-
-    public function isEditable()
-    {
-        
-    	if (($this->isOwn() && (strtotime($this->created_at) + $this->editTime) > time()) || $this->hasPermissions()) {
-    		return true;
-    	}
-    	return false;
-    }
-
-    public function isDeletable()
-    {
-        if ($this->isOwn() || $this->hasPermissions()) {
-            return true;
+        $user = (Auth::check) ? Auth::user() : null;
+        if ($user) {
+            if ($user->hasAnyRole('Admin')) {
+                return true;
+            }
+            if ($user->hasAnyRole('Moderator')) {
+                return $this->isOwn() || !$author->hasAnyRole(['Admin', 'Moderator']);
+            }
+            return $this->isOwn() && (strtotime($this->created_at) + $this->editTime) > time();
+        } else {
+            return false;
         }
-        return false;
+    }
+
+    public function isDeletable($user)
+    {
+        $user = (Auth::check) ? Auth::user() : null;
+        if ($user) {
+            if ($user->hasAnyRole('Admin')) {
+                return true;
+            }
+            if ($user->hasAnyRole('Moderator')) {
+                return $this->isOwn() || !$author->hasAnyRole(['Admin', 'Moderator']);
+            }
+            return $this->isOwn();
+        } else {
+            return false;
+        }
     }
 
 }

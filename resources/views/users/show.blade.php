@@ -14,9 +14,14 @@
 			<strong>Подписки: </strong>
 			<ul style="list-style-type: none; display: inline-block; padding: 0; margin: 0;">
 				@foreach ($user->tags as $tag)
-					<li style="display: inline-block;"><a href="{{ route('tag.show', $tag->name) }}" class="label label-success">{{ $tag->name }}</a></li>
+					<li style="display: inline-block;">
+						<a href="{{ route('tag.show', $tag->name) }}" class="label label-success">{{ $tag->name }}</a>
+					</li>
 				@endforeach
 			</ul>
 		</div>
+		@if (Auth::check() && Auth::user()->hasPermissions($user))
+            <a href="{{ route('ban.create', $user->id) }}" class="btn btn-xs btn-danger">Забанить</a>
+        @endif
 	</div>
 @endsection

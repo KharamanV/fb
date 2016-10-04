@@ -120,15 +120,34 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        if (Auth::check() && Auth::user()->hasAnyRole('Admin')) {
-            return true;
-        }
-        return false;
+        return Auth::check() && Auth::user()->hasAnyRole('Admin');
     }
 
     public function scopeUsername($query, $username)
     {
         return $query->where('login', $username);
+    }
+
+    public function hasBanPermissions($user)
+    {
+        //FIX THIS
+        return $this->hasAnyRole(['Admin', 'Moderator']) && !$user->hasAnyRole(['Admin', 'Moderator']);
+    }
+
+    public function isBanned()
+    {
+        return $this->ban_id;
+    }
+
+    public function unBan()
+    {
+        return $this->ban->delete();
+    }
+
+    public function shouldUnBan()
+    {
+        //If ban period is over
+        return strtotime($this->ban->blocked_until) < time();
     }
 
     

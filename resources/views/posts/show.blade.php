@@ -77,18 +77,21 @@
                                 @endif
                             </div>
                             
-                            <h4>{{ $comment->user->name . ' ' . $comment->last_name }}</h4>
+                            <h4><a href="{{ route('user.show', $comment->user->login) }}">{{ $comment->user->name . ' ' . $comment->user->last_name }}</a></h4>
                             <hr>
                             <p>{{ $comment->text }}</p>
-                            @if ($comment->isEditable())
+                            @if ($comment->isEditable($comment->user))
                                 <a href="{{ route('comment.edit', $comment->id) }}">Редактировать</a>
                             @endif
-                            @if ($comment->isDeletable())
+                            @if ($comment->isDeletable($comment->user))
                                 <form action="{{ route('comment.destroy', $comment->id) }}" method="post">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
                                     <button type="submit">Удалить</button>
                                 </form>
+                            @endif
+                            @if (Auth::check() && Auth::user()->hasBanPermissions($comment->user))
+                                <a href="{{ route('ban.create', $comment->user->id) }}" class="btn btn-xs btn-danger">Забанить</a>
                             @endif
                         </div>
                     @endforeach
