@@ -12,7 +12,6 @@
 
     <!-- Styles -->
     <link href="/css/app.css" rel="stylesheet">
-    <link href="/css/select2.min.css" rel="stylesheet">
 
     <!-- Scripts -->
     <script>
@@ -96,56 +95,7 @@
     @yield('content')
 
     <!-- Scripts -->
-    <script src="/js/app.js"></script>
-    <script src="/js/transliteral.js"></script>
-    <script src="/js/select2.min.js"></script>
-    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
-    <script>
-        'use strict';
-
-        tinymce.init({
-            selector: '#editor',
-            plugins: 'code image'
-        });
-
-
-
-        //Slug
-        var slug = function(str) {
-            var string = transliterate(str);
-            var $slug = '';
-            var trimmed = $.trim(string);
-            $slug = trimmed.replace(/[^a-zа-я0-9-]/gi, '-').
-            replace(/-+/g, '-').
-            replace(/^-|-$/g, '');
-            return $slug.toLowerCase();
-        }
-
-        $('#title-field').focusout(function() {
-            $('#slug-field').val(slug($(this).val()));
-        });
-
-        //Image preview
-        function readURL(input) {
-        if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                
-                reader.onload = function (e) {
-                    $('#image-preview').attr('src', e.target.result);
-                }
-                
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        
-        $("#image-upload").change(function(){
-            readURL(this);
-        });
-
-        //Tags selectbox
-        $(".js-example-basic-multiple").select2();
-
-
-    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/js/app.min.js"></script>
 </body>
 </html>

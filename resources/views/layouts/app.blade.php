@@ -21,43 +21,31 @@
     </script>
 </head>
 <body>
-    <nav class="navbar navbar-default navbar-static-top">
+    <nav class="navbar navbar-light navbar-fixed-top bg-faded" role="navigation">
         <div class="container">
-            <div class="navbar-header">
+            <button class="pull-xs-right navbar-toggler hidden-md-up" type="button" data-toggle="collapse" data-target="#nav-collapse" aria-controls="nav-collapse" aria-expanded="false" aria-label="Toggle navigation">
+                &#9776;
+            </button>
 
-                <!-- Collapsed Hamburger -->
-                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#app-navbar-collapse">
-                    <span class="sr-only">Toggle Navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
+            <!-- Branding Image -->
+            <a class="navbar-brand" href="{{ route('post.index') }}">
+                Home
+            </a>
+            {{-- <a class="navbar-brand" href="{{ route('post.subscribes') }}">
+                По подписке
+            </a> --}}
+            
 
-                <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ route('post.index') }}">
-                    Home
-                </a>
-                <a class="navbar-brand" href="{{ route('post.subscribes') }}">
-                    По подписке
-                </a>
-            </div>
-
-            <div class="collapse navbar-collapse" id="app-navbar-collapse">
-                <!-- Left Side Of Navbar -->
+            <div class="collapse navbar-toggleable-sm" id="nav-collapse">
                 <ul class="nav navbar-nav">
-                    &nbsp;
-                </ul>
-
-                <!-- Right Side Of Navbar -->
-                <ul class="nav navbar-nav navbar-right">
-                    <form action="{{ route('post.index') }}" style="display: inline-block;">
-                        <input type="search" name="search" value="{{ old('search') }}">
-                        <button type="submit">OK</button>
+                    <form action="{{ route('post.index') }}" class="form-inline pull-xs-right">
+                        <input type="search" name="search" placeholder="Search" value="{{ old('search') }}" class="form-control">
+                        <button type="submit" class="btn btn-outline-success">Search</button>
                     </form>
                     <!-- Authentication Links -->
                     @if (Auth::guest())
-                        <li><a href="{{ url('/login') }}">Login</a></li>
-                        <li><a href="{{ url('/register') }}">Register</a></li>
+                        <li class="nav-item"><a href="{{ url('/login') }}" class="nav-link">Login</a></li>
+                        <li class="nav-item"><a href="{{ url('/register') }}" class="nav-link">Register</a></li>
                     @else
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
@@ -90,24 +78,7 @@
     @yield('content')
 
     <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="/js/app.js"></script>
-    <script>
-        //Image preview
-        function readURL(input) {
-        if (input.files && input.files[0]) {
-                var reader = new FileReader();
-                
-                reader.onload = function (e) {
-                    $('#image-preview').attr('src', e.target.result);
-                }
-                
-                reader.readAsDataURL(input.files[0]);
-            }
-        }
-        
-        $("#image-upload").change(function(){
-            readURL(this);
-        });
-    </script>
 </body>
 </html>
