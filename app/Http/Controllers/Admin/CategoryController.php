@@ -67,7 +67,7 @@ class CategoryController extends Controller
         $this->validate($request, [
             'name'        => 'required|max:255',
             'description' => 'max:255',
-            'slug'        => 'required|unique:categories|alpha_dash|max:255'
+            'slug'        => 'required|alpha_dash|max:255|unique:categories,slug,' . $id
         ]);
 
         $category = Category::find($id);

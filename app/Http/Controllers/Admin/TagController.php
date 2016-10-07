@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+
+use App\Models\Category;
 use App\Models\Tag;
 
 class TagController extends Controller
@@ -23,7 +25,8 @@ class TagController extends Controller
     public function index()
     {
         $tags = Tag::all();
-        return view('admin.tags.index', ['tags' => $tags]);
+        $categories = Category::all();
+        return view('admin.tags.index', ['tags' => $tags, 'categories' => $categories]);
     }
 
     /**
@@ -35,10 +38,14 @@ class TagController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-        	'name' => 'required|max:255',
+        	'name'        => 'required|max:255',
+            'slug'        => 'required|unique:tags|alpha_dash|max:255',
+            'category_id' => 'sometimes|integer|exists:categories,id',
+            'description' => 'max:255'
     	]);
 
     	$tag = new Tag($request->all());
+        $tag->category_id = ($request->has('category_id')) ? $request->category_id : null;
     	$tag->save();
     	return redirect()->back()->with('status', 'Success!');
     }
@@ -52,7 +59,8 @@ class TagController extends Controller
     public function edit($id)
     {
         $tag = Tag::findOrFail($id);
-        return view('admin.tags.edit', ['tag' => $tag]);
+        $categories = Category::all();
+        return view('admin.tags.edit', ['tag' => $tag, 'categories' => $categories]);
     }
 
     /**
@@ -66,6 +74,8 @@ class TagController extends Controller
     {
         $this->validate($request, [
             'name'        => 'required|max:255',
+            'slug'        => 'required|alpha_dash|max:255|unique:tags,slug,' . $id,
+            'category_id' => 'sometimes|integer|exists:categories,id',
             'description' => 'max:255'
         ]);
 

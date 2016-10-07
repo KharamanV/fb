@@ -17,12 +17,22 @@
             {{ csrf_field() }}
             {{ method_field('PUT') }}
             <label>
-                Категория:
+                Название:
                 <input type="text" name="name" value="{{ $tag->name }}">
             </label>
             <label>
+                Slug:
+                <input type="text" name="slug" value="{{ $tag->slug }}">
+            </label>
+            <select name="category_id">
+                <option value="">Без категории</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" {{ ($tag->category_id == $category->id) ? 'selected' : '' }}>{{ $category->name }}</option>
+                @endforeach
+            </select>
+            <label>
                 Описание:
-                <input type="text" name="description" value="{{ $tag->description }}">
+                <textarea name="description">{{ $tag->description }}</textarea>
             </label>
             <button type="submit">OK</button>
         </form>

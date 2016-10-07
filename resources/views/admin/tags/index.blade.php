@@ -11,6 +11,7 @@
 							<th>#</th>
 							<th>Тег</th>
 							<th>Описание</th>
+							<th>Категория</th>
 							<th>Действия</th>
 						</tr>
 					</thead>
@@ -20,6 +21,7 @@
 								<td>{{ $tag->id }}</td>
 								<td><a href="{{ route('tag.show', $tag->name) }}">{{ $tag->name }}</a></td>
 								<td>{{ $tag->description }}</td>
+								<td>{{ ($tag->category) ? ($tag->category->name) : 'Без категории' }}</td>
 								<td>
 									<a href="{{ route('tags.edit', $tag->id) }}">Редактировать</a>
 									<form action="{{ route('tags.destroy', $tag->id) }}" method="post">
@@ -43,8 +45,15 @@
 					@endif
 					<form action="{{ route('tags.store') }}" method="post">
 						{{ csrf_field() }}
-						<input type="text" name="name" class="form-control">
-						<textarea name="description" class="form-control"></textarea>
+						<input type="text" name="name" class="form-control" placeholder="name">
+						<input type="text" name="slug" class="form-control" placeholder="slug">
+						<select name="category_id">
+							<option value="">Без категории</option>
+							@foreach ($categories as $category)
+								<option value="{{ $category->id }}">{{ $category->name }}</option>
+							@endforeach
+						</select>
+						<textarea name="description" class="form-control" placeholder="description"></textarea>
 						<button type="submit" class="btn btn-primary btn-block">Добавить</button>
 					</form>
 				</div>

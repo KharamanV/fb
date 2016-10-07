@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tag extends Model
 {
-	protected $fillable = ['name', 'description'];
+	protected $fillable = ['name', 'description', 'slug', 'category_id'];
 
     public function posts()
     {
@@ -16,6 +16,11 @@ class Tag extends Model
     public function users()
     {
     	return $this->belongsToMany('App\Models\User');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Category');
     }
 
     public function scopeTag($query, $tag)

@@ -13,8 +13,15 @@ class Category extends Model
         return $this->hasMany('App\Models\Post');
     }
 
+    public function tags()
+    {
+    	return $this->hasMany('App\Models\Tag');
+    }
+
     public function scopeSlug($query, $category)
     {
     	return $query->where('slug', $category);
     }
+
+
 }

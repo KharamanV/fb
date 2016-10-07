@@ -11,6 +11,8 @@
     <title>Laravel</title>
 
     <!-- Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.4.3/skins/lightgray/skin.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.4.3/skins/lightgray/content.min.css">
     <link href="/css/app.css" rel="stylesheet">
 
     <!-- Scripts -->
