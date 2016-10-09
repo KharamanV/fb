@@ -18,7 +18,7 @@ use App\Models\User;
 class PostController extends Controller
 {
 
-    public $perPage = 2;
+    public $perPage = 6;
     public $path;
 
     /**
@@ -28,8 +28,30 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
-        $posts = ($request->search) ? Post::searchByTitle($request->search)->orderById()->paginate($this->perPage) : Post::orderById()->paginate($this->perPage);
-        return view('posts.index', ['posts' => $posts]);
+        $posts = Post::orderById()->get();
+        $lastCategoryArticles = [];
+        $categories = [];
+
+        foreach ($posts as $post) {
+            if (isset($post->category_id)) {
+                if (array_search($post->category_id, $categories) === false) {
+                    $categories[] = $post->category->id;
+                    $lastCategoryArticles[] = $post;
+                    
+                    
+                }
+            }
+        }
+
+        $posts = PaginateHelper::paginate($posts, $this->perPage);
+
+        return view('posts.index', ['posts' => $posts, 'lastCatPosts' => $lastCategoryArticles, 'path' => $this->path]);
+    }
+
+    public function search(Request $request)
+    {
+        $posts = Post::searchByTitle($request->search)->orderById()->paginate($this->perPage);
+        return view('posts.chunk', ['posts' => $posts]);
     }
 
     public function __construct(Request $request)
@@ -53,14 +75,18 @@ class PostController extends Controller
         $tagPosts = Tag::tag($tag)->firstOrFail()->posts;
         $posts = PaginateHelper::paginate($tagPosts, $this->perPage);
 
-        return view('posts.index', ['posts' => $posts, 'path' => $this->path]); 
+        return view('posts.chunk', ['posts' => $posts, 'path' => $this->path]); 
     }
 
     public function showPostsByCategory(Request $request, $category) {
-        $categoryPosts = Category::slug($category)->firstOrFail()->posts;
+        if ($category == 'others') {
+            $categoryPosts = Post::withoutCategories()->get();
+        } else {
+            $categoryPosts = Category::slug($category)->firstOrFail()->posts;
+        }
         $posts = PaginateHelper::paginate($categoryPosts, $this->perPage);
 
-        return view('posts.index', ['posts' => $posts, 'path' => $this->path]);
+        return view('posts.chunk', ['posts' => $posts, 'path' => $this->path]);
     }
 
     public function rateUp($id)
@@ -111,7 +137,7 @@ class PostController extends Controller
             $query->whereIn('tags.id', $tags);
         })->paginate($this->perPage);
 
-        return view('posts.index', ['posts' => $posts]);
+        return view('posts.chunk', ['posts' => $posts]);
     }
 
 }

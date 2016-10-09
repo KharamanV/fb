@@ -21,6 +21,11 @@ class Post extends Model
     	return $query->orderBy('id', 'desc');
     }
 
+    public function scopeWithoutCategories($query)
+    {
+        return $query->whereNull('category_id');
+    }
+
     public function scopeSearchByTitle($query, $value)
     {
         return $query->where('title', 'LIKE', '%' . $value . '%');

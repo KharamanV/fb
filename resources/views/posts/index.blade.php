@@ -1,28 +1,158 @@
 @extends('layouts.app')
 
 @section('content')
+		@if (isset($lastCatPosts))
+			<section class="latest-category-articles">
+				<div class="container">
+					<h2 class="title-section">
+						<span class="heading-line">Последние в категории</span>
+						<form action="{{ route('post.search') }}" class="navbar-form navbar-right pull-xs-right" role="search">
+							<input type="search" id="search" name="search" placeholder="Search here" value="{{ old('search') }}">
+							<button type="submit" id="search-submit"><i class="fa fa-search"></i></button>
+						</form>
+						<form  class="form-inline ">
+	                        <input type="search" name="search" placeholder="Search" value="{{ old('search') }}" class="form-control">
+	                    </form>
+					</h2>
+					<div id="owl-demo" class="owl-carousel owl-theme">
+					@foreach ($lastCatPosts as $lastCatPost)
+						<div class="item latest">
+							<div class="post-block" style="background-image: url({{ asset('uploads/800/' . $lastCatPost->img) }});">
+								<div class="post-caption">
+									@if (isset($lastCatPost->category->name))
+										<a class="card-category" href="{{ route('category.show', $lastCatPost->category->slug) }}" style="background-color: {{ $lastCatPost->category->color }}">
+											{{ $lastCatPost->category->name }}
+										</a>
+									@else
+										<a class="card-category" href="{{ route('category.show', 'others') }}">
+											others
+										</a>
+									@endif
+									<h4 class="post-title">
+										<a href="{{ route('post.show', $lastCatPost->slug) }}">{{ $lastCatPost->title }}</a>
+									</h4>
+									<ul class="post-info">
+										<li>
+											<i class="fa fa-clock-o"></i>
+											{{ date('d M Y', $lastCatPost->created_at->getTimestamp()) }}
+										</li>
+										<li>
+											<a href="{{ route('post.show', $lastCatPost->slug) }}#comments">
+												<i class="fa fa-comments-o"></i>
+												<span>{{ $lastCatPost->comments->count() }}</span>
+											</a>
+										</li>
+										<li>
+											<i class="fa fa-bar-chart"></i>
+											{{ $lastCatPost->rating }}
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					@endforeach
+					</div>
+				</div>
+				</div>
+			</section>
+		@endif
 	<div class="container">
-		@foreach ($posts as $post)
-			<h3><a href="{{ route('post.show', $post->slug) }}">{{ $post->title }}</a></h3>
-			@if (isset($post->category->name))
-				<h4>Категория: <strong><a href="{{ route('category.show', $post->category->slug) }}">{{ $post->category->name }}</a></strong></h4>
-			@endif
-			<div class="tags">
-				@foreach($post->tags as $tag)
-					<a href="{{ route('tag.show', $tag->name) }}" class="label label-success">{{ $tag->name }}</a>
-				@endforeach
+		<div class="row">
+			<div class="col-xl-9">
+				<section class="latest-articles" id="latest-articles">
+					<h2 class="title-section"><span class="heading-line">Последние статьи</span></h2>
+					<div class="row">
+						@foreach ($posts as $post)
+							<div class="col-md-4 col-sm-6 post-container">
+								<div class="post-item">
+									<div class="post-img" style="background-image: url({{ asset('uploads/800/' . $post->img) }});">
+										@if (isset($post->category->name))
+											<a class="card-category" href="{{ route('category.show', $post->category->slug) }}" style="background-color: {{ $post->category->color }}">
+												{{ $post->category->name }}
+											</a>
+										@else
+											<a class="card-category" href="{{ route('category.show', 'others') }}">
+												others
+											</a>
+										@endif
+									</div>
+									<div class="post-content">
+										<h4 class="post-title">
+											<a href="{{ route('post.show', $post->slug) }}">{{ $post->title }}</a>
+										</h4>
+										<ul class="post-info">
+											<li>
+												<i class="fa fa-clock-o"></i>
+												{{ date('d M Y', $post->created_at->getTimestamp()) }}
+											</li>
+											<li>
+												<a href="{{ route('post.show', $post->slug) }}#comments">
+													<i class="fa fa-comments-o"></i>
+													<span>{{ $post->comments->count() }}</span>
+												</a>
+											</li>
+											<li>
+												<i class="fa fa-bar-chart"></i>
+												{{ $post->rating }}
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						@endforeach
+						<div class="col-xs-12">
+							<div class="text-xs-center">
+								{{ (isset($path)) ? $posts->setPath($path)->fragment('latest-articles')->links() : $posts->links() }}
+							</div>
+						</div>
+					</div>
+				</section>
 			</div>
-			<h5>Рейтинг: <span class="label label-warning">{{ $post->rating }}</span></h5>
-			<div class="">
-				<img width="500" src="{{ asset('uploads/800/' . $post->img) }}">
+			<div class="col-xl-3">
+				<h2 class="title-section"><span class="heading-line">Топ в категории</span></h2>
+				@if (isset($lastCatPosts))
+					<section class="top-categories">
+					<div id="owl-demo2" class="owl-carousel owl-theme">
+						@foreach ($lastCatPosts as $lastCatPost)
+							<div class="item latest">
+								<div class="post-block" style="background-image: url({{ asset('uploads/800/' . $lastCatPost->img) }});">
+									<div class="post-caption">
+										@if (isset($lastCatPost->category->name))
+											<a class="card-category" href="{{ route('category.show', $lastCatPost->category->slug) }}" style="background-color: {{ $lastCatPost->category->color }}">
+												{{ $lastCatPost->category->name }}
+											</a>
+										@else
+											<a class="card-category" href="{{ route('category.show', 'others') }}">
+												others
+											</a>
+										@endif
+										<h4 class="post-title">
+											<a href="{{ route('post.show', $lastCatPost->slug) }}">{{ $lastCatPost->title }}</a>
+										</h4>
+										<ul class="post-info">
+											<li>
+												<i class="fa fa-clock-o"></i>
+												{{ date('d M Y', $lastCatPost->created_at->getTimestamp()) }}
+											</li>
+											<li>
+												<a href="{{ route('post.show', $lastCatPost->slug) }}#comments">
+													<i class="fa fa-comments-o"></i>
+													<span>{{ $lastCatPost->comments->count() }}</span>
+												</a>
+											</li>
+											<li>
+												<i class="fa fa-bar-chart"></i>
+												{{ $lastCatPost->rating }}
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+						@endforeach
+					</div>
+					</section>
+				@endif
 			</div>
-			<p>{{ $post->short }}</p>
-			<em>{{ $post->created_at }}</em>
-			<p>Комментариев: <span class="label label-default">{{ $post->comments->count() }}</span></p>
-			<hr>
-		@endforeach
-		<div class="text-center">
-			{{ (isset($path)) ? $posts->setPath($path)->links() : $posts->links() }}
 		</div>
 	</div>
 @endsection

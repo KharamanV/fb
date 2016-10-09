@@ -60,7 +60,7 @@
         </div>
         <div class="row">
             <div class="col-sm-8">
-                <div class="comments">
+                <div class="comments" id="comments">
                     @foreach ($post->comments as $comment)
                         <div class="comment" style="border: 1px solid #000; margin-bottom: 20px">
                             <div class="rating pull-right">

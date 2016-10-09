@@ -26,6 +26,7 @@ var js_concat_files = [
 	'resources/assets/js/collapse.js',
 	'resources/assets/js/modal.js',
 	'resources/assets/js/util.js',
+	'resources/assets/js/dropdown.js',
 	'resources/assets/js/modules/select2.min.js',
 	'resources/assets/js/modules/transliteral.js',
 	'resources/assets/js/modules/uploadPreview.min.js',

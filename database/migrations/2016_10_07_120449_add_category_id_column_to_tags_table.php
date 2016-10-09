@@ -14,7 +14,7 @@ class AddCategoryIdColumnToTagsTable extends Migration
     public function up()
     {
         Schema::table('tags', function (Blueprint $table) {
-            $table->string('slug')->unique();
+            $table->string('slug')->unique()->nullable();
 
             $table->integer('category_id')->unsigned()->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('set null');

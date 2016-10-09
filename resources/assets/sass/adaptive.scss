@@ -1,0 +1,62 @@
+
+@media (min-width: 1200px) {
+    .top-categories {
+        .post-block {
+            height: $post-img-height-xl;
+        }
+    }
+    .searches {
+        .post-container {
+            &:nth-of-type(4n + 1) {
+                clear: left;
+            }
+        }
+    }
+}
+
+/**
+*   lg and md screens
+*/
+@media (min-width: 768px) {
+    .post-container {
+        &:nth-of-type(3n + 1) {
+            clear: left;
+        }
+    }
+}
+
+
+/**
+*   lg screens
+*/
+@media (max-width: 1199px) and (min-width: 992px) {
+    .post-img {
+        height: $post-img-height-lg;
+    }
+}
+
+/**
+*   md screens
+*/
+@media (max-width: 991px) and (min-width: 768px) {
+    .post-img {
+        height: $post-img-height-md;
+    }
+}
+
+/**
+*   xl screens
+*/
+@media (max-width: 543px) {
+    .post-img {
+        height: $post-img-height-xs;
+    }
+}
+
+@media (max-width: 767px) and (min-width: 544px) {
+    .post-container {
+        &:nth-of-type(2n + 1) {
+            clear: left;
+        }
+    }
+}

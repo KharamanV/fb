@@ -8,9 +8,13 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Laravel</title>
-    <link href="https://fonts.googleapis.com/css?family=Lato:700" rel="stylesheet">
+    <title>Frontend & Backend</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500&subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Lato:400i,400,700" rel="stylesheet">
     <!-- Styles -->
+    <link rel="stylesheet" href="/css/owl.carousel.css">
+    <link rel="stylesheet" href="/css/owl.theme.css">
+    <link rel="stylesheet" href="/css/owl.carousel.css">
     <link href="/css/app.css" rel="stylesheet">
     
     <!-- Scripts -->
@@ -21,7 +25,7 @@
     </script>
 </head>
 <body>
-    <nav class="navbar{{--  navbar-fixed-top --}} bg-faded" role="navigation">
+    <nav class="navbar navbar-fixed-top bg-faded" role="navigation">
         <div class="container">
             <button class="pull-xs-right navbar-toggler hidden-md-up" type="button" data-toggle="collapse" data-target="#nav-collapse" aria-controls="nav-collapse" aria-expanded="false" aria-label="Toggle navigation">
                 &#9776;
@@ -29,7 +33,7 @@
 
             <!-- Branding Image -->
             <a class="navbar-brand" href="{{ route('post.index') }}">
-                Home
+                <img src="/img/logo.png" alt="Frontend & Backend" class="logo">
             </a>
             {{-- <a class="navbar-brand" href="{{ route('post.subscribes') }}">
                 По подписке
@@ -38,18 +42,40 @@
 
             <div class="collapse navbar-toggleable-sm" id="nav-collapse">
                 <ul class="nav navbar-nav pull-xs-right">
-                    {{-- <form action="{{ route('post.index') }}" class="form-inline pull-xs-right">
-                        <input type="search" name="search" placeholder="Search" value="{{ old('search') }}" class="form-control">
-                        <button type="submit" class="btn btn-outline-success">Search</button>
-                    </form> --}}
-                    <li class="nav-item nav-category"><a href="#" class="nav-link">html & css</a></li>
-                    <li class="nav-item nav-category"><a href="#" class="nav-link">javasript</a></li>
-                    <li class="nav-item nav-category"><a href="#" class="nav-link">php</a></li>
-                    <li class="nav-item nav-category"><a href="#" class="nav-link">database</a></li>
-                    <li class="nav-item nav-category"><a href="#" class="nav-link">design & ux</a></li>
-                    <li class="nav-item nav-category"><a href="#" class="nav-link">tools</a></li>
-                    <li class="nav-item nav-category"><a href="#" class="nav-link">vcs</a></li>
-                    <li class="nav-item nav-category"><a href="#" class="nav-link">others</a></li>
+                    <li class="nav-item nav-category"><a href="{{ route('category.show', 'html-css') }}" class="nav-link html-css">html & css</a></li>
+                    <li class="nav-item nav-category"><a href="{{ route('category.show', 'javascript') }}" class="nav-link js">javasript</a></li>
+                    <li class="nav-item nav-category"><a href="{{ route('category.show', 'php') }}" class="nav-link php">php</a></li>
+                    <li class="nav-item nav-category"><a href="{{ route('category.show', 'database') }}" class="nav-link db">database</a></li>
+                    <li class="nav-item nav-category"><a href="{{ route('category.show', 'design-ux') }}" class="nav-link design">design & ux</a></li>
+                    <li class="nav-item nav-category"><a href="{{ route('category.show', 'tools') }}" class="nav-link tools">tools</a></li>
+                    <li class="nav-item nav-category"><a href="{{ route('category.show', 'vcs') }}" class="nav-link vcs">vcs</a></li>
+                    <li class="nav-item nav-category"><a href="{{ route('category.show', 'others') }}" class="nav-link other">others</a></li>
+                    <li class="nav-item nav-category dropdown">
+                        <a href="#" class="nav-link dropdown-toggle additional" data-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true">
+                        @if (Auth::guest())
+                               Sign in/up <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <a href="{{ url('/login') }}" class="dropdown-item">Войти</a>
+                                <a href="{{ url('/register') }}" class="dropdown-item">Регистрация</a>
+                            </div>
+                        @else
+                                {{ Auth::user()->name }} <span class="caret"></span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" role="menu">
+                                <a href="{{ route('cabinet.index') }}" class="dropdown-item">Личный кабинет</a>
+                                <div class="dropdown-divider"></div>
+                                <a href="{{ url('/logout') }}" class="dropdown-item"
+                                    onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                    Выйти
+                                </a>
+                                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </div>
+                        @endif
+                    </li>
                 </ul>
             </div>
         </div>
@@ -57,32 +83,6 @@
     <div class="toolbar">
         <div class="container">
             <ul class="toolbar-list">
-                <!-- Authentication Links -->
-                @if (Auth::guest())
-                    <li class="nav-item"><a href="{{ url('/login') }}" class="nav-link">Login</a></li>
-                    <li class="nav-item"><a href="{{ url('/register') }}" class="nav-link">Register</a></li>
-                @else
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                            {{ Auth::user()->name }} <span class="caret"></span>
-                        </a>
-                        <ul class="dropdown-menu" role="menu">
-                            <li>
-                                <a href="{{ url('/logout') }}"
-                                    onclick="event.preventDefault();
-                                             document.getElementById('logout-form').submit();">
-                                    Logout
-                                </a>
-                                <form id="logout-form" action="{{ url('/logout') }}" method="POST" style="display: none;">
-                                    {{ csrf_field() }}
-                                </form>
-                            </li>
-                            <li>
-                                <a href="{{ route('cabinet.index') }}">Личный кабинет</a>
-                            </li>
-                        </ul>
-                    </li>
-                @endif
             </ul>
         </div>
     </div>
@@ -91,6 +91,7 @@
 
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="/js/owl.carousel.min.js"></script>
     <script src="/js/app.js"></script>
 </body>
 </html>

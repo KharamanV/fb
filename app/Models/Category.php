@@ -23,5 +23,4 @@ class Category extends Model
     	return $query->where('slug', $category);
     }
 
-
 }

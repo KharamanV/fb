@@ -39,3 +39,23 @@ $("#image-upload").change(function(){
 
 //Tags selectbox
 $(".js-example-basic-multiple").select2();
+
+$("#owl-demo").owlCarousel({
+    items: 4,
+    itemsDesktop: [1199, 3],
+    itemsTablet: [767, 2],
+    itemsTabletSmall: [543, 1],
+    autoPlay: 3000,
+    navigation: true,
+    pagination: false,
+    navigationText: false
+});
+
+$("#owl-demo2").owlCarousel({
+    items: 1,
+    itemsDesktop: [1199, 3],
+    itemsTablet: [767, 2],
+    itemsTabletSmall: [543, 1],
+    autoPlay: 5000,
+    navigationText: false
+});

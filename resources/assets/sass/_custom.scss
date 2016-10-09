@@ -3,10 +3,68 @@
 // Copy variables from `_variables.scss` to this file to override default values
 // without modifying source files.
 
+// Body
+//
+// Settings for the `<body>` element.
+
+$body-bg:    #fafafa;
+
 //Colors
+
+$primary-color: #f44336;
 
 $gray-darker: #333;
 $white: #fff;
 
+$html-css-color: rgb(244, 67, 54);
+$js-color:       #f6b33c;
+$php-color:      #669;
+$db-color:       rgb(76, 96, 246);
+$design-color:   rgb(170, 53, 214);
+$tools-color:    rgb(50, 180, 123);
+$vcs-color:      rgb(51, 163, 241);
+$other-color:    #2c5773;
+
+$navbar-border-color: #f0f0f0;
+
+$post-info-color:      #999;
+$post-date-icon-color: #ccc;
+
+$title-section-color:        #222;
+$title-section-border-color: #e1e1e1;
+
+// Typography
+//
+// Font, line-height, and color for body text, headings, and more.
+
+//$font-family-sans-serif: Roboto, "Helvetica Neue", Arial, sans-serif !default;
+
+
+//Sizes
+$category-font-size: .6875rem;
+$category-padding: .25rem .625rem;
+
+$post-img-height-xl:    194px;
+$post-img-height-lg:    217px;
+$post-img-height-md:    163px;
+$post-img-height-xs:    251px;
+$post-title-font-size: .8125rem;
+$post-info-font-size:  .75rem;
+
+
 //Navbar
 $navbar-padding-y: 0;
+
+//Pagination
+$pagination-padding-x-sm:  .6875rem;
+$pagination-padding-y-sm:  .375rem;
+
+$pagination-color:         $gray-darker;
+$pagination-border-color:  $navbar-border-color;
+
+$pagination-hover-color:   $white;
+$pagination-hover-bg:      $primary-color;
+$pagination-hover-border:  $primary-color;
+
+$pagination-active-bg:     $primary-color;
+$pagination-active-border: $primary-color;
