@@ -15,7 +15,6 @@ class CheckRole
      */
     public function handle($request, Closure $next)
     {
-        dd($ro);
         if ($request->user() === null) {
             return redirect()->route('login');
         }

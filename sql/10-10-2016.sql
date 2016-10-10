@@ -10,7 +10,14 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
+-- Дамп структуры базы данных fb
+DROP DATABASE IF EXISTS `fb`;
+CREATE DATABASE IF NOT EXISTS `fb` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `fb`;
+
+
 -- Дамп структуры для таблица fb.bans
+DROP TABLE IF EXISTS `bans`;
 CREATE TABLE IF NOT EXISTS `bans` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
@@ -24,11 +31,13 @@ CREATE TABLE IF NOT EXISTS `bans` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.bans: ~0 rows (приблизительно)
+DELETE FROM `bans`;
 /*!40000 ALTER TABLE `bans` DISABLE KEYS */;
 /*!40000 ALTER TABLE `bans` ENABLE KEYS */;
 
 
 -- Дамп структуры для таблица fb.categories
+DROP TABLE IF EXISTS `categories`;
 CREATE TABLE IF NOT EXISTS `categories` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -41,6 +50,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.categories: ~7 rows (приблизительно)
+DELETE FROM `categories`;
 /*!40000 ALTER TABLE `categories` DISABLE KEYS */;
 INSERT INTO `categories` (`id`, `name`, `description`, `created_at`, `updated_at`, `slug`, `color`) VALUES
 	(3, 'html & css', 'html & css', '2016-10-08 19:05:07', '2016-10-08 19:05:07', 'html-css', 'rgb(244, 67, 54)'),
@@ -54,6 +64,7 @@ INSERT INTO `categories` (`id`, `name`, `description`, `created_at`, `updated_at
 
 
 -- Дамп структуры для таблица fb.comments
+DROP TABLE IF EXISTS `comments`;
 CREATE TABLE IF NOT EXISTS `comments` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
@@ -70,6 +81,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.comments: ~1 rows (приблизительно)
+DELETE FROM `comments`;
 /*!40000 ALTER TABLE `comments` DISABLE KEYS */;
 INSERT INTO `comments` (`id`, `user_id`, `post_id`, `text`, `created_at`, `updated_at`, `rating`) VALUES
 	(1, 2, 28, 'KLASS!', '2016-10-01 11:25:00', '2016-10-03 18:53:32', 1);
@@ -77,6 +89,7 @@ INSERT INTO `comments` (`id`, `user_id`, `post_id`, `text`, `created_at`, `updat
 
 
 -- Дамп структуры для таблица fb.comments_rates
+DROP TABLE IF EXISTS `comments_rates`;
 CREATE TABLE IF NOT EXISTS `comments_rates` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `comment_id` int(10) unsigned NOT NULL,
@@ -92,6 +105,7 @@ CREATE TABLE IF NOT EXISTS `comments_rates` (
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.comments_rates: ~1 rows (приблизительно)
+DELETE FROM `comments_rates`;
 /*!40000 ALTER TABLE `comments_rates` DISABLE KEYS */;
 INSERT INTO `comments_rates` (`id`, `comment_id`, `user_id`, `value`, `created_at`, `updated_at`) VALUES
 	(1, 1, 5, 1, '2016-10-03 18:53:32', '2016-10-03 18:53:32');
@@ -99,6 +113,7 @@ INSERT INTO `comments_rates` (`id`, `comment_id`, `user_id`, `value`, `created_a
 
 
 -- Дамп структуры для таблица fb.email_resets
+DROP TABLE IF EXISTS `email_resets`;
 CREATE TABLE IF NOT EXISTS `email_resets` (
   `user_id` int(10) unsigned NOT NULL,
   `new_email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -110,17 +125,20 @@ CREATE TABLE IF NOT EXISTS `email_resets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.email_resets: ~0 rows (приблизительно)
+DELETE FROM `email_resets`;
 /*!40000 ALTER TABLE `email_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `email_resets` ENABLE KEYS */;
 
 
 -- Дамп структуры для таблица fb.migrations
+DROP TABLE IF EXISTS `migrations`;
 CREATE TABLE IF NOT EXISTS `migrations` (
   `migration` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.migrations: ~31 rows (приблизительно)
+DELETE FROM `migrations`;
 /*!40000 ALTER TABLE `migrations` DISABLE KEYS */;
 INSERT INTO `migrations` (`migration`, `batch`) VALUES
 	('2014_10_12_000000_create_users_table', 1),
@@ -158,6 +176,7 @@ INSERT INTO `migrations` (`migration`, `batch`) VALUES
 
 
 -- Дамп структуры для таблица fb.password_resets
+DROP TABLE IF EXISTS `password_resets`;
 CREATE TABLE IF NOT EXISTS `password_resets` (
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `token` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -167,11 +186,13 @@ CREATE TABLE IF NOT EXISTS `password_resets` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.password_resets: ~0 rows (приблизительно)
+DELETE FROM `password_resets`;
 /*!40000 ALTER TABLE `password_resets` DISABLE KEYS */;
 /*!40000 ALTER TABLE `password_resets` ENABLE KEYS */;
 
 
 -- Дамп структуры для таблица fb.posts
+DROP TABLE IF EXISTS `posts`;
 CREATE TABLE IF NOT EXISTS `posts` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -190,6 +211,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.posts: ~21 rows (приблизительно)
+DELETE FROM `posts`;
 /*!40000 ALTER TABLE `posts` DISABLE KEYS */;
 INSERT INTO `posts` (`id`, `title`, `short`, `img`, `slug`, `text`, `created_at`, `updated_at`, `category_id`, `rating`) VALUES
 	(1, 'Voluptatem velit et est.', 'Qui et sit fugiat quas perspiciatis quasi. Sunt iusto sint ut eaque. Voluptatum nobis sint reiciendis. Voluptatibus dolorem sint voluptatem aspernatur.', NULL, 'velit-deserunt-magni-quasi-minus', 'Recusandae in laudantium veniam. Reiciendis id eius est tempora reiciendis ea. Incidunt pariatur non voluptates modi ea sunt fugit.', '2016-09-01 19:00:47', '2016-09-01 19:00:47', NULL, 0),
@@ -217,6 +239,7 @@ INSERT INTO `posts` (`id`, `title`, `short`, `img`, `slug`, `text`, `created_at`
 
 
 -- Дамп структуры для таблица fb.posts_rates
+DROP TABLE IF EXISTS `posts_rates`;
 CREATE TABLE IF NOT EXISTS `posts_rates` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `post_id` int(10) unsigned NOT NULL,
@@ -232,6 +255,7 @@ CREATE TABLE IF NOT EXISTS `posts_rates` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.posts_rates: ~3 rows (приблизительно)
+DELETE FROM `posts_rates`;
 /*!40000 ALTER TABLE `posts_rates` DISABLE KEYS */;
 INSERT INTO `posts_rates` (`id`, `post_id`, `user_id`, `value`, `created_at`, `updated_at`) VALUES
 	(1, 28, 2, 1, '2016-10-01 11:24:52', '2016-10-01 11:24:52'),
@@ -241,6 +265,7 @@ INSERT INTO `posts_rates` (`id`, `post_id`, `user_id`, `value`, `created_at`, `u
 
 
 -- Дамп структуры для таблица fb.post_tag
+DROP TABLE IF EXISTS `post_tag`;
 CREATE TABLE IF NOT EXISTS `post_tag` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `post_id` int(10) unsigned NOT NULL,
@@ -253,6 +278,7 @@ CREATE TABLE IF NOT EXISTS `post_tag` (
 ) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.post_tag: ~6 rows (приблизительно)
+DELETE FROM `post_tag`;
 /*!40000 ALTER TABLE `post_tag` DISABLE KEYS */;
 INSERT INTO `post_tag` (`id`, `post_id`, `tag_id`) VALUES
 	(1, 28, 1),
@@ -265,6 +291,7 @@ INSERT INTO `post_tag` (`id`, `post_id`, `tag_id`) VALUES
 
 
 -- Дамп структуры для таблица fb.roles
+DROP TABLE IF EXISTS `roles`;
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -274,6 +301,7 @@ CREATE TABLE IF NOT EXISTS `roles` (
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.roles: ~3 rows (приблизительно)
+DELETE FROM `roles`;
 /*!40000 ALTER TABLE `roles` DISABLE KEYS */;
 INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
 	(1, 'admin', NULL, NULL),
@@ -283,6 +311,7 @@ INSERT INTO `roles` (`id`, `name`, `created_at`, `updated_at`) VALUES
 
 
 -- Дамп структуры для таблица fb.tags
+DROP TABLE IF EXISTS `tags`;
 CREATE TABLE IF NOT EXISTS `tags` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -298,6 +327,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.tags: ~5 rows (приблизительно)
+DELETE FROM `tags`;
 /*!40000 ALTER TABLE `tags` DISABLE KEYS */;
 INSERT INTO `tags` (`id`, `name`, `description`, `created_at`, `updated_at`, `slug`, `category_id`) VALUES
 	(1, 'php', 'PHP posts', NULL, NULL, NULL, NULL),
@@ -309,6 +339,7 @@ INSERT INTO `tags` (`id`, `name`, `description`, `created_at`, `updated_at`, `sl
 
 
 -- Дамп структуры для таблица fb.tag_user
+DROP TABLE IF EXISTS `tag_user`;
 CREATE TABLE IF NOT EXISTS `tag_user` (
   `user_id` int(10) unsigned NOT NULL,
   `tag_id` int(10) unsigned NOT NULL,
@@ -319,6 +350,7 @@ CREATE TABLE IF NOT EXISTS `tag_user` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.tag_user: ~2 rows (приблизительно)
+DELETE FROM `tag_user`;
 /*!40000 ALTER TABLE `tag_user` DISABLE KEYS */;
 INSERT INTO `tag_user` (`user_id`, `tag_id`) VALUES
 	(2, 3),
@@ -327,6 +359,7 @@ INSERT INTO `tag_user` (`user_id`, `tag_id`) VALUES
 
 
 -- Дамп структуры для таблица fb.users
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `login` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -352,6 +385,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 ) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.users: ~4 rows (приблизительно)
+DELETE FROM `users`;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
 INSERT INTO `users` (`id`, `login`, `name`, `last_name`, `email`, `password`, `remember_token`, `created_at`, `updated_at`, `role_id`, `is_active`, `age`, `city`, `avatar`, `ban_counter`, `ban_id`) VALUES
 	(2, 'admin', 'Admin', 'Admin', 'admin@mail.ro', '$2y$10$jVx9buRn2e2vCo0lwgtIDuxzJhW2eMZLbMbD81THsEYmX4E17sGwG', 'CoxwsMR3HAiglbPJR9dkPpeL4ydS7Zxp87Ia3TgOp8jV8xoEgMrWsdx4VV3e', NULL, '2016-10-09 21:04:10', 1, 1, 21, 'фыв', NULL, 0, NULL),
@@ -362,6 +396,7 @@ INSERT INTO `users` (`id`, `login`, `name`, `last_name`, `email`, `password`, `r
 
 
 -- Дамп структуры для таблица fb.user_activations
+DROP TABLE IF EXISTS `user_activations`;
 CREATE TABLE IF NOT EXISTS `user_activations` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `user_id` int(10) unsigned NOT NULL,
@@ -372,6 +407,7 @@ CREATE TABLE IF NOT EXISTS `user_activations` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Дамп данных таблицы fb.user_activations: ~0 rows (приблизительно)
+DELETE FROM `user_activations`;
 /*!40000 ALTER TABLE `user_activations` DISABLE KEYS */;
 /*!40000 ALTER TABLE `user_activations` ENABLE KEYS */;
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
