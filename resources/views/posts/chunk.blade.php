@@ -3,7 +3,13 @@
 @section('content')
     <div class="container">
         <section class="searches">
-            <h2 class="title-section"><span class="heading-line">Результаты</span></h2>
+            <h2 class="title-section">
+                <span class="heading-line">Результаты</span>
+                <form action="{{ route('post.search') }}" class="search-form pull-xs-right" role="search">
+                    <input type="search" class="search-input" id="search" name="search" placeholder="SEARCH HERE" value="{{ old('search') }}">
+                    <button type="submit" class="search-btn" id="search-submit"><i class="fa fa-search"></i></button>
+                </form>
+            </h2>
             <div class="row">
                 @foreach ($posts as $post)
                     <div class="col-xl-3 col-md-4 col-sm-6 post-container">

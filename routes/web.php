@@ -13,6 +13,7 @@
 Auth::routes();
 
 Route::group(['middleware' => 'notBanned'], function() {
+
     Route::resource('post', 'PostController', ['only' => ['show']]);
     Route::get('/', ['uses' => 'PostController@index', 'as' => 'post.index']);
     Route::get('posts', ['uses' => 'PostController@search', 'as' => 'post.search']);

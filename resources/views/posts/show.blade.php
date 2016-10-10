@@ -2,40 +2,55 @@
 
 @section('content')
     <div class="container">
-        <div class="row">
-            <div class="col-sm-8">
-                <h1>{{ $post->title }}</h1>
-                @if (isset($post->category->name))
-                    <h4>Категория: <strong><a href="{{ route('category.show', $post->category->slug) }}">{{ $post->category->name }}</a></strong></h4>
-                @endif
-                <div class="rating pull-right">
-                    <strong style="font-size: 20px;">{{ $post->rating }}</strong>
-                    @if (Auth::check() && !$post->isRated())
-                        <form action="{{ route('post.rateup', $post->id) }}" method="post">
-                            {{ csrf_field() }}
-                            <button type="submit" class="btn btn-success">+</button>
-                        </form>
-                        <form action="{{ route('post.ratedown', $post->id) }}" method="post">
-                            {{ csrf_field() }}
-                            <button type="submit" class="btn btn-danger">-</button>
-                        </form>
+                <article class="single-article">
+                    @if (isset($post->category->name))
+                        <a class="card-category" href="{{ route('category.show', $post->category->slug) }}" style="background-color: {{ $post->category->color }}">{{ $post->category->name }}</a>
+                    @else
+                        <a class="card-category" href="{{ route('category.show', 'others') }}">
+                            others
+                        </a>
                     @endif
-                </div>
-                <div class="tags">
-                    @foreach($post->tags as $tag)
-                        <a href="{{ route('tag.show', $tag->name) }}" class="label label-success">{{ $tag->name }}</a>
-                    @endforeach
-                </div>
-                <div class="">
-                    <img src="{{ asset('uploads/original/' . $post->img) }}" width="500">
-                </div>
-                <div>{!! $post->text !!}</div>
-                <em>{{ $post->created_at }}</em>
-                <hr>
-                <a href="{{ route('post.index') }}">Posts</a>
-                <hr><br>
-            </div>
-        </div>
+                    <h1 class="s-article-title">{{ $post->title }}</h1>
+                    <ul class="post-info">
+                        <li>
+                            <i class="fa fa-clock-o"></i>
+                            {{ date('d M Y', $post->created_at->getTimestamp()) }}
+                        </li>
+                        <li>
+                            <a href="{{ route('post.show', $post->slug) }}#comments">
+                                <i class="fa fa-comments-o"></i>
+                                <span>{{ $post->comments->count() }}</span>
+                            </a>
+                        </li>
+                        <li>
+                            <i class="fa fa-bar-chart"></i>
+                            {{ $post->rating }}
+                        </li>
+                    </ul>
+                    <div class="rating pull-right">
+                        <strong style="font-size: 20px;">{{ $post->rating }}</strong>
+                        @if (Auth::check() && !$post->isRated())
+                            <form action="{{ route('post.rateup', $post->id) }}" method="post">
+                                {{ csrf_field() }}
+                                <button type="submit" class="btn btn-success">+</button>
+                            </form>
+                            <form action="{{ route('post.ratedown', $post->id) }}" method="post">
+                                {{ csrf_field() }}
+                                <button type="submit" class="btn btn-danger">-</button>
+                            </form>
+                        @endif
+                    </div>
+                    <div class="">
+                        <img src="{{ asset('uploads/original/' . $post->img) }}" width="500">
+                    </div>
+                    <div>{!! $post->text !!}</div>
+                    <div class="tags">
+                        @foreach($post->tags as $tag)
+                            <a href="{{ route('tag.show', $tag->name) }}" class="label label-success">{{ $tag->name }}</a>
+                        @endforeach
+                    </div>
+                    <hr>
+                </article>
         <div class="row">
             <div class="col-sm-6">
                 @if (session('success'))

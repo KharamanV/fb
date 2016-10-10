@@ -1,18 +1,4 @@
 
-@media (min-width: 1200px) {
-    .top-categories {
-        .post-block {
-            height: $post-img-height-xl;
-        }
-    }
-    .searches {
-        .post-container {
-            &:nth-of-type(4n + 1) {
-                clear: left;
-            }
-        }
-    }
-}
 
 /**
 *   lg and md screens
@@ -26,12 +12,36 @@
 }
 
 
+@media (min-width: 1200px) {
+    .top-categories {
+        .post-block {
+            height: $post-img-height-xl;
+        }
+    }
+    .searches {
+        .post-container {
+            &:nth-of-type(3n + 1) {
+                clear: none;
+            }
+            &:nth-of-type(4n + 1) {
+                clear: left;
+            }
+        }
+    }
+}
+
+
 /**
 *   lg screens
 */
 @media (max-width: 1199px) and (min-width: 992px) {
     .post-img {
         height: $post-img-height-lg;
+    }
+    .nav-category {
+       .nav-link {
+            padding: .9375rem .4rem;
+       } 
     }
 }
 
@@ -41,6 +51,14 @@
 @media (max-width: 991px) and (min-width: 768px) {
     .post-img {
         height: $post-img-height-md;
+    }
+}
+
+@media (max-width: 991px) {
+    .nav-category {
+        .nav-link {
+            padding: .9375rem .37rem;
+        }
     }
 }
 

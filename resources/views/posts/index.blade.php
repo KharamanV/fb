@@ -6,13 +6,10 @@
 				<div class="container">
 					<h2 class="title-section">
 						<span class="heading-line">Последние в категории</span>
-						<form action="{{ route('post.search') }}" class="navbar-form navbar-right pull-xs-right" role="search">
-							<input type="search" id="search" name="search" placeholder="Search here" value="{{ old('search') }}">
-							<button type="submit" id="search-submit"><i class="fa fa-search"></i></button>
+						<form action="{{ route('post.search') }}" class="search-form pull-xs-right" role="search">
+							<input type="search" class="search-input" id="search" name="search" placeholder="SEARCH HERE" value="{{ old('search') }}">
+							<button type="submit" class="search-btn" id="search-submit"><i class="fa fa-search"></i></button>
 						</form>
-						<form  class="form-inline ">
-	                        <input type="search" name="search" placeholder="Search" value="{{ old('search') }}" class="form-control">
-	                    </form>
 					</h2>
 					<div id="owl-demo" class="owl-carousel owl-theme">
 					@foreach ($lastCatPosts as $lastCatPost)

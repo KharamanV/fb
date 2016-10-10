@@ -28,6 +28,8 @@ class PostController extends Controller
      */
     public function index(Request $request)
     {
+
+
         $posts = Post::orderById()->get();
         $lastCategoryArticles = [];
         $topCategoryArticles = [];
