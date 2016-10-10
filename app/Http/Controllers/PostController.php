@@ -30,22 +30,32 @@ class PostController extends Controller
     {
         $posts = Post::orderById()->get();
         $lastCategoryArticles = [];
+        $topCategoryArticles = [];
         $categories = [];
 
         foreach ($posts as $post) {
             if (isset($post->category_id)) {
                 if (array_search($post->category_id, $categories) === false) {
-                    $categories[] = $post->category->id;
+                    $categories[] = $post->category_id;
                     $lastCategoryArticles[] = $post;
-                    
-                    
+
+                    $topCategoryArticles[$post->category_id] = $post;
+                } else {
+                    if ($post->rating > $topCategoryArticles[$post->category_id]->rating) {
+                        $topCategoryArticles[$post->category_id] = $post;
+                    }
                 }
             }
         }
 
         $posts = PaginateHelper::paginate($posts, $this->perPage);
 
-        return view('posts.index', ['posts' => $posts, 'lastCatPosts' => $lastCategoryArticles, 'path' => $this->path]);
+        return view('posts.index', [
+            'posts' => $posts, 
+            'lastCatPosts' => $lastCategoryArticles, 
+            'topCatPosts' => $topCategoryArticles, 
+            'path' => $this->path
+        ]);
     }
 
     public function search(Request $request)

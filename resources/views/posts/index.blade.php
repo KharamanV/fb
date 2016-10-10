@@ -110,16 +110,16 @@
 			</div>
 			<div class="col-xl-3">
 				<h2 class="title-section"><span class="heading-line">Топ в категории</span></h2>
-				@if (isset($lastCatPosts))
+				@if (isset($topCatPosts))
 					<section class="top-categories">
 					<div id="owl-demo2" class="owl-carousel owl-theme">
-						@foreach ($lastCatPosts as $lastCatPost)
+						@foreach ($topCatPosts as $topCatPost)
 							<div class="item latest">
-								<div class="post-block" style="background-image: url({{ asset('uploads/800/' . $lastCatPost->img) }});">
+								<div class="post-block" style="background-image: url({{ asset('uploads/800/' . $topCatPost->img) }});">
 									<div class="post-caption">
-										@if (isset($lastCatPost->category->name))
-											<a class="card-category" href="{{ route('category.show', $lastCatPost->category->slug) }}" style="background-color: {{ $lastCatPost->category->color }}">
-												{{ $lastCatPost->category->name }}
+										@if (isset($topCatPost->category->name))
+											<a class="card-category" href="{{ route('category.show', $topCatPost->category->slug) }}" style="background-color: {{ $topCatPost->category->color }}">
+												{{ $topCatPost->category->name }}
 											</a>
 										@else
 											<a class="card-category" href="{{ route('category.show', 'others') }}">
@@ -127,22 +127,22 @@
 											</a>
 										@endif
 										<h4 class="post-title">
-											<a href="{{ route('post.show', $lastCatPost->slug) }}">{{ $lastCatPost->title }}</a>
+											<a href="{{ route('post.show', $topCatPost->slug) }}">{{ $topCatPost->title }}</a>
 										</h4>
 										<ul class="post-info">
 											<li>
 												<i class="fa fa-clock-o"></i>
-												{{ date('d M Y', $lastCatPost->created_at->getTimestamp()) }}
+												{{ date('d M Y', $topCatPost->created_at->getTimestamp()) }}
 											</li>
 											<li>
-												<a href="{{ route('post.show', $lastCatPost->slug) }}#comments">
+												<a href="{{ route('post.show', $topCatPost->slug) }}#comments">
 													<i class="fa fa-comments-o"></i>
-													<span>{{ $lastCatPost->comments->count() }}</span>
+													<span>{{ $topCatPost->comments->count() }}</span>
 												</a>
 											</li>
 											<li>
 												<i class="fa fa-bar-chart"></i>
-												{{ $lastCatPost->rating }}
+												{{ $topCatPost->rating }}
 											</li>
 										</ul>
 									</div>
