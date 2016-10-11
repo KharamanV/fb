@@ -16,7 +16,8 @@
                         @endif
                         @if (session('warning'))
                             <div class="alert alert-warning">
-                                {{ session('warning') }}
+                                {{ session('warning') . '.' }}
+                                <a href="">Отправить еще раз</a>
                             </div>
                         @endif
 

@@ -120,6 +120,14 @@ class RegisterController extends Controller
         Mail::to($user)->send(new ConfirmRegistration($link));        
     }
 
+    public function resendActivationEmail(Request $request)
+    {
+        $user = $request->user();
+        if (!$user) {
+            
+        }
+    }
+
     /**
      * Checking the token match and
      * activates the user and signing in him into site
