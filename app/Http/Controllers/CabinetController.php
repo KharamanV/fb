@@ -104,7 +104,7 @@ class CabinetController extends Controller
         $reset = new EmailReset;
         $activation = $reset->getActivationByToken($token);
         if (!$activation || !$reset->isActive($activation)) {
-            return response('Страница не найдена', 404);
+            abort(404);
         }
         session(['user_id' => $activation->user_id, 'new_email' => $activation->new_email]);
 
@@ -114,7 +114,7 @@ class CabinetController extends Controller
     public function changeEmail(Request $request)
     { 
         if (!session('user_id') || !session('new_email')) {
-            return response('Время сессии истекло', 404);
+            abort(403, 'Время сессии истекло или вам запрещено это действие');
         }
 
         $this->validate($request, ['password' => 'required|max:255|min:6|confirmed']);

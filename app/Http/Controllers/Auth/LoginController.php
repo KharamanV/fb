@@ -98,10 +98,12 @@ class LoginController extends Controller
         $credentials = $this->credentials($request);
 
         if ($this->guard()->attempt($credentials, $request->has('remember'))) {
-            if (!$request->user()->is_active) {
+            $user = $request->user();
+            if (!$user->is_active) {
+
+                session(['user_id' => $user->id, 'should_send' => true]);
                 Auth::logout();
-                return back()->with('warning', 'Ваш аккаунт не подтвержден. На ваш электронный ящик было отправлено письмо для пожтверждения')
-                             ->with('resend', $request->user());
+                return back()->with('warning', 'Ваш аккаунт не подтвержден. На ваш электронный ящик было отправлено письмо для пожтверждения');
             } 
             return $this->sendLoginResponse($request);
         }

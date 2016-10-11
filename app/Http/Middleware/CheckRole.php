@@ -15,18 +15,12 @@ class CheckRole
      */
     public function handle($request, Closure $next)
     {
-        if ($request->user() === null) {
-            return redirect()->route('login');
-        }
-
         $actions = $request->route()->getAction();
         $roles = isset($actions['roles']) ? $actions['roles'] : null;
 
         if ($request->user()->hasAnyRole($roles) || !$roles) {
             return $next($request);
         }
-
-        return response('У вас нет прав для просмотра этой страцниы', 401);
-
+        abort(403, 'У вас нет прав для просмотра этой страцниы');
     }
 }

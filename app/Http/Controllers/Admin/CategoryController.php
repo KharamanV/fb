@@ -12,7 +12,7 @@ class CategoryController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('roles');
+        $this->middleware('hasRoles');
     }
     /**
      * Display a listing of the resource.

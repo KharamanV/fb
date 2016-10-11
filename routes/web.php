@@ -12,6 +12,8 @@
 */
 Auth::routes();
 
+Route::get('email/resendVerification', ['as' => 'resend.emailVerify', 'uses' => 'Auth\RegisterController@resendActivationEmail']);
+
 Route::group(['middleware' => 'notBanned'], function() {
 
     Route::resource('post', 'PostController', ['only' => ['show']]);

@@ -14,7 +14,7 @@ class TagController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('roles');
+        $this->middleware('hasRoles');
     }
 
     /**

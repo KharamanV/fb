@@ -12,12 +12,19 @@
                         @if (session('status'))
                             <div class="alert alert-success">
                                 {{ session('status') }}
+                            </div> 
+                        @endif
+                        @if (session('danger'))
+                            <div class="alert alert-danger">
+                                {{ session('danger') }}
                             </div>
                         @endif
                         @if (session('warning'))
                             <div class="alert alert-warning">
                                 {{ session('warning') . '.' }}
-                                <a href="">Отправить еще раз</a>
+                                @if (session('should_send') && session('user_id'))
+                                    <a class="btn btn-warning" href="{{ route('resend.emailVerify') }}">Отправить еще раз</a>
+                                @endif
                             </div>
                         @endif
 

@@ -14,7 +14,7 @@ class RoleController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('roles');
+        $this->middleware('hasRoles');
     }
 
     public function showAssigningForm($userId)

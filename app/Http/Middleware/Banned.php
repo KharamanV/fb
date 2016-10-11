@@ -16,7 +16,7 @@ class Banned
     public function handle($request, Closure $next)
     {
         if (!$request->user()->isBanned()) {
-            return response('Такой страницы не существует', 404);
+            abort(404);
         }
 
         return $next($request);

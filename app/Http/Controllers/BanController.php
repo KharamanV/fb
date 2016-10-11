@@ -20,7 +20,7 @@ class BanController extends Controller
 
     public function __construct()
     {
-        $this->middleware('roles');
+        $this->middleware('hasRoles');
     }
 
     /**
@@ -43,7 +43,7 @@ class BanController extends Controller
     {
         $user = User::find($userId);
         if (!Auth::user()->hasBanPermissions($user)) {
-           return response('Вы не можете банить этого пользователя'); 
+           abort(403, 'Вы не можете банить этого пользователя'); 
         }
         return view('bans.create', ['user' => $user, 'terms' => $this->terms]);
     }

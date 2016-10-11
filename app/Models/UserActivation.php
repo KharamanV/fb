@@ -22,10 +22,10 @@ class UserActivation extends Model
             return null;
         }
 
-        $user = User::find($activation->user_id);
+        $user = User::findOrFail($activation->user_id);
         $user->is_active = 1;
         $user->save();
-        
+       
         $this->deleteActivation($token);
 
         return $user;

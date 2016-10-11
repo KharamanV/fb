@@ -7,6 +7,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Auth;
 
 use App\Models\Role;
+use App\Models\UserActivation;
 
 class User extends Authenticatable
 {
@@ -108,7 +109,7 @@ class User extends Authenticatable
      */
     public function setIsActiveAttribute($value)
     {
-        if ($this->isAdmin()) {
+        if ($this->isAdmin() || UserActivation::where('user_id', $this->id)) {
             $this->attributes['is_active'] = $value;
         }
     }

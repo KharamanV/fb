@@ -106,7 +106,7 @@ class PostController extends Controller
         $post = Post::find($id);
         $rate = new PostsRate;
         if ($post->isRated()) {
-            return response('Вы уже голосовали за этот пост', 401);
+            abort(403, 'Вы уже голосовали за этот пост');
         }
         $rate->value = 1;
         $rate->user_id = Auth::user()->id;
@@ -124,7 +124,7 @@ class PostController extends Controller
         $post = Post::find($id);
         $rate = new PostsRate;
         if ($post->isRated()) {
-            return response('Вы уже голосовали за этот пост', 401);
+            abort(403, 'Вы уже голосовали за этот пост');
         }
         $rate->value = -1;
         $rate->user_id = Auth::user()->id;

@@ -51,7 +51,7 @@ class CommentController extends Controller
     {
         $comment = Comment::find($id);
         if (!$comment->isEditable($comment->user)) {
-            return response('Вы не можете редактировать этот комментарий', 401);
+            abort(403, 'Вы не можете редактировать этот комментарий');
         }
         return view('comments.edit', ['comment' => $comment]);
     }
@@ -68,7 +68,7 @@ class CommentController extends Controller
 
         $comment = Comment::find($id);
         if (!$comment->isEditable($comment->user)) {
-            return response('Вы не можете редактировать этот комментарий', 401);
+            abort(403, 'Вы не можете редактировать этот комментарий');
         }
         $this->validate($request, [
             'text' => 'required'
@@ -91,7 +91,7 @@ class CommentController extends Controller
         $comment = Comment::find($id);
         
         if (!$comment->isDeletable($comment->user)) {
-            return response('Вы не можете удалить этот комментарий', 401);
+            abort(403, 'Вы не можете удалить этот комментарий');
         }
 
         $comment->delete();
@@ -105,7 +105,7 @@ class CommentController extends Controller
         $comment = Comment::find($id);
         $rate = new CommentsRate;
         if ($comment->isOwn() || $comment->isRated()) {
-            return response('Вы не можете проголосовать за этот комментарий', 401);
+            abort(403, 'Вы не можете проголосовать за этот комментарий');
         }
         $rate->value = 1;
         $rate->user_id = Auth::user()->id;
@@ -123,7 +123,7 @@ class CommentController extends Controller
         $comment = Comment::find($id);
         $rate = new CommentsRate;
         if ($comment->isOwn() || $comment->isRated()) {
-            return response('Вы не можете проголосовать за этот комментарий', 401);
+            abort(403, 'Вы не можете проголосовать за этот комментарий');
         }
         $rate->value = -1;
         $rate->user_id = Auth::user()->id;

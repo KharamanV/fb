@@ -36,7 +36,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/post';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -111,7 +111,7 @@ class RegisterController extends Controller
         $userActivation = new UserActivation();
 
         if ($user->is_active || !$userActivation->shouldSend($user->id)) {
-            return;
+            return back()->with('danger', 'На данный момент эта возможность вам недоступна, попробуйте позже');
         }
 
         $token = $userActivation->createActivation($user->id);
@@ -122,10 +122,13 @@ class RegisterController extends Controller
 
     public function resendActivationEmail(Request $request)
     {
-        $user = $request->user();
-        if (!$user) {
-            
+        if (session('should_send') && session('user_id')) {
+            $user = User::findOrFail(session('user_id'));
+            $request->session()->flush();
+            $this->sendActivationMail($user);
+            return back()->with('status', 'На ваш email адрес было отправлено письмо с ссылкой для подтверждения регистрации');
         }
+        abort(403, 'Время сессии истекло или вы не имеете доступа');
     }
 
     /**
@@ -143,6 +146,6 @@ class RegisterController extends Controller
             Auth::login($user);
             return redirect($this->redirectPath());
         }
-        return response('Страница не найдена', 404);
+        abort(404);
     }
 }
