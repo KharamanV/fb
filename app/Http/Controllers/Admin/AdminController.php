@@ -42,7 +42,21 @@ class AdminController extends Controller
 
     public function clearTrash()
     {
-        
+        Post::onlyTrashed()->forceDelete();
+        return redirect()->route('admin.index')->with('success', 'Корзина успешно отчисчена');
+    }
+
+    public function restore($slug)
+    {
+        $post = Post::onlyTrashed()->slug($slug)->firstOrFail();
+        $post->restore();
+        return redirect()->back()->with('success', 'Статья успешно восстановлена');
+    }
+
+    public function restoreTrash()
+    {
+        Post::onlyTrashed()->restore();
+        return redirect()->route('admin.index')->with('success', 'Статьи успешно восстановлены');
     }
 
     /**
@@ -107,7 +121,7 @@ class AdminController extends Controller
      */
     public function edit($slug)
     {
-        $post = Post::slug($slug)->first();
+        $post = Post::slug($slug)->firstOrFail();
         $categories = Category::all();
         $tags = Tag::all();
         return view('admin.edit', ['post' => $post, 'categories' => $categories, 'tags' => $tags]);
@@ -122,7 +136,7 @@ class AdminController extends Controller
      */
     public function update(Request $request, $slug)
     {
-        $post = Post::slug($slug)->first();
+        $post = Post::slug($slug)->firstOrFail();
 
         $this->validate($request, [
             'title'       => 'required|max:255',
@@ -161,14 +175,17 @@ class AdminController extends Controller
      */
     public function destroy($slug)
     {
-        $post = Post::slug($slug)->first();
-        $post->tags()->detach();
-        $post->delete();
-
-        if ($post->img) {
-            ImageHelper::delete($post->img);
+        $post = Post::withTrashed()->slug($slug)->firstOrFail();
+        if ($post->trashed()) {
+            $post->tags()->detach();
+            if ($post->img) {
+                ImageHelper::delete($post->img);
+            }
+            $post->forceDelete();
+        } else {
+            $post->delete();
         }
-        
-        return redirect()->back();
+
+        return redirect()->back()->with('success', 'Статья успешно удалена');
     }
 }

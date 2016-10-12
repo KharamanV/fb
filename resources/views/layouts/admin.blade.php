@@ -53,7 +53,7 @@
                 <a class="navbar-brand" href="{{ route('admin.index') }}">
                     Admin
                 </a>
-                <a class="navbar-brand" href="{{ route('admin.trash') }}">
+                <a class="navbar-brand" href="{{ route('trash.index') }}">
                     Trash
                 </a>
             </div>

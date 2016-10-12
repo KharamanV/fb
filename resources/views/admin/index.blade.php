@@ -3,6 +3,7 @@
 @section('content')
 	<div class="container">
 		<h3 class="text-center"><a href="{{ route('admin.create') }}">Create</a></h3>
+		@include('partials._statuses')
 		<table class="table table-hover">
 			@foreach($posts as $post)
 				<tr>
