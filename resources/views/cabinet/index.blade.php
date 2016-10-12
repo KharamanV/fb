@@ -6,12 +6,7 @@
 		<div class="row">
 			<div class="col-sm-8">
 				@include('partials._errors')
-				@if (session('info'))
-					<div class="alert alert-info">{{ session('info') }}</div>
-				@endif
-				@if (session('success'))
-					<div class="alert alert-success">{{ session('success') }}</div>
-				@endif
+				@include('partials._statuses')
 				<h1>{{ $user->login }}</h1>
 				<div><img src="{{ ($user->avatar) ? asset('uploads/avatars/150/' . $user->avatar) : asset('img/default_avatar.png') }}" alt=""></div>
 				<form action="{{ route('cabinet.edit') }}" method="post" enctype="multipart/form-data" style="border: 1px solid #000">

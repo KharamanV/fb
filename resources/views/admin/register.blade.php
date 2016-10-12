@@ -9,18 +9,7 @@
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ url('/admin/register') }}">
                         {{ csrf_field() }}
-
-                        @if (session('status'))
-                            <div class="alert alert-success">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-                        @if (session('warning'))
-                            <div class="alert alert-warning">
-                                {{ session('warning') }}
-                            </div>
-                        @endif
-
+                        @include('partials._statuses')
                         <div class="form-group{{ $errors->has('login') ? ' has-error' : '' }}">
                             <label for="login" class="col-md-4 control-label">Логин</label>
 

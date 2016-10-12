@@ -53,11 +53,7 @@
                 </article>
         <div class="row">
             <div class="col-sm-6">
-                @if (session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                @include('partials._statuses')
                 @if (Auth::check())
                     <form action="{{ route('comment.store') }}" method="post" class="text-center">
                         {{ csrf_field() }}

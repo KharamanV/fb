@@ -36,11 +36,7 @@
 			<div class="col-sm-4">
 				<div class="well">
 					<h2>Добавить категорию</h2>
-					@if (session('status'))
-						<div class="alert alert-success">
-							{{ session('status') }}
-						</div>
-					@endif
+					@include('partials._statuses')
 					<form action="{{ route('categories.store') }}" method="post">
 						{{ csrf_field() }}
 						<input type="text" name="name" class="form-control" placeholder="Имя">

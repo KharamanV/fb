@@ -3,11 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Traits\Rating;
 
 class Post extends Model
 {
-    use Rating;
+    use Rating, SoftDeletes;
+
+    protected $dates = ['deleted_at'];
 
     protected $fillable = ['title', 'short', 'slug', 'text', 'img', 'category_id'];
 

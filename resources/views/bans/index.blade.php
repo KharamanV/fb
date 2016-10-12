@@ -4,11 +4,7 @@
 	<div class="container">
 		<h3 class="text-center">Список заблокированных пользвателей</h3>
 		<hr>
-		@if (session('success'))
-			<div class="alert alert-success">
-				{{ session('success') }}
-			</div>
-		@endif
+		@include('partials._statuses')
 		<table class="table">
 			<thead>
 				<tr>

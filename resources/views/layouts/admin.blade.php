@@ -53,6 +53,9 @@
                 <a class="navbar-brand" href="{{ route('admin.index') }}">
                     Admin
                 </a>
+                <a class="navbar-brand" href="{{ route('admin.trash') }}">
+                    Trash
+                </a>
             </div>
 
             <div class="collapse navbar-collapse" id="app-navbar-collapse">

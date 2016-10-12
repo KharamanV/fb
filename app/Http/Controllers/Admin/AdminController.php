@@ -34,6 +34,17 @@ class AdminController extends Controller
         return view('admin.index', ['posts' => $posts]);
     }
 
+    public function trash()
+    {
+        $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->onlyTrashed()->paginate(3);
+        return view('admin.trash', ['posts' => $posts]);
+    }
+
+    public function clearTrash()
+    {
+        
+    }
+
     /**
      * Show the form for creating a new resource.
      *

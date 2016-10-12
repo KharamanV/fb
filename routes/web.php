@@ -51,6 +51,7 @@ Route::group(['middleware' => 'notBanned'], function() {
         Route::resource('tags', 'TagController', ['except' => ['create', 'show']]);
         Route::get('user/{user}/role', ['uses' => 'RoleController@showAssigningForm', 'as' => 'role.assign.show']);
         Route::patch('role/assign', ['uses' => 'RoleController@assign', 'as' => 'role.assign']);
+        Route::get('trash', ['uses' => 'AdminController@trash', 'as' => 'admin.trash']);
     });
 
     Route::get('tag/{tag}', [

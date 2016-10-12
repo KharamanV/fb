@@ -3,11 +3,7 @@
 @section('content')
     <div class="container">
         @include('partials._errors')
-        @if (session('failure'))
-            <div class="alert alert-danger">
-                {{ session('failure') }}
-            </div>
-        @endif
+        @include('partials._statuses')
         <form action="{{ route('email.update') }}" method="post">
             {{ csrf_field() }}
             <div class="form-group">
