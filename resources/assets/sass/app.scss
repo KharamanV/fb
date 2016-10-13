@@ -1,3 +1,5 @@
+
+
 .logo {
 	display: inline-block;
 	height: 17px;
@@ -276,15 +278,18 @@
 	.card-category {
 		position: static;
 	}
+	.post-info {
+		li {
+			color: $white;
+		}
+	}
+
 }
 
 .top-categories {
 	.post-title {
 		font-size: .875rem;
 		margin: 10px 0 5px;
-		a {
-			font-weight: 400;
-		}
 	}
 	.owl-theme .owl-controls .owl-page span {
 		background: $primary-color;
@@ -308,7 +313,7 @@
 	padding: 0 $indent;
 	z-index: 1;
 	bottom: $indent;
-	.latest-category-articles & {
+	.top-categories & {
 		top: 50%;
 		transform: translateY(-50%);
 		text-align: center;
@@ -323,6 +328,13 @@
 .latest-category-articles {
 	background-color: $white;
 	padding: 50px 0 1.875rem;
+	.post-title {
+		text-transform: uppercase;
+		font-size: .875rem;
+		a {
+			font-weight: 700;
+		}
+	}
 }
 
 .latest-articles {

@@ -25,7 +25,7 @@
     </script>
 </head>
 <body>
-    <nav class="navbar navbar-fixed-top bg-faded" role="navigation">
+    <nav class="navbar {{-- navbar-fixed-top --}} bg-faded" role="navigation">
         <div class="container">
             <button class="pull-xs-right navbar-toggler hidden-md-up" type="button" data-toggle="collapse" data-target="#nav-collapse" aria-controls="nav-collapse" aria-expanded="false" aria-label="Toggle navigation">
                 &#9776;
@@ -35,10 +35,6 @@
             <a class="navbar-brand" href="{{ route('post.index') }}">
                 <img src="/img/logo.png" alt="Frontend & Backend" class="logo">
             </a>
-            {{-- <a class="navbar-brand" href="{{ route('post.subscribes') }}">
-                По подписке
-            </a> --}}
-            
 
             <div class="collapse navbar-toggleable-sm" id="nav-collapse">
                 <ul class="nav navbar-nav pull-xs-right">
@@ -64,6 +60,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" role="menu">
                                 <a href="{{ route('cabinet.index') }}" class="dropdown-item">Личный кабинет</a>
+                                <a href="{{ route('post.subscribes') }}" class="dropdown-item">По подписке</a>
                                 <div class="dropdown-divider"></div>
                                 <a href="{{ url('/logout') }}" class="dropdown-item"
                                     onclick="event.preventDefault();

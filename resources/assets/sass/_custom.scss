@@ -12,6 +12,7 @@ $body-bg:    #fafafa;
 //Colors
 
 $primary-color: #f44336;
+$inversed-color: #222;
 
 $gray-darker: #333;
 $white: #fff;
@@ -32,7 +33,7 @@ $navbar-border-color: #f0f0f0;
 $post-info-color:      #999;
 $post-date-icon-color: #ccc;
 
-$title-section-color:        #222;
+$title-section-color:        $inversed-color;
 $title-section-border-color: #e1e1e1;
 
 // Typography
@@ -52,6 +53,8 @@ $post-img-height-md:    163px;
 $post-img-height-xs:    251px;
 $post-title-font-size: .8125rem;
 $post-info-font-size:  .75rem;
+
+$full-post-img-height-xl: 222px;
 
 
 //Navbar

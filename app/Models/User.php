@@ -96,7 +96,7 @@ class User extends Authenticatable
      */
     public function setRoleIdAttribute($value)
     {
-        if ($this->isAdmin()) {
+        if (Auth::check() && $this->isAdmin()) {
             $this->attributes['role_id'] = $value;
         }
     }
@@ -109,7 +109,7 @@ class User extends Authenticatable
      */
     public function setIsActiveAttribute($value)
     {
-        if ($this->isAdmin() || UserActivation::where('user_id', $this->id)) {
+        if ((Auth::check() && $this->isAdmin()) || UserActivation::where('user_id', $this->id)) {
             $this->attributes['is_active'] = $value;
         }
     }
@@ -121,7 +121,7 @@ class User extends Authenticatable
      */
     public function isAdmin()
     {
-        return Auth::check() && Auth::user()->hasAnyRole('Admin');
+        return Auth::user()->hasAnyRole('Admin');
     }
 
     public function scopeUsername($query, $username)

@@ -50,7 +50,6 @@
 					@endforeach
 					</div>
 				</div>
-				</div>
 			</section>
 		@endif
 	<div class="container">
