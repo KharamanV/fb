@@ -28,15 +28,15 @@
                         </li>
                     </ul>
                     <div class="rating pull-right">
-                        <strong style="font-size: 20px;">{{ $post->rating }}</strong>
+                        <strong style="font-size: 20px;" id="post-rating-counter">{{ $post->rating }}</strong>
                         @if (Auth::check() && !$post->isRated())
-                            <form action="{{ route('post.rateup', $post->id) }}" method="post">
+                            <form action="{{ route('post.rateup', $post->id) }}" method="post" class="rating-post-form">
                                 {{ csrf_field() }}
-                                <button type="submit" class="btn btn-success">+</button>
+                                <button type="submit" class="btn btn-success rate-post-btn">+</button>
                             </form>
-                            <form action="{{ route('post.ratedown', $post->id) }}" method="post">
+                            <form action="{{ route('post.ratedown', $post->id) }}" method="post" class="rating-post-form">
                                 {{ csrf_field() }}
-                                <button type="submit" class="btn btn-danger">-</button>
+                                <button type="submit" class="btn btn-danger rate-post-btn">-</button>
                             </form>
                         @endif
                     </div>
@@ -53,13 +53,18 @@
                 </article>
         <div class="row">
             <div class="col-sm-6">
-                @include('partials._statuses')
+                <div class="alerts">   
+                    @include('partials._statuses')
+                </div>
                 @if (Auth::check())
-                    <form action="{{ route('comment.store') }}" method="post" class="text-center">
+                    <form action="{{ route('comment.store') }}" method="post" class="text-center" id="add-comment-form">
                         {{ csrf_field() }}
-                        <h4 class="text-center">Добавить комментарий</h4>
                         <input type="hidden" name="post_id" value="{{ $post->id }}">
-                        <textarea class="form-control" name="text" placeholder="Текст комментария:"></textarea>
+                        <div class="form-group" id="add-comment-group">
+                            <label class="text-field">Добавить комментарий</label>
+                            <textarea class="form-control" name="text" placeholder="Текст комментария:" id="text-field"></textarea>
+                            <div class="form-control-feedback" id="status-notify"></div>
+                        </div>
                         <button type="submit" class="btn btn-success">Отправить</button>
                     </form>
                 @else
@@ -75,15 +80,15 @@
                     @foreach ($post->comments as $comment)
                         <div class="comment" style="border: 1px solid #000; margin-bottom: 20px">
                             <div class="rating pull-right">
-                                <strong style="font-size: 20px;">{{ $comment->rating }}</strong>
+                                <strong style="font-size: 20px;" id="comment-rating-counter">{{ $comment->rating }}</strong>
                                 @if (Auth::check() && !$comment->isOwn() && !$comment->isRated())
-                                    <form action="{{ route('comment.rateup', $comment->id) }}" method="post">
+                                    <form action="{{ route('comment.rateup', $comment->id) }}" method="post" class="rating-comment-form">
                                         {{ csrf_field() }}
-                                        <button type="submit" class="btn btn-success">+</button>
+                                        <button type="submit" class="btn btn-success rate-comment-btn">+</button>
                                     </form>
-                                    <form action="{{ route('comment.ratedown', $comment->id) }}" method="post">
+                                    <form action="{{ route('comment.ratedown', $comment->id) }}" method="post" class="rating-comment-form">
                                         {{ csrf_field() }}
-                                        <button type="submit" class="btn btn-danger">-</button>
+                                        <button type="submit" class="btn btn-danger rate-comment-btn">-</button>
                                     </form>
                                 @endif
                             </div>

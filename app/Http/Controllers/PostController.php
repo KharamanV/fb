@@ -18,7 +18,7 @@ use App\Models\User;
 class PostController extends Controller
 {
 
-    public $perPage = 6;
+    public $perPage = 9;
     public $path;
 
     /**
@@ -101,8 +101,9 @@ class PostController extends Controller
         return view('posts.chunk', ['posts' => $posts, 'path' => $this->path]);
     }
 
-    public function rateUp($id)
+    public function rateUp(Request $request, $id)
     {
+     
         $post = Post::find($id);
         $rate = new PostsRate;
         if ($post->isRated()) {
@@ -116,10 +117,19 @@ class PostController extends Controller
         $post->rating++;
         $post->save();
 
-        return redirect()->back()->with('success', 'Ваш голос учтен');
+        $successMessaege = 'Ваш голос учтен';
+
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => $successMessaege,
+                'rating'  => $post->rating
+            ], 200);
+        }
+
+        return redirect()->back()->with('success', $successMessaege);
     }
 
-    public function rateDown($id)
+    public function rateDown(Request $request, $id)
     {
         $post = Post::find($id);
         $rate = new PostsRate;
@@ -134,7 +144,16 @@ class PostController extends Controller
         $post->rating--;
         $post->save();
 
-        return redirect()->back()->with('success', 'Ваш голос учтен');
+        $successMessaege = 'Ваш голос учтен';
+
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => $successMessaege,
+                'rating'  => $post->rating
+            ], 200);
+        }
+
+        return redirect()->back()->with('success', $successMessaege);
     }
 
     public function showPostsBySubscribes()

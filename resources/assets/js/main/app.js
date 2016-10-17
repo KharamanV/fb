@@ -59,3 +59,73 @@ $("#owl-demo2").owlCarousel({
     autoPlay: 5000,
     navigationText: false
 });
+
+/*$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});*/
+
+
+$('.rate-post-btn').click(function(e){
+    e.preventDefault();
+    var form = $(this).parent();
+    var url = form.attr('action');
+    var ajax = $.ajax({
+        url: url,
+        method: 'POST',
+        dataType: 'json',
+        data: form.serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    ajax.done(function(data){
+        //var elem = '<div class="alert alert-success">' + data.message + '</div>';
+        //$(elem).hide().appendTo('.alerts').fadeIn(750);
+        $('#post-rating-counter').html(data.rating);
+        $('.rating-post-form').remove();
+    });
+});
+
+$('.rate-comment-btn').click(function(e){
+    e.preventDefault();
+    var form = $(this).parent();
+    var url = form.attr('action');
+    var ajax = $.ajax({
+        url: url,
+        method: 'POST',
+        dataType: 'json',
+        data: form.serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    ajax.done(function(data){
+        //var elem = '<div class="alert alert-success">' + data.message + '</div>';
+        //$(elem).hide().appendTo('.alerts').fadeIn(750);
+        $('#comment-rating-counter').html(data.rating);
+        $('.rating-comment-form').remove();
+    });
+});
+
+$('#add-comment-form').submit(function(e) {
+    e.preventDefault();
+    var val = $.trim($('#text-field').val());
+    if (val.length < 3) {
+        $('#add-comment-group').addClass('has-danger');
+        $('#status-notify').text('Введите текст комментария больше чем 2 символа');
+        return;
+    }
+    var ajax = $.ajax({
+        url: $(this).attr('action'),
+        method: 'POST',
+        dataType: 'json',
+        data: $(this).serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+});
