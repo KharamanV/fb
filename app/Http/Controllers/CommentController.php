@@ -31,7 +31,7 @@ class CommentController extends Controller
     {
         $this->validate($request, [
             'post_id' => 'required|exists:posts,id',
-            'text' => 'required'
+            'text' => 'required|min:2'
         ]);
 
         $comment = new Comment($request->all());
@@ -100,7 +100,7 @@ class CommentController extends Controller
 
     }
 
-    public function rateUp($id)
+    public function rateUp(Request $request, $id)
     {
         $comment = Comment::find($id);
         $rate = new CommentsRate;
@@ -115,10 +115,19 @@ class CommentController extends Controller
         $comment->rating++;
         $comment->save();
 
-        return redirect()->back()->with('success', 'Ваш голос учтен');
+        $successMessaege = 'Ваш голос учтен';
+
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => $successMessaege,
+                'rating'  => $comment->rating
+            ], 200);
+        }
+
+        return redirect()->back()->with('success', $successMessaege);
     }
 
-    public function rateDown($id)
+    public function rateDown(Request $request, $id)
     {
         $comment = Comment::find($id);
         $rate = new CommentsRate;
@@ -133,6 +142,15 @@ class CommentController extends Controller
         $comment->rating--;
         $comment->save();
 
-        return redirect()->back()->with('success', 'Ваш голос учтен');
+        $successMessaege = 'Ваш голос учтен';
+
+        if ($request->ajax()) {
+            return response()->json([
+                'message' => $successMessaege,
+                'rating'  => $comment->rating
+            ], 200);
+        }
+
+        return redirect()->back()->with('success', $successMessaege);
     }
 }
