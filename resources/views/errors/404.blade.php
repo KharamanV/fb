@@ -26,7 +26,7 @@
           </div>
           <p>Запрашиваемая страницы не существует на сервере&hellip;</p>
           <div id="respond">
-            <form action="{{ route('post.search') }}">
+            <form action="{{ route('posts.search') }}">
               <fieldset>
                 <legend>Site Search</legend>
                 <input type="text" name="search" placeholder="Search here">

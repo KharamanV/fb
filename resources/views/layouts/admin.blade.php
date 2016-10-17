@@ -47,7 +47,7 @@
                 </button>
 
                 <!-- Branding Image -->
-                <a class="navbar-brand" href="{{ route('post.index') }}">
+                <a class="navbar-brand" href="{{ route('posts.index') }}">
                     Home
                 </a>
                 <a class="navbar-brand" href="{{ route('admin.index') }}">

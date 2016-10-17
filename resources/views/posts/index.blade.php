@@ -6,7 +6,7 @@
 				<div class="container">
 					<h2 class="title-section">
 						<span class="heading-line">Последние в категории</span>
-						<form action="{{ route('post.search') }}" class="search-form pull-xs-right" role="search">
+						<form action="{{ route('posts.search') }}" class="search-form pull-xs-right" role="search">
 							<input type="search" class="search-input" id="search" name="search" placeholder="SEARCH HERE" value="{{ old('search') }}">
 							<button type="submit" class="search-btn" id="search-submit"><i class="fa fa-search"></i></button>
 						</form>
@@ -26,7 +26,7 @@
 										</a>
 									@endif
 									<h4 class="post-title">
-										<a href="{{ route('post.show', $lastCatPost->slug) }}">{{ $lastCatPost->title }}</a>
+										<a href="{{ route('posts.show', $lastCatPost->slug) }}">{{ $lastCatPost->title }}</a>
 									</h4>
 									<ul class="post-info">
 										<li>
@@ -34,7 +34,7 @@
 											{{ date('d M Y', $lastCatPost->created_at->getTimestamp()) }}
 										</li>
 										<li>
-											<a href="{{ route('post.show', $lastCatPost->slug) }}#comments">
+											<a href="{{ route('posts.show', $lastCatPost->slug) }}#comments">
 												<i class="fa fa-comments-o"></i>
 												<span>{{ $lastCatPost->comments->count() }}</span>
 											</a>
@@ -74,7 +74,7 @@
 									</div>
 									<div class="post-content">
 										<h4 class="post-title">
-											<a href="{{ route('post.show', $post->slug) }}">{{ $post->title }}</a>
+											<a href="{{ route('posts.show', $post->slug) }}">{{ $post->title }}</a>
 										</h4>
 										<ul class="post-info">
 											<li>
@@ -82,7 +82,7 @@
 												{{ date('d M Y', $post->created_at->getTimestamp()) }}
 											</li>
 											<li>
-												<a href="{{ route('post.show', $post->slug) }}#comments">
+												<a href="{{ route('posts.show', $post->slug) }}#comments">
 													<i class="fa fa-comments-o"></i>
 													<span>{{ $post->comments->count() }}</span>
 												</a>
@@ -123,7 +123,7 @@
 											</a>
 										@endif
 										<h4 class="post-title">
-											<a href="{{ route('post.show', $topCatPost->slug) }}">{{ $topCatPost->title }}</a>
+											<a href="{{ route('posts.show', $topCatPost->slug) }}">{{ $topCatPost->title }}</a>
 										</h4>
 										<ul class="post-info">
 											<li>
@@ -131,7 +131,7 @@
 												{{ date('d M Y', $topCatPost->created_at->getTimestamp()) }}
 											</li>
 											<li>
-												<a href="{{ route('post.show', $topCatPost->slug) }}#comments">
+												<a href="{{ route('posts.show', $topCatPost->slug) }}#comments">
 													<i class="fa fa-comments-o"></i>
 													<span>{{ $topCatPost->comments->count() }}</span>
 												</a>

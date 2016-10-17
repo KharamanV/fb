@@ -17,7 +17,7 @@
                             {{ date('d M Y', $post->created_at->getTimestamp()) }}
                         </li>
                         <li>
-                            <a href="{{ route('post.show', $post->slug) }}#comments">
+                            <a href="{{ route('posts.show', $post->slug) }}#comments">
                                 <i class="fa fa-comments-o"></i>
                                 <span>{{ $post->comments->count() }}</span>
                             </a>
@@ -30,11 +30,11 @@
                     <div class="rating pull-right">
                         <strong style="font-size: 20px;">{{ $post->rating }}</strong>
                         @if (Auth::check() && !$post->isRated())
-                            <form action="{{ route('post.rateup', $post->id) }}" method="post">
+                            <form action="{{ route('posts.rateup', $post->id) }}" method="post">
                                 {{ csrf_field() }}
                                 <button type="submit" class="btn btn-success">+</button>
                             </form>
-                            <form action="{{ route('post.ratedown', $post->id) }}" method="post">
+                            <form action="{{ route('posts.ratedown', $post->id) }}" method="post">
                                 {{ csrf_field() }}
                                 <button type="submit" class="btn btn-danger">-</button>
                             </form>

@@ -77,7 +77,7 @@ class CommentController extends Controller
         $comment->text = $request->text;
         $comment->save();
 
-        return redirect()->route('post.show', $comment->post->slug)->with('success', 'Комментарий успешно отредактирован!');
+        return redirect()->route('posts.show', $comment->post->slug)->with('success', 'Комментарий успешно отредактирован!');
     }
 
     /**

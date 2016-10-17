@@ -32,7 +32,7 @@
             </button>
 
             <!-- Branding Image -->
-            <a class="navbar-brand" href="{{ route('post.index') }}">
+            <a class="navbar-brand" href="{{ route('posts.index') }}">
                 <img src="/img/logo.png" alt="Frontend & Backend" class="logo">
             </a>
 
@@ -60,7 +60,7 @@
                             </a>
                             <div class="dropdown-menu dropdown-menu-right" role="menu">
                                 <a href="{{ route('cabinet.index') }}" class="dropdown-item">Личный кабинет</a>
-                                <a href="{{ route('post.subscribes') }}" class="dropdown-item">По подписке</a>
+                                <a href="{{ route('posts.subscribes') }}" class="dropdown-item">По подписке</a>
                                 <div class="dropdown-divider"></div>
                                 <a href="{{ url('/logout') }}" class="dropdown-item"
                                     onclick="event.preventDefault();

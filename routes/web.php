@@ -16,9 +16,9 @@ Route::get('email/resendVerification', ['as' => 'resend.emailVerify', 'uses' => 
 
 Route::group(['middleware' => 'notBanned'], function() {
 
-    Route::resource('post', 'PostController', ['only' => ['show']]);
-    Route::get('/', ['uses' => 'PostController@index', 'as' => 'post.index']);
-    Route::get('posts', ['uses' => 'PostController@search', 'as' => 'post.search']);
+    Route::resource('posts', 'PostController', ['only' => ['show']]);
+    Route::get('/', ['uses' => 'PostController@index', 'as' => 'posts.index']);
+    Route::get('posts', ['uses' => 'PostController@search', 'as' => 'posts.search']);
 
     Route::get('register/confirm/{token}', [
         'uses' => 'Auth\RegisterController@activate',
@@ -75,9 +75,9 @@ Route::group(['middleware' => 'notBanned'], function() {
     Route::post('comment/{comment}/ratedown', ['uses' => 'CommentController@rateDown', 'as' => 'comment.ratedown']);
 
     Route::group(['middleware' => 'auth'], function() {
-        Route::post('post/{post}/rateup', ['uses' => 'PostController@rateUp', 'as' => 'post.rateup']);
-        Route::post('post/{post}/ratedown', ['uses' => 'PostController@rateDown', 'as' => 'post.ratedown']);
-        Route::get('subscribes', ['uses' => 'PostController@showPostsBySubscribes', 'as' => 'post.subscribes']);
+        Route::post('post/{post}/rateup', ['uses' => 'PostController@rateUp', 'as' => 'posts.rateup']);
+        Route::post('post/{post}/ratedown', ['uses' => 'PostController@rateDown', 'as' => 'posts.ratedown']);
+        Route::get('subscribes', ['uses' => 'PostController@showPostsBySubscribes', 'as' => 'posts.subscribes']);
     });
 
     Route::post('password/change', ['as' => 'password.change', 'uses' => 'CabinetController@changePassword']);
