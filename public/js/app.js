@@ -1577,7 +1577,13 @@ $('#add-comment-form').submit(function(e) {
                             </form>\
                         </div>';
         $('#comments').prepend(comment);
-
-
     });
+});
+
+$('.btn-edit').click(function() {
+    var comment = $(this).parent(),
+        commentItem = comment.find('.comment-text'),
+        commentText = commentItem.text();
+    commentItem.replaceWith('<mark>awdawd</mark>');
+    console.log(commentItem);
 });

@@ -95,9 +95,10 @@
                             
                             <h4><a href="{{ route('user.show', $comment->user->login) }}">{{ $comment->user->name . ' ' . $comment->user->last_name }}</a></h4>
                             <hr>
-                            <p>{{ $comment->text }}</p>
+                            <p class="comment-text">{{ $comment->text }}</p>
                             <p>{{ date('d M Y', $comment->created_at->getTimestamp()) }}</p>
                             @if ($comment->isEditable($comment->user))
+                                <button class="btn-edit" type="button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                                 <a href="{{ route('comment.edit', $comment->id) }}">Редактировать</a>
                             @endif
                             @if ($comment->isDeletable($comment->user))
