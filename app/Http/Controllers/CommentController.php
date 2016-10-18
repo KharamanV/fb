@@ -38,6 +38,19 @@ class CommentController extends Controller
         $comment->user_id = $request->user()->id;
         $comment->save();
 
+        if ($request->ajax()) {
+            $commentAuthor = $comment->user;
+            return response()->json([
+                'id'        => $comment->id,
+                'username'  => $commentAuthor->login,
+                'fullName'  => $commentAuthor->name . ' ' . $commentAuthor->last_name,
+                'text'      => $comment->text,
+                'date'      => date('d M Y', $comment->created_at->getTimestamp()),
+                'csrfToken' => csrf_token()
+
+            ], 201);
+        }
+
         return redirect()->back()->with('success', 'Комментарий успешно добавлен');
     }
 

@@ -1559,4 +1559,25 @@ $('#add-comment-form').submit(function(e) {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
+
+    ajax.done(function(comment) {
+        var comment = '<div class="comment" style="border: 1px solid #000; margin-bottom: 20px">\
+                            <div class="rating pull-right">\
+                                <strong style="font-size: 20px;" id="comment-rating-counter">0</strong>\
+                            </div>\
+                            <h4><a href="/user/' + comment.username + '">' + comment.fullName + '</a></h4>\
+                            <hr>\
+                            <p>' + comment.text + '</p>\
+                            <p>' + comment.date + '</p>\
+                            <a href="/comment/' + comment.id + '/edit">Редактировать</a>\
+                            <form action="/comment/' + comment.id + '" method="post">\
+                                <input type="hidden" name="_token" value="' + comment.csrfToken + '">\
+                                <input type="hidden" name="_method" value="DELETE">\
+                                <button type="submit">Удалить</button>\
+                            </form>\
+                        </div>';
+        $('#comments').prepend(comment);
+
+
+    });
 });
