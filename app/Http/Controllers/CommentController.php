@@ -90,6 +90,12 @@ class CommentController extends Controller
         $comment->text = $request->text;
         $comment->save();
 
+        if ($request->ajax()) {
+            return response()->json([
+                'text' => $comment->text
+            ], 200);
+        }
+
         return redirect()->route('posts.show', $comment->post->slug)->with('success', 'Комментарий успешно отредактирован!');
     }
 

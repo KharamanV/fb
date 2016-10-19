@@ -98,11 +98,11 @@
                             <p class="comment-text">{{ $comment->text }}</p>
                             <p>{{ date('d M Y', $comment->created_at->getTimestamp()) }}</p>
                             @if ($comment->isEditable($comment->user))
-                                <button class="btn-edit" type="button"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <button class="btn-edit" type="button" data-target="{{ $comment->id }}"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                                 <a href="{{ route('comment.edit', $comment->id) }}">Редактировать</a>
                             @endif
                             @if ($comment->isDeletable($comment->user))
-                                <form action="{{ route('comment.destroy', $comment->id) }}" method="post">
+                                <form action="{{ route('comment.destroy', $comment->id) }}" method="post" class="delete-comment-form">
                                     {{ csrf_field() }}
                                     {{ method_field('DELETE') }}
                                     <button type="submit">Удалить</button>

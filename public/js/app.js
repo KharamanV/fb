@@ -1576,14 +1576,84 @@ $('#add-comment-form').submit(function(e) {
                                 <button type="submit">Удалить</button>\
                             </form>\
                         </div>';
-        $('#comments').prepend(comment);
+        $('#comments').append(comment);
     });
 });
 
+var commentText = '';
+
 $('.btn-edit').click(function() {
+    $('#cancel-comment-edit-btn').click();
+    $(this).prop('disabled', true);
+
     var comment = $(this).parent(),
-        commentItem = comment.find('.comment-text'),
-        commentText = commentItem.text();
-    commentItem.replaceWith('<mark>awdawd</mark>');
-    console.log(commentItem);
+        commentItem = comment.find('.comment-text');
+
+    commentText = commentItem.text();
+
+    var form = '\
+        <form action="/comment/' + $(this).data('target') + '" method="post" id="update-comment-form">\
+            <input type="hidden" name="_token" value="' + $('meta[name="csrf-token"]').attr('content') + '">\
+            <div class="form-group" id="inline-edit-wrapper">\
+                <textarea name="text" class="form-control">' + commentText + '</textarea>\
+                <div class="form-control-feedback" id="inline-notify"></div>\
+            </div>\
+            <button type="button" id="cancel-comment-edit-btn">Cancel</button>\
+            <button type="submit">OK</button>\
+        </form>\
+    ';
+    commentItem.replaceWith(form);
+
+    $('#cancel-comment-edit-btn').click(function() {
+        var form = $(this).parent('form');
+        comment.find('.btn-edit').prop('disabled', false);
+        form.replaceWith(commentItem);
+        $(this).off('click');
+        $('#update-comment-form').off('submit');
+    });
+
+    $('#update-comment-form').submit(function(e) {
+        e.preventDefault();
+        var val = $.trim($(this).find('textarea').val());
+        if (val.length < 3) {
+            $('#inline-edit-wrapper').addClass('has-danger');
+            $('#inline-notify').text('Введите текст комментария больше чем 2 символа');
+            return;
+        }
+        var ajax = $.ajax({
+            url: $(this).attr('action'),
+            method: 'PATCH',
+            dataType: 'json',
+            data: $(this).serialize(),
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+
+        ajax.done(function(data) {
+            commentItem.html(data.text);
+            $('#update-comment-form').replaceWith(commentItem);
+            comment.find('.btn-edit').prop('disabled', false);
+        });
+    });
+});
+
+$('#delete-comment-form').submit(function(e) {
+    e.preventDefault();
+    var comment = $(this).parent('.comment');
+    var ajax = $.ajax({
+        url: $(this).attr('action'),
+        method: 'DELETE',
+        dataType: 'json',
+        data: $(this).serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    ajax.done(function(data) {
+        if (data.status == 'ok') {
+
+        }
+    });
 });
