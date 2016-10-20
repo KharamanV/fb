@@ -1569,6 +1569,7 @@ $('#add-comment-form').submit(function(e) {
                             <hr>\
                             <p>' + comment.text + '</p>\
                             <p>' + comment.date + '</p>\
+                            <button class="btn-edit" type="button" data-target="' + comment.id + '"><i class="fa fa-pencil" aria-hidden="true"></i></button>\
                             <a href="/comment/' + comment.id + '/edit">Редактировать</a>\
                             <form action="/comment/' + comment.id + '" method="post">\
                                 <input type="hidden" name="_token" value="' + comment.csrfToken + '">\
@@ -1638,7 +1639,7 @@ $('.btn-edit').click(function() {
     });
 });
 
-$('#delete-comment-form').submit(function(e) {
+$('.delete-comment-form').submit(function(e) {
     e.preventDefault();
     var comment = $(this).parent('.comment');
     var ajax = $.ajax({
@@ -1653,7 +1654,24 @@ $('#delete-comment-form').submit(function(e) {
 
     ajax.done(function(data) {
         if (data.status == 'ok') {
-
+            comment.remove();
         }
+    });
+});
+
+$('#login-form').submit(function(e) {
+    e.preventDefault();
+    var ajax = $.ajax({
+        url: $(this).attr('action'),
+        method: 'POST',
+        dataType: 'json',
+        data: $(this).serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    ajax.fail(function(response) {
+        console.log(response);
     });
 });
