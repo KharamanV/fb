@@ -62,7 +62,13 @@ class PostController extends Controller
 
     public function search(Request $request)
     {
+        if ($request->ajax()) {
+            $posts = Post::searchByTitle($request->search)->orderById()->get();
+            return response()->json($posts, 200);
+        }
+
         $posts = Post::searchByTitle($request->search)->orderById()->paginate($this->perPage);
+
         return view('posts.chunk', ['posts' => $posts]);
     }
 

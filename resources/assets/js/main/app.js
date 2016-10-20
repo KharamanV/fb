@@ -256,3 +256,58 @@ $('#login-form').submit(function(e) {
         }
     });
 });
+
+
+$('#register-form').submit(function(e) {
+    e.preventDefault();
+    var form = this;
+
+    var ajax = $.ajax({
+        url: $(this).attr('action'),
+        method: 'POST',
+        dataType: 'json',
+        data: $(this).serialize(),
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+    ajax.fail(function(response) {
+        var data = $.parseJSON(response.responseText);
+        for (var prop in data) {
+            var failedInput = $("[name=" + prop + "]");
+            failedInput.addClass('form-control-danger')
+                        .closest('.form-group').addClass('has-danger')
+                        .find('.form-control-feedback').html(data[prop]);
+        }
+    });
+
+    ajax.done(function(data) {
+        $('.has-danger').removeClass('has-danger');
+        $('.form-control-danger').removeClass('form-control-danger');
+        $('.form-control-feedback').html('');
+
+        if (data.status == 'ok') {
+            var messageItem = '<div class="alert alert-success">' + data.message + '</div>';
+            $(form).before(messageItem);
+        }
+    });
+});
+
+$('#search').keypress(function(e) {
+    if ( $(this).val().length > 2 ) {
+        var ajax = $.ajax({
+            url: $(this).parent().attr('action'),
+            method: 'GET',
+            dataType: 'json',
+            data: $(this).serialize()
+        });
+
+        ajax.done(function(data) {
+            
+            for (var i = 0; i < data.length; i++) {
+                
+            }
+        });
+    }
+});

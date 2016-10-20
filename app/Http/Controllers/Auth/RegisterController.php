@@ -57,7 +57,7 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'login' => 'required|max:255|unique:users',
+            'login' => 'required|min:4|max:255|unique:users',
             'email' => 'required|email|max:255|unique:users',
             'name' => 'required|max:255',
             'last_name' => 'required|max:255',
@@ -95,7 +95,15 @@ class RegisterController extends Controller
         $user = $this->create($request->all());
         $this->sendActivationMail($user);
 
-        return back()->with('status', 'На ваш email адрес было отправлено письмо с ссылкой для подтверждения регистрации');
+        $message = 'На ваш email адрес было отправлено письмо с ссылкой для подтверждения регистрации';
+
+        if ($request->ajax()) {
+            return response()->json([
+                'status'  => 'ok',
+                'message' => $message
+            ], 200);
+        }
+        return back()->with('status', $message);
         //$this->guard()->login();
         //return redirect($this->redirectPath());
     }

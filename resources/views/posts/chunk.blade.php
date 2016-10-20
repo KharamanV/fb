@@ -6,7 +6,7 @@
             <h2 class="title-section">
                 <span class="heading-line">Результаты</span>
                 <form action="{{ route('posts.search') }}" class="search-form pull-xs-right" role="search">
-                    <input type="search" class="search-input" id="search" name="search" placeholder="SEARCH HERE" value="{{ old('search') }}">
+                    <input autocomplete="off" type="search" class="search-input" id="search" name="search" placeholder="SEARCH HERE" value="{{ old('search') }}">
                     <button type="submit" class="search-btn" id="search-submit"><i class="fa fa-search"></i></button>
                 </form>
             </h2>
