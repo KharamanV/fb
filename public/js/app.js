@@ -1653,7 +1653,7 @@ $('#delete-comment-form').submit(function(e) {
 
     ajax.done(function(data) {
         if (data.status == 'ok') {
-
+            
         }
     });
 });
