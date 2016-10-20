@@ -4,7 +4,6 @@ tinymce.init({
 });
 
 
-
 //Slug
 var slug = function(str) {
     var string = transliterate(str);
@@ -230,6 +229,8 @@ $('.delete-comment-form').submit(function(e) {
 
 $('#login-form').submit(function(e) {
     e.preventDefault();
+
+
     var ajax = $.ajax({
         url: $(this).attr('action'),
         method: 'POST',
@@ -241,6 +242,17 @@ $('#login-form').submit(function(e) {
     });
 
     ajax.fail(function(response) {
-        console.log(response);
+        var data = $.parseJSON(response.responseText);
+        var loginField = $('#login-field');
+
+        loginField.closest('.form-group').addClass('has-danger');
+        loginField.addClass('form-control-danger');
+        loginField.next('.form-control-feedback').html(data.error);
+    });
+
+    ajax.done(function(response) {
+        if (response.status == 'ok') {
+            window.location.href = '/';
+        }
     });
 });

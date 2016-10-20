@@ -29,16 +29,11 @@
                         @endif
 
                         <div class="form-group{{ $errors->has('login') ? ' has-error' : '' }}">
-                            <label for="email" class="col-md-4 control-label">Логин</label>
+                            <label for="login-field" class="col-md-4 control-label">Логин</label>
                             
                             <div class="col-md-6">
-                                <input id="email" type="text" class="form-control" name="login" value="{{ old('login') }}" autofocus>
-
-                                @if ($errors->has('login'))
-                                    <span class="help-block">
-                                        <strong>{{ $errors->first('login') }}</strong>
-                                    </span>
-                                @endif
+                                <input id="login-field" type="text" class="form-control" name="login" value="{{ old('login') }}" autofocus required>
+                                <div class="form-control-feedback">{{ ($errors->has('login')) ? $errors->first('login') : '' }}</div>
                             </div>
                         </div>
 
@@ -46,7 +41,7 @@
                             <label for="password" class="col-md-4 control-label">Пароль</label>
 
                             <div class="col-md-6">
-                                <input id="password" type="password" class="form-control" name="password">
+                                <input id="password" type="password" class="form-control" name="password" required>
 
                                 @if ($errors->has('password'))
                                     <span class="help-block">
