@@ -1725,8 +1725,10 @@ $('#register-form').submit(function(e) {
     });
 });
 
-$('#search').keypress(function(e) {
-    if ( $(this).val().length > 2 ) {
+$('#search').on('input', function(e) {
+    if ( $(this).val().length < 3 ) {
+        return false;
+    }
         var ajax = $.ajax({
             url: $(this).parent().attr('action'),
             method: 'GET',
@@ -1735,10 +1737,9 @@ $('#search').keypress(function(e) {
         });
 
         ajax.done(function(data) {
-            
+            console.log(data);
             for (var i = 0; i < data.length; i++) {
                 
             }
         });
-    }
 });

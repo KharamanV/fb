@@ -9,6 +9,12 @@
 						<form action="{{ route('posts.search') }}" class="search-form pull-xs-right" role="search">
 							<input autocomplete="off" type="search" class="search-input" id="search" name="search" placeholder="SEARCH HERE" value="{{ old('search') }}">
 							<button type="submit" class="search-btn" id="search-submit"><i class="fa fa-search"></i></button>
+							<ul class="search-results">
+								<li>
+									<img class="search-results-avatar" src="http://placehold.it/200x500">
+									<span class="search-results-title">Самый крутой человек в мире пришел в Сартану и опиздюлился так, что о нем забыли все режиссеры Болливуда, что эа гавно?</span>
+								</li>
+							</ul>
 						</form>
 					</h2>
 					<div id="owl-demo" class="owl-carousel owl-theme">
