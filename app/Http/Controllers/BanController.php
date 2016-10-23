@@ -11,6 +11,7 @@ use App\Models\User;
 
 class BanController extends Controller
 {
+    /** @var array Terms on which you can ban users */
     protected $terms = [
         ['name' => 'День',   'value' => 1],
         ['name' => 'Неделю', 'value' => 7],
@@ -24,32 +25,35 @@ class BanController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the banned users.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $bans = Ban::all();
+        
         return view('bans.index', ['bans' => $bans]);
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for ban user.
      *
      * @return \Illuminate\Http\Response
      */
     public function create($userId)
     {
         $user = User::find($userId);
+        
         if (!Auth::user()->hasBanPermissions($user)) {
            abort(403, 'Вы не можете банить этого пользователя'); 
         }
+        
         return view('bans.create', ['user' => $user, 'terms' => $this->terms]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Bans user
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -63,6 +67,7 @@ class BanController extends Controller
         ]);
 
         $ban = new Ban($request->all());
+        
         if ($request->blocked_until) {
             $time = time() + (60 * 60 * 24 * $request->blocked_until);
             $ban->blocked_until = date('Y-m-d H:i:s', $time);
@@ -81,7 +86,7 @@ class BanController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified user ban.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -89,11 +94,12 @@ class BanController extends Controller
     public function show($id)
     {
         $ban = Ban::find($id);
+        
         return view('bans.show', ['ban' => $ban]);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Unbans user
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response

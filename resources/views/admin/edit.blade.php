@@ -27,6 +27,7 @@
             <label>
                 Категория:
                 <select name="category_id" class="form-control">
+                    <option value="">Без категории</option>
                     @foreach($categories as $category)
                         <option value="{{ $category->id }}" {{ ($category->id == $post->category_id) ? 'selected' : '' }}>{{ $category->name }}</option>
                     @endforeach

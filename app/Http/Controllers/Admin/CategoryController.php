@@ -14,19 +14,21 @@ class CategoryController extends Controller
     {
         $this->middleware('hasRoles');
     }
+    
     /**
-     * Display a listing of the resource.
+     * Display a listing of the categories.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $categories = Category::all();
+        
         return view('admin.categories.index', ['categories' => $categories]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created category in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -40,11 +42,12 @@ class CategoryController extends Controller
 
     	$category = new Category($request->all());
     	$category->save();
+        
     	return redirect()->back()->with('status', 'Success!');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified category.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -52,11 +55,12 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = Category::findOrFail($id);
+        
         return view('admin.categories.edit', ['category' => $category]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified category in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -77,7 +81,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified category from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -86,6 +90,7 @@ class CategoryController extends Controller
     {
         $category = Category::findOrFail($id);
         $category->delete();
+        
         return redirect()->route('categories.index');
     }
 }

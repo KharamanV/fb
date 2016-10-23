@@ -12,12 +12,18 @@ $body-bg:    #fafafa;
 //Colors
 
 $primary-color: #f44336;
+
+$brand-success: #1aca94;//#50c18d;
+$brand-danger:  #f56361;
+
 $inversed-color: #222;
 
 $gray-darker: #333;
 $white: #fff;
 $light-gray: #eee;
 $medium-gray: #666;
+
+$inversed-border-color: #444;
 
 $html-css-color: rgb(244, 67, 54);
 $js-color:       #f6b33c;
@@ -36,12 +42,25 @@ $post-date-icon-color: #ccc;
 $title-section-color:        $inversed-color;
 $title-section-border-color: #e1e1e1;
 
+//Buttons
+$btn-padding-x:                  1.3rem !default;
+$btn-padding-y:                  .55rem !default;
+$btn-font-weight:                700;
+
+$btn-success-color:              $brand-success;
+$btn-success-bg:                 $white;
+$btn-success-border:             $btn-success-color;
+
+$btn-danger-color:              $brand-danger;
+$btn-danger-bg:                 $white;
+$btn-danger-border:             $btn-danger-color;
+
 // Typography
 //
 // Font, line-height, and color for body text, headings, and more.
 
 //$font-family-sans-serif: Roboto, "Helvetica Neue", Arial, sans-serif !default;
-
+$font-size-base: .9375rem;
 
 //Sizes
 $category-font-size: .6875rem;
@@ -56,6 +75,13 @@ $post-info-font-size:  .75rem;
 
 $full-post-img-height-xl: 222px;
 
+$post-xs-image-size: 48px;
+
+$comment-avatar-size: 60px;
+
+$btn-border-radius: 17px;
+
+$auth-input-width: 245px;
 
 //Navbar
 $navbar-padding-y: 0;

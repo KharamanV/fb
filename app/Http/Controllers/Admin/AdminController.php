@@ -24,43 +24,69 @@ class AdminController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of posts.
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
         $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->paginate(3);
+        
         return view('admin.index', ['posts' => $posts]);
     }
 
+    /**
+     * Display a listing of trashed posts.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function trash()
     {
         $posts = Post::orderBy('created_at', 'desc')->orderBy('id', 'desc')->onlyTrashed()->paginate(3);
+        
         return view('admin.trash', ['posts' => $posts]);
     }
 
+    /**
+     * Deletes all trashed posts forever
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function clearTrash()
     {
         Post::onlyTrashed()->forceDelete();
+        
         return redirect()->route('admin.index')->with('success', 'Корзина успешно отчисчена');
     }
 
+    /**
+     * Restores single trashed post back to normal/active state
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function restore($slug)
     {
         $post = Post::onlyTrashed()->slug($slug)->firstOrFail();
         $post->restore();
+        
         return redirect()->back()->with('success', 'Статья успешно восстановлена');
     }
 
+
+    /**
+     * Restores all trashed post back to normal/active state
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function restoreTrash()
     {
         Post::onlyTrashed()->restore();
+        
         return redirect()->route('admin.index')->with('success', 'Статьи успешно восстановлены');
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new post.
      *
      * @return \Illuminate\Http\Response
      */
@@ -69,6 +95,7 @@ class AdminController extends Controller
 
         $categories = Category::all();
         $tags = Tag::all();
+        
         return view('admin.create', ['categories' => $categories, 'tags' => $tags]);
     }
 
@@ -90,6 +117,7 @@ class AdminController extends Controller
         ]);
 
         $post = new Post($request->all());
+        $post->category_id = ($request->category_id) ?: null;
 
         if ($request->hasFile('img')) {
             $post->img = ImageHelper::upload($request->file('img'));
@@ -102,21 +130,22 @@ class AdminController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Display the specified post by slug.
      *
-     * @param  int  $id
+     * @param  string  $slug    
      * @return \Illuminate\Http\Response
      */
     public function show($slug)
     {
         $post = Post::slug($slug)->firstOrFail();
+        
         return view('admin.show', ['post' => $post]);
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified post.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
     public function edit($slug)
@@ -124,14 +153,15 @@ class AdminController extends Controller
         $post = Post::slug($slug)->firstOrFail();
         $categories = Category::all();
         $tags = Tag::all();
+        
         return view('admin.edit', ['post' => $post, 'categories' => $categories, 'tags' => $tags]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified post in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $slug)
@@ -149,6 +179,7 @@ class AdminController extends Controller
         
         $oldName = $post->img;
         $post->fill($request->all());
+        $post->category_id = ($request->category_id) ?: null;
 
         if ($request->hasFile('img')) {
             $post->img = ImageHelper::upload($request->file('img'));
@@ -168,14 +199,15 @@ class AdminController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified post from storage.
      *
-     * @param  int  $id
+     * @param  string  $slug
      * @return \Illuminate\Http\Response
      */
     public function destroy($slug)
     {
         $post = Post::withTrashed()->slug($slug)->firstOrFail();
+        
         if ($post->trashed()) {
             $post->tags()->detach();
             if ($post->img) {

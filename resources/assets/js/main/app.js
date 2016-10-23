@@ -68,6 +68,7 @@ $("#owl-demo2").owlCarousel({
 
 $('.rate-post-btn').click(function(e){
     e.preventDefault();
+    var self = $(this);
     var form = $(this).parent();
     var url = form.attr('action');
     var ajax = $.ajax({
@@ -84,7 +85,14 @@ $('.rate-post-btn').click(function(e){
         //var elem = '<div class="alert alert-success">' + data.message + '</div>';
         //$(elem).hide().appendTo('.alerts').fadeIn(750);
         $('#post-rating-counter').html(data.rating);
-        $('.rating-post-form').remove();
+        $('.rate-post-btn').prop('disabled', true);
+        var ratingBlock = self.closest('.rating');
+        if (self.hasClass('rate-down-btn')) {
+            ratingBlock.addClass('down-voted');
+        } else if (self.hasClass('rate-up-btn')) {
+            ratingBlock.addClass('up-voted');
+        }
+
     });
 });
 
@@ -92,6 +100,7 @@ $('.rate-comment-btn').click(function(e){
     e.preventDefault();
     var form = $(this).parent();
     var url = form.attr('action');
+    var comment = $(this).closest('.comment');
     var ajax = $.ajax({
         url: url,
         method: 'POST',
@@ -105,7 +114,7 @@ $('.rate-comment-btn').click(function(e){
     ajax.done(function(data){
         //var elem = '<div class="alert alert-success">' + data.message + '</div>';
         //$(elem).hide().appendTo('.alerts').fadeIn(750);
-        $('#comment-rating-counter').html(data.rating);
+        comment.find('.comment-rating-counter').html(data.rating);
         $('.rating-comment-form').remove();
     });
 });
@@ -129,22 +138,31 @@ $('#add-comment-form').submit(function(e) {
     });
 
     ajax.done(function(comment) {
-        var comment = '<div class="comment" style="border: 1px solid #000; margin-bottom: 20px">\
+        var comment = '<div class="comment">\
                             <div class="rating pull-right">\
-                                <strong style="font-size: 20px;" id="comment-rating-counter">0</strong>\
+                                <strong class="comment-rating-counter">0</strong>\
                             </div>\
-                            <h4><a href="/user/' + comment.username + '">' + comment.fullName + '</a></h4>\
-                            <hr>\
-                            <p>' + comment.text + '</p>\
-                            <p>' + comment.date + '</p>\
-                            <button class="btn-edit" type="button" data-target="' + comment.id + '"><i class="fa fa-pencil" aria-hidden="true"></i></button>\
-                            <a href="/comment/' + comment.id + '/edit">Редактировать</a>\
-                            <form action="/comment/' + comment.id + '" method="post">\
-                                <input type="hidden" name="_token" value="' + comment.csrfToken + '">\
-                                <input type="hidden" name="_method" value="DELETE">\
-                                <button type="submit">Удалить</button>\
-                            </form>\
+                            <div class="comment-avatar" style="background-image: url(' + comment.avatar + ');"></div>\
+                            <div class="comment-content">\
+                                <h4 class="comment-author"><a href="/user/' + comment.username + '">' + comment.fullName + '</a></h4>\
+                                <ul class="post-info">\
+                                    <li>\
+                                        <i class="fa fa-clock-o"></i>\
+                                        ' + comment.date + '\
+                                    </li>\
+                                </ul>\
+                                <p class="comment-text">' + comment.text + '</p>\
+                                <button class="btn-edit" type="button" data-target="' + comment.id + '"><i class="fa fa-pencil" aria-hidden="true"></i>Редактировать</button>\
+                                <form action="/comment/' + comment.id + '" method="post" class="delete-comment-form">\
+                                    <input type="hidden" name="_token" value="' + comment.csrfToken + '">\
+                                    <input type="hidden" name="_method" value="DELETE">\
+                                    <button class="btn-delete" type="submit"><i class="fa fa-times" aria-hidden="true"></i>Удалить</button>\
+                                </form>\
+                            </div>\
                         </div>';
+        if ($('#no-comments')) {
+            $('#no-comments').remove();
+        }
         $('#comments').append(comment);
     });
 });
@@ -209,7 +227,7 @@ $('.btn-edit').click(function() {
 
 $('.delete-comment-form').submit(function(e) {
     e.preventDefault();
-    var comment = $(this).parent('.comment');
+    var comment = $(this).closest('.comment');
     var ajax = $.ajax({
         url: $(this).attr('action'),
         method: 'DELETE',
@@ -292,23 +310,4 @@ $('#register-form').submit(function(e) {
             $(form).before(messageItem);
         }
     });
-});
-
-$('#search').on('input', function(e) {
-    if ( $(this).val().length < 3 ) {
-        return false;
-    }
-        var ajax = $.ajax({
-            url: $(this).parent().attr('action'),
-            method: 'GET',
-            dataType: 'json',
-            data: $(this).serialize()
-        });
-
-        ajax.done(function(data) {
-            console.log(data);
-            for (var i = 0; i < data.length; i++) {
-                
-            }
-        });
 });

@@ -25,20 +25,22 @@ class CabinetController extends Controller
 	}
 
     /**
-     * Shows the user cabinet
+     * Shows the current user cabinet
      * 
-     * @return View
+     * @return \Illuminate\Http\Response
      */
-    public function index() {
+    public function index()
+    {
     	$user = Auth::user();
+
     	return view('cabinet.index', ['user' => $user]);
     }
 
     /**
      * Updating account data
      * 
-     * @param Illuminate\Http\Request $request
-     * @return void
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
      */
     public function update(Request $request)
     {
@@ -52,6 +54,7 @@ class CabinetController extends Controller
     	$user = $request->user();
         $oldName = $user->avatar;
         $user->fill($request->all());
+        $user->age = ($request->age) ? (int) $request->age : null;
 
         if ($request->hasFile('avatar')) {
             $user->avatar = ImageHelper::uploadAvatar($request->file('avatar'));
@@ -65,6 +68,12 @@ class CabinetController extends Controller
     	return back()->with('success', 'Информация изменена');
     }
 
+    /**
+     * Change password of current user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function changePassword(Request $request)
     {
         $this->validate($request, [
@@ -81,12 +90,19 @@ class CabinetController extends Controller
         }
     }
 
+    /**
+     * Sends reset link to email
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function sendResetEmailLink(Request $request)
     {
         $this->validate($request, ['new_email' => 'required|email|unique:users,email']);
 
         $reset = new EmailReset;
         $user = $request->user();
+        
         if (!$reset->shouldSend($user->id)) {
             return redirect()->back()->with('info', 'На ваш новый почтовый адрес уже было отправлено письмо с активацией нового email');
         }
@@ -94,23 +110,39 @@ class CabinetController extends Controller
         $newEmail = $request->new_email;
         $token = $reset->createActivation($user->id, $newEmail);
         $link = route('email.token', $token);
+        
         Mail::to($newEmail)->send(new EmailChange($link));
 
         return redirect()->back()->with('success', 'На ваш новый адрес, было отправлено письмо с ссылкой для подтверждения');
     }
 
+    /**
+     * Confirms email change by token from new email
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param string $token Token, which will confirm email change
+     * @return \Illuminate\Http\Response
+     */
     public function confirmChangeEmail(Request $request, $token)
     {
         $reset = new EmailReset;
         $activation = $reset->getActivationByToken($token);
+        
         if (!$activation || !$reset->isActive($activation)) {
             abort(404);
         }
+        
         session(['user_id' => $activation->user_id, 'new_email' => $activation->new_email]);
 
         return view('cabinet.confirm_email_change');
     }
 
+    /**
+     * Change email
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function changeEmail(Request $request)
     { 
         if (!session('user_id') || !session('new_email')) {
@@ -126,7 +158,6 @@ class CabinetController extends Controller
 
         $user->email = session('new_email');
         $user->save();
-
         $reset = new EmailReset;
         $reset->deleteActivationByUserId($user->id);
         $request->session()->forget(['user_id', 'new_email']);
@@ -134,17 +165,30 @@ class CabinetController extends Controller
         return redirect()->route('cabinet.index')->with('success', 'Почтовый адрес успешно изменен');
     }
 
+    /**
+     * Shows on which tags user has subscribed
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function showSubscribeSettings()
     {
         $tags = Tag::all();
         $userTags = Auth::user()->tags;
+        
         return view('cabinet.subscribes', ['tags' => $tags, 'userTags' => $userTags]);
     }
 
+    /**
+     * Updates info about subscribes
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function updateTags(Request $request)
     {
         $this->validate($request, ['tags' => 'array']);
         $user = $request->user();
+        
         if ($request->tags) {
             $user->tags()->sync($request->tags);
         } else {

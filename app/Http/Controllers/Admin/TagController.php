@@ -18,7 +18,7 @@ class TagController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the tags.
      *
      * @return \Illuminate\Http\Response
      */
@@ -26,11 +26,12 @@ class TagController extends Controller
     {
         $tags = Tag::all();
         $categories = Category::all();
+        
         return view('admin.tags.index', ['tags' => $tags, 'categories' => $categories]);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created tag in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -47,11 +48,12 @@ class TagController extends Controller
     	$tag = new Tag($request->all());
         $tag->category_id = ($request->has('category_id')) ? $request->category_id : null;
     	$tag->save();
+        
     	return redirect()->back()->with('status', 'Success!');
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified tag.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -60,11 +62,12 @@ class TagController extends Controller
     {
         $tag = Tag::findOrFail($id);
         $categories = Category::all();
+        
         return view('admin.tags.edit', ['tag' => $tag, 'categories' => $categories]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified tag in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -86,7 +89,7 @@ class TagController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified tag from storage.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -96,6 +99,7 @@ class TagController extends Controller
         $tag = Tag::findOrFail($id);
         $tag->posts()->detach();
         $tag->delete();
+        
         return redirect()->route('tags.index');
     }
 }

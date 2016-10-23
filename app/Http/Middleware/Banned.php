@@ -7,7 +7,7 @@ use Closure;
 class Banned
 {
     /**
-     * Handle an incoming request.
+     * Handles banned users
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

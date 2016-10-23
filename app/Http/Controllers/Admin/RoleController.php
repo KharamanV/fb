@@ -17,6 +17,12 @@ class RoleController extends Controller
         $this->middleware('hasRoles');
     }
 
+    /**
+     * Shows a form, to assign role to user
+     *
+     * @param int $userId Id of user, which need to assign role
+     * @return \Illuminate\Http\Response
+     */
     public function showAssigningForm($userId)
     {
         $user = User::findOrFail($userId);
@@ -25,6 +31,12 @@ class RoleController extends Controller
         return view('roles.assign', ['roles' => $roles, 'user' => $user]);
     }
 
+    /**
+     * Assigns role/roles to user
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function assign(Request $request)
     {
         $this->validate($request, [

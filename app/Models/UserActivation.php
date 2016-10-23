@@ -10,10 +10,18 @@ class UserActivation extends Model
 {
     use TokenActivation;
 
+    /** @var string The table associated with the model. */
 	protected $table = 'user_activations';
 
+    /** @var int Amount of hours, during user cant resend email */
     protected $resendAfter = 2;
 
+    /**
+     * Activates user by specified token
+     *
+     * @param string $token
+     * @return \App\Models\User $user User model
+     */
     public function activateUser($token)
     {
         $activation = $this->getActivationByToken($token);

@@ -1,63 +1,57 @@
 @extends('layouts.app')
 
 @section('content')
-		@if (isset($lastCatPosts))
-			<section class="latest-category-articles">
-				<div class="container">
-					<h2 class="title-section">
-						<span class="heading-line">Последние в категории</span>
-						<form action="{{ route('posts.search') }}" class="search-form pull-xs-right" role="search">
-							<input autocomplete="off" type="search" class="search-input" id="search" name="search" placeholder="SEARCH HERE" value="{{ old('search') }}">
-							<button type="submit" class="search-btn" id="search-submit"><i class="fa fa-search"></i></button>
-							<ul class="search-results">
-								<li>
-									<img class="search-results-avatar" src="http://placehold.it/200x500">
-									<span class="search-results-title">Самый крутой человек в мире пришел в Сартану и опиздюлился так, что о нем забыли все режиссеры Болливуда, что эа гавно?</span>
-								</li>
-							</ul>
-						</form>
-					</h2>
-					<div id="owl-demo" class="owl-carousel owl-theme">
-					@foreach ($lastCatPosts as $lastCatPost)
-						<div class="item latest">
-							<div class="post-block" style="background-image: url({{ asset('uploads/800/' . $lastCatPost->img) }});">
-								<div class="post-caption">
-									@if (isset($lastCatPost->category->name))
-										<a class="card-category" href="{{ route('category.show', $lastCatPost->category->slug) }}" style="background-color: {{ $lastCatPost->category->color }}">
-											{{ $lastCatPost->category->name }}
+	@if (isset($lastCatPosts))
+		<section class="latest-category-articles">
+			<div class="container">
+				<h2 class="title-section">
+					<span class="heading-line">Последние в категории</span>
+					<form action="{{ route('posts.search') }}" class="search-form pull-xs-right" role="search">
+						<input autocomplete="off" type="search" class="search-input" id="search" name="search" placeholder="SEARCH HERE" value="{{ old('search') }}">
+						<button type="submit" class="search-btn" id="search-submit"><i class="fa fa-search"></i></button>
+					</form>
+				</h2>
+				<div id="owl-demo" class="owl-carousel owl-theme">
+				@foreach ($lastCatPosts as $lastCatPost)
+					<div class="item latest">
+						<div class="post-block" style="background-image: url({{ asset('uploads/800/' . $lastCatPost->img) }});">
+							<div class="post-caption">
+								@if (isset($lastCatPost->category->name))
+									<a class="card-category" href="{{ route('category.show', $lastCatPost->category->slug) }}" style="background-color: {{ $lastCatPost->category->color }}">
+										{{ $lastCatPost->category->name }}
+									</a>
+								@else
+									<a class="card-category" href="{{ route('category.show', 'others') }}">
+										others
+									</a>
+								@endif
+								<h4 class="post-title">
+									<a href="{{ route('posts.show', $lastCatPost->slug) }}">{{ $lastCatPost->title }}</a>
+								</h4>
+								<ul class="post-info">
+									<li>
+										<i class="fa fa-clock-o"></i>
+										{{ date('d M Y', $lastCatPost->created_at->getTimestamp()) }}
+									</li>
+									<li>
+										<a href="{{ route('posts.show', $lastCatPost->slug) }}#comments">
+											<i class="fa fa-comments-o"></i>
+											<span>{{ $lastCatPost->comments->count() }}</span>
 										</a>
-									@else
-										<a class="card-category" href="{{ route('category.show', 'others') }}">
-											others
-										</a>
-									@endif
-									<h4 class="post-title">
-										<a href="{{ route('posts.show', $lastCatPost->slug) }}">{{ $lastCatPost->title }}</a>
-									</h4>
-									<ul class="post-info">
-										<li>
-											<i class="fa fa-clock-o"></i>
-											{{ date('d M Y', $lastCatPost->created_at->getTimestamp()) }}
-										</li>
-										<li>
-											<a href="{{ route('posts.show', $lastCatPost->slug) }}#comments">
-												<i class="fa fa-comments-o"></i>
-												<span>{{ $lastCatPost->comments->count() }}</span>
-											</a>
-										</li>
-										<li>
-											<i class="fa fa-bar-chart"></i>
-											{{ $lastCatPost->rating }}
-										</li>
-									</ul>
-								</div>
+									</li>
+									<li>
+										<i class="fa fa-bar-chart"></i>
+										{{ $lastCatPost->rating }}
+									</li>
+								</ul>
 							</div>
 						</div>
-					@endforeach
 					</div>
+				@endforeach
 				</div>
-			</section>
-		@endif
+			</div>
+		</section>
+	@endif
 	<div class="container">
 		<div class="row">
 			<div class="col-xl-9">
@@ -157,4 +151,17 @@
 			</div>
 		</div>
 	</div>
+    <footer class="page-footer">
+        <div class="container">
+            <div class="widget social-widget">
+                <h2 class="page-footer-heading">Наши контакты</h2>
+                <ul class="social-icons">
+                    <li><a target="_blank" href="https://vk.com/frontend_and_backend" class="vk"><i class="fa fa-vk"></i></a></li>
+                    <li><a target="_blank" href="https://www.youtube.com/channel/UC-ntPRQLq246E5dqifBhfkw" class="youtube"><i class="fa fa-youtube"></i></a></li>
+                    <li><a target="_blank" href="https://twitter.com/front_and_back" class="twitter"><i class="fa fa-twitter"></i></a></li>
+                    <li><a target="_blank" href="https://telegram.me/frontend_and_backend" class="telegram"><i class="fa fa-paper-plane"></i></a></li>
+                </ul>
+            </div>
+        </div>
+    </footer>
 @endsection

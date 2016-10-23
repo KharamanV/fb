@@ -12,11 +12,11 @@ class Role extends Model
 		$this->roles = DB::table('roles')->get();
 	}
 
-    /**
-     * Defining relation with users model
-     * 
-     * @return Relation
-     */
+	/**
+	 * Get the users with this role
+	 *
+	 * @return \Illuminate\Database\Eloquent\Model Relation
+	 */
     public function users()
     {
     	return $this->hasMany('App\Models\User');
@@ -25,7 +25,7 @@ class Role extends Model
     /**
      * Get id of needed role
      * 
-     * @param string $role
+     * @param string $role Name of role
      * @return int Id of role
      */
     public static function getRoleId($role) {

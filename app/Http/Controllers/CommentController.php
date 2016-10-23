@@ -22,7 +22,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created comment in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -40,9 +40,12 @@ class CommentController extends Controller
 
         if ($request->ajax()) {
             $commentAuthor = $comment->user;
+            $avatar = ($commentAuthor->avatar) ? '/uploads/avatars/60/' . $commentAuthor->avatar : '/img/default_avatar.png';
+            
             return response()->json([
                 'id'        => $comment->id,
                 'username'  => $commentAuthor->login,
+                'avatar'    => $avatar,
                 'fullName'  => $commentAuthor->name . ' ' . $commentAuthor->last_name,
                 'text'      => $comment->text,
                 'date'      => date('d M Y', $comment->created_at->getTimestamp()),
@@ -55,7 +58,7 @@ class CommentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form for editing the specified comment.
      *
      * @param  int  $id
      * @return \Illuminate\Http\Response
@@ -63,14 +66,16 @@ class CommentController extends Controller
     public function edit($id)
     {
         $comment = Comment::find($id);
+        
         if (!$comment->isEditable($comment->user)) {
             abort(403, 'Вы не можете редактировать этот комментарий');
         }
+        
         return view('comments.edit', ['comment' => $comment]);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Update the specified comment in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
@@ -80,9 +85,11 @@ class CommentController extends Controller
     {
 
         $comment = Comment::find($id);
+        
         if (!$comment->isEditable($comment->user)) {
             abort(403, 'Вы не можете редактировать этот комментарий');
         }
+        
         $this->validate($request, [
             'text' => 'required'
         ]);
@@ -102,12 +109,13 @@ class CommentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id Id of comment
      * @return \Illuminate\Http\Response
      */
     public function destroy(Request $request, $id)
     {
-        $comment = Comment::find($id);
+        $comment = Comment::findOrFail($id);
         
         if (!$comment->isDeletable($comment->user)) {
             abort(403, 'Вы не можете удалить этот комментарий');
@@ -125,13 +133,22 @@ class CommentController extends Controller
 
     }
 
+    /**
+     * Rates up comment
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id Id of comment
+     * @return \Illuminate\Http\Response
+     */
     public function rateUp(Request $request, $id)
     {
-        $comment = Comment::find($id);
+        $comment = Comment::findOrFail($id);
         $rate = new CommentsRate;
+        
         if ($comment->isOwn() || $comment->isRated()) {
             abort(403, 'Вы не можете проголосовать за этот комментарий');
         }
+        
         $rate->value = 1;
         $rate->user_id = Auth::user()->id;
         $rate->comment_id = $comment->id;
@@ -152,13 +169,22 @@ class CommentController extends Controller
         return redirect()->back()->with('success', $successMessaege);
     }
 
+    /**
+     * Rates down comment
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id Id of comment
+     * @return \Illuminate\Http\Response
+     */
     public function rateDown(Request $request, $id)
     {
         $comment = Comment::find($id);
         $rate = new CommentsRate;
+        
         if ($comment->isOwn() || $comment->isRated()) {
             abort(403, 'Вы не можете проголосовать за этот комментарий');
         }
+        
         $rate->value = -1;
         $rate->user_id = Auth::user()->id;
         $rate->comment_id = $comment->id;
@@ -167,15 +193,15 @@ class CommentController extends Controller
         $comment->rating--;
         $comment->save();
 
-        $successMessaege = 'Ваш голос учтен';
+        $successMessage = 'Ваш голос учтен';
 
         if ($request->ajax()) {
             return response()->json([
-                'message' => $successMessaege,
+                'message' => $successMessage,
                 'rating'  => $comment->rating
             ], 200);
         }
 
-        return redirect()->back()->with('success', $successMessaege);
+        return redirect()->back()->with('success', $successMessage);
     }
 }

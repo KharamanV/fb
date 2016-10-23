@@ -32,32 +32,57 @@ class User extends Authenticatable
     ];
 
     /**
-     * Defining relation to role model
-     * 
-     * @return Relation
+     * Get the role of this user
+     *
+     * @return \Illuminate\Database\Eloquent\Model Relation
      */
     public function role()
     {
          return $this->belongsTo('App\Models\Role');
     }
 
+    /**
+     * Get the comments of this user
+     *
+     * @return \Illuminate\Database\Eloquent\Model Relation
+     */
     public function comments()
     {
         return $this->hasMany('App\Models\Comment');
     }
 
+    /**
+     * Get the subscribe tags of this user
+     *
+     * @return \Illuminate\Database\Eloquent\Model Relation
+     */
     public function tags()
     {
         return $this->belongsToMany('App\Models\Tag');
     }
 
+    /**
+     * Get the ban record of this user
+     *
+     * @return \Illuminate\Database\Eloquent\Model Relation
+     */
     public function ban()
     {
         return $this->hasOne('App\Models\Ban');
     }
 
     /**
-     * Checks, is the user has needed role
+     * Get the post rates of this user
+     *
+     * @return \Illuminate\Database\Eloquent\Model Relation
+     */
+    public function postRates()
+    {
+        return $this->hasMany('App\Models\PostsRate');
+    }
+
+    /**
+     * Checks, is the user has specified role/roles
      * 
      * @param string/array $roles
      * @return boolean
@@ -79,7 +104,7 @@ class User extends Authenticatable
         return false;
     }
     /**
-     * Checks, is the user has needed role
+     * Checks, is the user has specified role
      * 
      * @param string $role
      * @return boolean
@@ -91,7 +116,7 @@ class User extends Authenticatable
     /**
      * Setter/Mutator for role_id column
      * 
-     * @param $value
+     * @param int $value
      * @return void
      */
     public function setRoleIdAttribute($value)
@@ -104,7 +129,7 @@ class User extends Authenticatable
     /**
      * Setter/Mutator for is_active column
      * 
-     * @param $value
+     * @param int $value
      * @return void
      */
     public function setIsActiveAttribute($value)
@@ -115,7 +140,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Checks, is the current user - admin
+     * Checks, is the current user is admin
      * 
      * @return boolean
      */
@@ -124,36 +149,66 @@ class User extends Authenticatable
         return Auth::user()->hasAnyRole('Admin');
     }
 
-    public function scopeUsername($query, $username)
-    {
-        return $query->where('login', $username);
-    }
-
+    /**
+     * Checks, is the current user can ban specified user
+     *
+     * @param \App\Models\User $user
+     * @return boolean
+     */
     public function hasBanPermissions($user)
     {
         if ($this->hasAnyRole('Admin') && !$user->hasAnyRole('Admin')) {
             return true;
         }
+
         if ($this->hasAnyRole('Moderator') && !$user->hasAnyRole(['Admin', 'Moderator'])) {
             return true;
         }
+
         return false;
     }
 
+    /**
+     * Checks, is the current has been banned
+     *
+     * @return int|null
+     */
     public function isBanned()
     {
         return $this->ban_id;
     }
 
+    /**
+     * Unban user
+     *
+     * @return boolean
+     */
     public function unBan()
     {
         return $this->ban->delete();
     }
 
+    /**
+     * Checks, is the ban period is over
+     *
+     * @return boolean
+     */
     public function shouldUnBan()
     {
         //If ban period is over
         return strtotime($this->ban->blocked_until) < time();
+    }
+
+    /**
+     * Scope a query to only include user with specified login
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param string $username
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeUsername($query, $username)
+    {
+        return $query->where('login', $username);
     }
 
     

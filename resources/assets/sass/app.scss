@@ -1,4 +1,7 @@
-
+html,
+body {
+    height: 100%;
+}
 
 .logo {
 	display: inline-block;
@@ -8,6 +11,7 @@
 
 .navbar {
 	border-bottom: 1px solid $navbar-border-color;
+    box-shadow: 0 0px 2px rgba(0,0,0,.1);
 }
 
 .dropdown-item {
@@ -264,7 +268,7 @@
 	.post-block {
 		height: 225px;
 		&::before {
-			background-color: rgba(0,0,0,.65);
+			//background-color: rgba(0,0,0,.65);
 		}
 	}
 	.post-title {
@@ -291,6 +295,11 @@
 		font-size: .875rem;
 		margin: 10px 0 5px;
 	}
+    .post-block {
+        &::before {
+            background-color: rgba(0,0,0,.65);
+        }
+    }
 	.owl-theme .owl-controls .owl-page span {
 		background: $primary-color;
 	}
@@ -310,24 +319,27 @@
 	position: absolute;
 	left: 0;
 	right: 0;
-	padding: 0 $indent;
+	padding: $indent;
 	z-index: 1;
-	bottom: $indent;
+	bottom: 0;
+    background: linear-gradient(to bottom, rgba(17, 17, 17, 0) 0%, rgba(17, 17, 17, 0.1) 10%, rgba(17, 17, 17, 0.95) 100%);
 	.top-categories & {
 		top: 50%;
 		transform: translateY(-50%);
 		text-align: center;
 		bottom: auto;
+        background: none;
 	}
 }
 
 .searches {
-	margin-top: 82px;
+	//margin-top: 82px;
 }
 
 .latest-category-articles {
-	background-color: $white;
-	padding: 50px 0 1.875rem;
+	//background-color: $white;
+	padding: 0 0 1.875rem;
+    overflow: hidden;
 	.post-title {
 		text-transform: uppercase;
 		font-size: .875rem;
@@ -435,7 +447,7 @@
 .search-form {
 	position: relative;
 	width: 262px;
-	margin-top: -10px;
+	margin-top: -16px;
 }
 
 .search-input {
@@ -463,15 +475,350 @@
 //Single article
 
 .single-article {
-	margin-top: 70px;
+	//margin-top: 70px;
 	.card-category {
 		position: static;
 	}
 }
 
 .s-article-title {
-	color: $gray-darker;
+	color: $white;
+    text-transform: uppercase;
 	font-size: 1.5rem;
 	line-height: 30px;
-	margin: .5rem 0;
+    font-weight: 700;
+	margin: .85rem 0 .5rem;
+    @media (min-width: 992px) {
+        width: 65%;
+    }
+}
+
+.inversed {
+    background-color: $inversed-color;
+    .title-section {
+        color: $white;
+        border-color: $inversed-border-color;
+    }
+}
+
+.post-board {
+    height: 50%;
+    overflow: hidden;
+    background: no-repeat center center;
+    background-size: cover;
+    position: relative;
+    &::before {
+        content: '';
+        position: absolute;
+        display: block;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,.25);
+    }
+    &-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: 30px 0;
+        background: linear-gradient(to bottom, rgba(17, 17, 17, 0) 0%, rgba(17, 17, 17, 0.1) 10%, rgba(17, 17, 17, 0.75) 100%);
+        .rating {
+            //position: absolute;
+            float: right;
+            color: $white;
+            &-counter {
+                font-size: 2rem;
+            }
+            &-post-form {
+                line-height: .4;
+            }
+        }
+    }
+    .card-category {
+        position: static;
+    }
+    .post-info {
+        li {
+            color: $white;
+        }
+    }
+}
+
+.post-text {
+    overflow: hidden;
+    margin-top: 1.875rem;
+}
+
+.tags {
+    margin: 18px 0 0;
+    padding: 0;
+    &-icon {
+        font-size: 1.125rem;
+        margin-right: .625rem;
+        color: $post-info-color;
+    }
+    &-section-title {
+        margin-right: 1.125rem;
+    }
+    li {
+        display: inline-block;
+        color: $medium-gray;
+        font-size: 13px;
+        font-family: 'Lato', sans-serif;
+        margin-right: 3px;
+        margin-bottom: 2px;
+    }
+    &-item {
+        display: inline-block;
+        transition: all .2s ease-in-out;
+        padding: .375rem .625rem;
+        border: 1px solid $post-date-icon-color;
+        border-radius: 3px;
+        color: $post-info-color;
+        font-size: 12px;
+        text-transform: uppercase;
+        font-weight: 700;
+        &:hover,
+        &:focus {
+            background-color: $inversed-color;
+            border-color: $inversed-color;
+            color: $white;
+            text-decoration: none;
+        }
+    }
+}
+
+.rating {
+    text-align: center;
+    &.up-voted {
+        .rate-up-btn i {
+            color: $brand-success;
+        }
+    }
+    &.down-voted {
+        .rate-down-btn i {
+            color: $brand-danger;
+        }
+    }
+    &-counter {
+        font-family: Roboto, sans-serif;
+        font-weight: 400;
+    }
+    &-comment-form {
+        line-height: .1;
+    }
+}
+
+.rate-btn {
+    background: none;
+    border: none;
+    line-height: .4;
+    &:focus {
+        outline: none;
+    }
+    &:active {
+        transform: scale(1.15);
+    }
+    &[disabled] {
+        i {
+            color: $post-date-icon-color;
+        }
+    }
+    i {
+        color: $white;
+        font-size: 2.75rem;
+        line-height: inherit;
+        font-weight: 400;
+    }
+}
+
+.comment-field {
+    resize: none;
+    &:focus {
+        border: 1px solid rgba(0,0,0,.3);
+    }
+}
+
+.add-comment-form {
+    $width: $comment-avatar-size + 16;
+    float: left;
+    margin: .25rem 0 0 1rem;
+    width: calc(100% - #{$width});
+}
+
+.comment-avatar {
+    width: $comment-avatar-size;
+    height: $comment-avatar-size;
+    border-radius: 50%;
+    overflow: hidden;
+    float: left;
+    background: no-repeat center center;
+    background-size: cover;
+}
+
+.btn {
+    border-width: 2px;
+    transition: all .2s ease-in-out;
+    font-size: 14px;
+    &:focus {
+        outline: none !important;
+    }
+    &.btn-success {
+        &:hover,
+        &:focus {
+            background-color: $brand-success;
+            color: $white;
+            border-color: $brand-success;
+        }
+    }
+    &.btn-danger {
+        &:hover,
+        &:focus {
+            background-color: $brand-danger;
+            color: $white;
+            border-color: $brand-danger;
+        }
+    }
+    
+}
+
+.comments {
+}
+
+.comment {
+    //background-color: $white;
+    //padding: 10px;
+    overflow: hidden;
+    //border: 1px solid rgba(0,0,0,.2);
+    //border-radius: 12px;
+    margin-bottom: 1.3rem;
+    &-content {
+        float: left;
+        margin-left: 1rem;
+    }
+    &-author {
+        margin: 0;
+        a {
+            color: $gray-darker;
+        }
+    }
+    &-text {
+        margin-top: 10px;
+    }
+    .rate-btn {
+        i {
+            color: $gray-light;
+            font-size: 2rem;
+        }
+    }
+    &-rating-counter {
+        color: $gray-dark;
+        font-size: 18px;
+    }
+}
+
+.btn-delete,
+.btn-edit {
+    background-color: transparent;
+    border: none;
+    color: $medium-gray;
+    padding: 0 5px 0 0;
+    i {
+        margin-right: 5px;
+    }
+    &:focus {
+        outline: none;
+    }
+}
+
+.btn-edit {
+    &:hover {
+        color: $brand-success;
+    }
+}
+
+.btn-delete {
+    &:hover {
+        color: $brand-danger;
+    }
+}
+
+.delete-comment-form {
+    display: inline-block;
+}
+
+.login-label {
+    margin-top: 5px;
+}
+
+.auth-form {
+    width: $auth-input-width;
+    margin: 20px auto 0;
+}
+
+.reg-btn {
+    margin-top: 20px;
+}
+
+.page-footer {
+    background-color: $inversed-color;
+    margin-top: 26px;
+    padding: 26px 0;
+    text-align: right;
+    &-heading {
+        font-weight: 700;
+        margin: 0 0 25px;
+        text-transform: uppercase;
+        font-family: Roboto, sans-serif;
+        font-size: 13px;
+        padding-bottom: 25px;
+        border-bottom: 1px solid $gray-darker;
+        color: $white;
+        letter-spacing: 1px;
+    }
+    .social-icons {
+        padding: 0;
+        margin: 0;
+        list-style-type: none;
+        li {
+            display: inline-block;
+            margin-right: 1px;
+            margin-bottom: 4px;
+            a {
+                display: inline-block;
+                text-decoration: none;
+                transition: all .2s ease-in-out;
+                width: 36px;
+                height: 35px;
+                line-height: 34px;
+                text-align: center;
+                border: 1px solid $gray-darker;
+                color: $medium-gray;
+                font-size: 20px;
+                background: transparent;
+                border-radius: 2px;
+                &:hover {
+                    color: $white;
+                }
+                &.twitter:hover {
+                    background: #18a3dd;
+                    border: 1px solid #18a3dd;
+                }
+                &.telegram:hover {
+                    background: #2ea0f0;
+                    border: 1px solid #2ea0f0;
+                }
+                &.youtube:hover {
+                    background: #d31708;
+                    border: 1px solid #d31708;
+                }
+                &.vk:hover {
+                    background: #507299;
+                    border: 1px solid #507299;
+                }
+            }
+        }
+    }
 }

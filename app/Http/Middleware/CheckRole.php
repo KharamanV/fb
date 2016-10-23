@@ -7,7 +7,7 @@ use Closure;
 class CheckRole
 {
     /**
-     * Handle an incoming request.
+     * Handles users by roles, which defined in route parameters
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -21,6 +21,7 @@ class CheckRole
         if ($request->user()->hasAnyRole($roles) || !$roles) {
             return $next($request);
         }
+        
         abort(403, 'У вас нет прав для просмотра этой страцниы');
     }
 }

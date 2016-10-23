@@ -9,7 +9,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Frontend & Backend</title>
-    <link href="https://fonts.googleapis.com/css?family=Roboto:500&subset=cyrillic" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&subset=cyrillic" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Lato:400i,400,700" rel="stylesheet">
     <!-- Styles -->
     <link rel="stylesheet" href="/css/owl.carousel.css">
@@ -85,7 +85,7 @@
     </div>
 
     @yield('content')
-
+    
     <!-- Scripts -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="/js/owl.carousel.min.js"></script>

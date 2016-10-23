@@ -7,7 +7,7 @@ use Closure;
 class NotBanned
 {
     /**
-     * Handle an incoming request.
+     * Handles not banned users
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next
@@ -25,6 +25,7 @@ class NotBanned
                 }
             }
         }
+        
         return $next($request);
     }
 }

@@ -51,7 +51,7 @@ class LoginController extends Controller
     }
 
     /**
-     * Redeclaring username() method, which will look on login field on login-page, not email
+     * Redeclare username() method, which will look on login field on login-page, not email
      *
      * @return string
      */
